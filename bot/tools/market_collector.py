@@ -125,7 +125,14 @@ def collect_l2_metrics(coin):
 
 
 def collect_trades_agg(coin):
-    """HL recent trades -> aggregate. Endpoint may not exist; caller handles failure."""
+    """HL recent trades -> aggregate. Endpoint may not exist; caller handles failure.
+
+    MEASUREMENT CAVEAT (TABLE_B_NEWSTREAMS, 2026-07-02): HL recentTrades
+    returns only the LAST ~10 TRADES (verified live: len=10, span ~5s), so
+    buy_ratio here is dust and CANNOT work as a flow signal. Kept for
+    largest_trade/trade_count continuity only; the honest full-interval taker
+    flow lives in collect_taker_volume_15m() -> record key "taker_15m".
+    """
     trades = _post_hl({"type": "recentTrades", "coin": coin})
     if not isinstance(trades, list) or not trades:
         raise ValueError("no trades returned")
@@ -143,6 +150,35 @@ def collect_trades_agg(coin):
         "sell_vol": round(sell_vol, 6),
         "largest_trade": round(largest, 6),
         "buy_ratio": round(buy_vol / (buy_vol + sell_vol), 4) if (buy_vol + sell_vol) > 0 else None,
+        "window": "last_10_trades_only",  # muted per TABLE_B Invariant 7 — use taker_15m
+    }
+
+
+def collect_taker_volume_15m(coin):
+    """Full 15-min taker buy/sell VOLUME (TABLE_B collector fix #1, 2026-07-02).
+
+    OKX rubik taker-volume, period=5m, rows newest-first as
+    [ts, sellVol, buyVol] (verified live for all 5 symbols incl HYPE).
+    Sums the 3 most recent rows => a true 15-minute interval, replacing the
+    unusable last-10-trades sample. Window timestamps logged so effective-n
+    stays honest.
+    """
+    rows = _get_okx("/api/v5/rubik/stat/taker-volume",
+                    {"ccy": coin, "instType": "CONTRACTS", "period": "5m"})
+    if not rows or len(rows) < 3:
+        raise ValueError(f"okx taker-volume: {len(rows or [])} rows < 3")
+    window = rows[:3]  # newest-first; newest row may be an in-progress bucket
+    sell_vol = sum(float(r[1]) for r in window)
+    buy_vol = sum(float(r[2]) for r in window)
+    total = buy_vol + sell_vol
+    return {
+        "buy_vol_usd": round(buy_vol, 2),
+        "sell_vol_usd": round(sell_vol, 2),
+        "buy_ratio": round(buy_vol / total, 4) if total > 0 else None,
+        "window_min": 15,
+        "window_ts_start": int(window[-1][0]),
+        "window_ts_end": int(window[0][0]),
+        "src": "okx_rubik_taker_volume_5m_x3",
     }
 
 
@@ -179,9 +215,14 @@ def collect_binance_context(coin):
     try:
         ls = _get_binance("/futures/data/globalLongShortAccountRatio", {"symbol": bsym, "period": "15m", "limit": 1})
         out["long_short_account_ratio"] = float(ls[0]["longShortRatio"]) if ls else None
+        # TABLE_B collector fix #2: log the SOURCE timestamp of the ratio (not
+        # just poll time) so repeated stale values can be deduped — the level's
+        # lag-1 AC is 0.89-0.98 and effective-n was dishonest without this.
+        out["long_short_account_ratio_ts"] = int(ls[0]["timestamp"]) if ls else None
     except Exception as e:
         print(f"[WARN] {coin} binance longShortRatio: {e}")
         out["long_short_account_ratio"] = None
+        out["long_short_account_ratio_ts"] = None
     try:
         tk = _get_binance("/futures/data/takerlongshortRatio", {"symbol": bsym, "period": "15m", "limit": 1})
         out["taker_buy_sell_ratio"] = float(tk[0]["buySellRatio"]) if tk else None
@@ -196,7 +237,8 @@ def collect_okx_context(coin):
     swap = f"{coin}-USDT-SWAP"
     out = {"source": "okx", "mark_price": None, "index_price": None,
            "funding_rate": None, "basis_bps": None,
-           "long_short_account_ratio": None, "taker_buy_sell_ratio": None}
+           "long_short_account_ratio": None, "long_short_account_ratio_ts": None,
+           "taker_buy_sell_ratio": None}
     try:
         fr = _get_okx("/api/v5/public/funding-rate", {"instId": swap})
         out["funding_rate"] = float(fr[0]["fundingRate"]) if fr else None
@@ -214,6 +256,8 @@ def collect_okx_context(coin):
     try:
         ls = _get_okx("/api/v5/rubik/stat/contracts/long-short-account-ratio", {"ccy": coin, "period": "5m"})
         out["long_short_account_ratio"] = float(ls[0][1]) if ls else None
+        # TABLE_B collector fix #2: OKX row ts (source time, not poll time)
+        out["long_short_account_ratio_ts"] = int(ls[0][0]) if ls else None
     except Exception as e:
         print(f"[WARN] {coin} okx longShortRatio: {e}")
     try:
@@ -241,7 +285,8 @@ def collect_once():
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     records = []
     for coin in SYMBOLS:
-        rec = {"ts": ts, "symbol": coin, "l2": None, "trades": None, "futures_ctx": None}
+        rec = {"ts": ts, "symbol": coin, "l2": None, "trades": None,
+               "taker_15m": None, "futures_ctx": None}
         try:
             rec["l2"] = collect_l2_metrics(coin)
         except Exception as e:
@@ -250,6 +295,12 @@ def collect_once():
             rec["trades"] = collect_trades_agg(coin)
         except Exception as e:
             print(f"[WARN] {coin} recentTrades: {e}")
+        try:
+            # TABLE_B fix #1: full 15-min taker buy/sell volume (the last-10-
+            # trades sample above is dust and stays muted).
+            rec["taker_15m"] = collect_taker_volume_15m(coin)
+        except Exception as e:
+            print(f"[WARN] {coin} taker_15m: {e}")
         try:
             rec["futures_ctx"] = collect_futures_context(coin)
         except Exception as e:
