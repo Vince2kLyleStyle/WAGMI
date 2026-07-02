@@ -44,6 +44,15 @@ class ThesisRecord:
         self.setup_type = setup_type or "unknown"
         self.agent_name = agent_name
         self.created_at = datetime.now(timezone.utc).isoformat()
+        # A/B stamp (RQ15): was the thesis-quality checklist active in the
+        # prompt when this thesis was formed? Enables checklist-on vs -off
+        # graded-accuracy scoring with auto-retire.
+        self.checklist_active: Optional[bool] = None
+        try:
+            from llm.agents.prompts import THESIS_CHECKLIST_ENABLED
+            self.checklist_active = bool(THESIS_CHECKLIST_ENABLED)
+        except Exception:
+            pass
 
         # Outcome fields (filled later)
         self.outcome: Optional[str] = None  # "correct", "incorrect", "partial", "pending"
@@ -69,6 +78,7 @@ class ThesisRecord:
             "setup_type": self.setup_type,
             "agent_name": self.agent_name,
             "created_at": self.created_at,
+            "checklist_active": self.checklist_active,
             "outcome": self.outcome,
             "exit_price": self.exit_price,
             "actual_hold_h": self.actual_hold_h,
@@ -95,6 +105,7 @@ class ThesisRecord:
             agent_name=d.get("agent_name", "trade_agent"),
         )
         rec.created_at = d.get("created_at", rec.created_at)
+        rec.checklist_active = d.get("checklist_active")
         rec.outcome = d.get("outcome")
         rec.exit_price = d.get("exit_price")
         rec.actual_hold_h = d.get("actual_hold_h")

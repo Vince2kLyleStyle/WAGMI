@@ -971,6 +971,48 @@ Your input also contains named enrichment fields (structured versions of the "en
 - `enriched`: Combined blob of all above (backward compat). Prefer the named fields above.
 """
 
+# ── RQ15 Thesis-Quality Checklist (env-gated injection) ─────────
+# Evidence (coordination/RQ15_THESIS_FORENSICS.md, n=155 deduped graded
+# theses, holds in BOTH eras E1/E2): composite score>=2 -> 74% right
+# (48/65) vs score<=0 -> 37% (15/41), monotonic. Injected per THE_STANDARD
+# v1.3 (stats carry n + era; in-sample feature selection => shipped as
+# A/B — thesis records are stamped checklist_active for outcome scoring).
+# Revert: THESIS_CHECKLIST=false (restart applies).
+import os as _os
+
+THESIS_CHECKLIST_ENABLED = _os.getenv(
+    "THESIS_CHECKLIST", "true").lower() in ("1", "true", "yes")
+
+_TRADE_THESIS_CHECKLIST_BLOCK = """
+## THESIS QUALITY CHECKLIST (evidence-ranked — RQ15, n=155 graded theses, era-robust)
+When you write the `thesis` field, follow these measured rules:
+1. **REQUIRE a fresh numeric MARKET price target** ("toward $1,825", "to ~$102,400") derived from market structure. Theses with one graded 64% right (n=117) vs 37% without (n=38); holds in both eras and per-symbol.
+2. **NEVER use your own TP1/TP2 as the target** ("to TP1 $60.78" = restating the order ticket, not a prediction): 45% right (n=58) vs 65% without (n=97).
+3. **Cap the thesis at ~25 words.** Shortest quartile graded 66% right vs 41% for the longest (n=155, monotonic). If it needs more words, the setup is muddy — reconsider.
+4. **Prefer one cross-asset confirmation clause** (BTC/ETH alignment, leader/laggard): 62% vs 55% (n=53, weak positive — one clause max).
+
+BANNED from theses (each graded WRONG-leaning on n=155):
+- **Numeric Quant-Brain edge citations** ("85% WR", "n=", "PF 12.2") — 45% right in the current era (n=20); small-n stats presented as edges own the worst-10 trades. Cite structure, not injected WR stats.
+- **Session/UTC-hour edge language** ("US session peak edge"): 29% right, avg -1.53% (n=14).
+- **"holds / continues / continuation-to" theses** that describe the EXISTING position instead of a new prediction: 38% right, avg -1.40% (n=21).
+- **Post-crash chase phrasing** ("dead-cat", "after massive breakdown"): 43% right, avg -1.85% (n=7, small but owns 6/10 worst trades).
+"""
+
+_CRITIC_THESIS_CHECKLIST_BLOCK = """
+## THESIS-QUALITY REJECT RULES (RQ15, n=155 graded theses, era-robust)
+Before evaluating direction, check the FORM of the Trade Agent's thesis. These features measurably predict wrongness (evidence per item, both eras):
+- No fresh numeric market target, or target is the pipeline's own TP1/TP2 label: 37-45% right vs 64-65% with a real market target. -> reduce adjusted_confidence; if combined with another flag below, challenge.
+- Cites numeric Quant-Brain stats as the edge ("X% WR", "n=", "PF"): coin-flip-or-worse (45% in current era, n=20). Stats without structure are not evidence.
+- Session/UTC-hour edge language: 29% right (n=14).
+- "holds/continues" language describing an existing position instead of predicting: 38% right (n=21).
+- Longer than ~25 words of kitchen-sink justification: longest quartile 41% right vs 66% shortest.
+These are FORM checks — they justify confidence reduction on their own, and support (not replace) an evidence-based counter-thesis for a full challenge.
+"""
+
+if THESIS_CHECKLIST_ENABLED:
+    TRADE_AGENT_PROMPT += _TRADE_THESIS_CHECKLIST_BLOCK
+    CRITIC_AGENT_PROMPT += _CRITIC_THESIS_CHECKLIST_BLOCK
+
 
 # ── Exit Intelligence Agent ────────────────────────────────────
 
