@@ -95,18 +95,28 @@ class TestLLMFirstActivation:
 class TestLLMFirstDispatchGate:
     """Verify the dispatch logic gates are present and correctly ordered."""
 
-    def test_cost_gate_precedes_llm_first_dispatch(self):
-        """The 60% confidence cost gate must be applied before the LLM-first
-        dispatch fires, otherwise sub-60% noise burns API budget."""
+    def test_conf_divert_is_shadow_with_kill_switch(self):
+        """WAVE2B L1 (R7, FULL_PIPE_BUILD_MAP 2026-07-02): the old
+        conf<min(60,floor) "cost gate" must NOT divert signals away from the
+        LLM by default — ensemble confidence has IC≈0 vs outcomes (D4), so
+        routing on it is opinion, not quota physics. The divert exists only
+        behind the ROUTER_CONF_DIVERT_ENFORCE kill-switch, with
+        [SHADOW-ROUTER] would-divert logging otherwise. Budget protection =
+        the 10-min cooldown (tested below) + coordinator entry cache."""
         from multi_strategy_main import MultiStrategyBot
         src = inspect.getsource(MultiStrategyBot._process_symbol)
-        # Crude but effective: find order of key markers
-        cost_gate_idx = src.find("60% threshold")
+        assert "ROUTER_CONF_DIVERT_ENFORCE" in src, (
+            "R7 kill-switch missing — either the divert was re-hardcoded "
+            "unconditionally or the shadow demotion was removed"
+        )
+        assert "[SHADOW-ROUTER] R7 would-divert" in src, (
+            "R7 shadow logging missing — would-divert decisions must be observable"
+        )
+        kill_idx = src.find("ROUTER_CONF_DIVERT_ENFORCE")
         dispatch_idx = src.find("_process_symbol_llm_first")
-        assert cost_gate_idx > 0, "60% cost gate missing from _process_symbol"
         assert dispatch_idx > 0, "LLM-first dispatch call missing"
-        assert cost_gate_idx < dispatch_idx, (
-            "Cost gate must appear BEFORE LLM-first dispatch; budget protection broken"
+        assert kill_idx < dispatch_idx, (
+            "R7 kill-switch check must precede LLM-first dispatch"
         )
 
     def test_cooldown_mechanism_present(self):

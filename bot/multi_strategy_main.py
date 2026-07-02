@@ -1582,6 +1582,33 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
                     f"{', '.join(_reasons)}. Falling back to mechanical path."
                 )
                 self.config.llm_first_mode = False
+                # WAVE2B L1 (R5, FULL_PIPE_BUILD_MAP): the silent flip to full
+                # mechanical is gone. Degradation is LOUD (alert + heartbeat
+                # flag llm_first_degraded=true) and mechanical EXECUTION now
+                # requires ALLOW_MECHANICAL_FALLBACK=true — the exact moment
+                # llm_first lapses is the moment the legacy opinion gates used
+                # to take over unwatched (see R4 deletion in handle_symbol).
+                self.llm_first_degraded = True
+                _allow_mech = os.getenv("ALLOW_MECHANICAL_FALLBACK", "false").lower() == "true"
+                if _allow_mech:
+                    logger.warning(
+                        "  LLM-FIRST DEGRADED → mechanical execution ENABLED "
+                        "(ALLOW_MECHANICAL_FALLBACK=true)"
+                    )
+                else:
+                    logger.warning(
+                        "  LLM-FIRST DEGRADED → mechanical path will annotate/track "
+                        "signals but NOT execute. Set ALLOW_MECHANICAL_FALLBACK=true "
+                        "to trade without the brain."
+                    )
+                try:
+                    self.alerts.send_market_update(
+                        f"⚠️ LLM-FIRST DEGRADED at startup: {', '.join(_reasons)} — "
+                        f"mechanical execution "
+                        f"{'ENABLED (ALLOW_MECHANICAL_FALLBACK=true)' if _allow_mech else 'BLOCKED (annotate-only)'}"
+                    )
+                except Exception:
+                    pass
         elif _llm_dual:
             logger.info(f"  LLM-FIRST DUAL-TRACK: logging LLM vs mechanical divergence")
         logger.info(f"  Signal monitor: {len(self.signal_monitor.channel_ids)} channels configured")
@@ -1962,7 +1989,12 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
                     loop_duration_s=0.0,
                     positions=int(snap.get("positions", 0)),
                     equity=float(snap.get("equity", 0.0)),
-                    extra={"source": "heartbeat_daemon"},
+                    extra={
+                        "source": "heartbeat_daemon",
+                        # WAVE2B L1 (R5): loud degradation — watchdog/owner can
+                        # see when llm_first lapsed to mechanical at startup.
+                        "llm_first_degraded": bool(getattr(self, "llm_first_degraded", False)),
+                    },
                 )
                 # Also poke the in-process watchdog so its stall timer resets.
                 self.watchdog.heartbeat(
@@ -4744,34 +4776,62 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
         except Exception:
             pass
 
-        # ── Wave 2: Regime-based strategy filter ──
-        # Disable strategies that are expected to fail in the current regime.
-        # Uses STRATEGY_REGIME_FIT table (static theory) + historical WR (learned).
+        # WAVE2B L1 (F4, FULL_PIPE_BUILD_MAP 2026-07-02): per-symbol collector
+        # for mechanical would-have verdicts. Routers demoted below record
+        # their opinions here; the dict rides into market_ctx["mech_opinion"]
+        # (formatted for prompts by L4's format_mech_opinion) so Claude sees
+        # the mechanical layer's analysis as labeled context, not enforcement.
+        if not hasattr(self, '_mech_opinion'):
+            self._mech_opinion = {}
+        self._mech_opinion[symbol] = {}
+
+        # ── Wave 2B L1 (R21d): FIT verdicts annotate, never disable ──
+        # STRATEGY_REGIME_FIT "avoid" used to disable strategies before they
+        # could vote (static theory, no n — OPINION per FULL_PIPE_BUILD_MAP).
+        # Doctrine: strategies always vote; the fitness table's verdict rides
+        # along as labeled metadata (set_fit_avoid_annotations, WAVE2A L3).
+        # Kill-switch: ROUTER_FIT_DISABLE_ENFORCE=true restores legacy disable.
         if self.config.enable_regime_strategy_filter:
+            _fit_enforce = os.getenv("ROUTER_FIT_DISABLE_ENFORCE", "false").lower() == "true"
             try:
                 _cur_regime = self._tick_regime_cache.get(symbol) or self.regime_detector.get_regime(symbol)
                 if _cur_regime:
                     from llm.agents.shared_context import STRATEGY_REGIME_FIT
                     _fit = STRATEGY_REGIME_FIT.get(_cur_regime, {})
-                    _disabled = set()
-
-                    # Static: disable strategies marked "avoid" in this regime
-                    for _sname, _sfit in _fit.items():
-                        if _sfit == "avoid":
-                            _disabled.add(_sname)
+                    _avoid = {_sname for _sname, _sfit in _fit.items() if _sfit == "avoid"}
 
                     # Dynamic WR-based disabling skipped to match backtest behavior.
                     # Will re-enable once sufficient paper trading data is collected.
                     # Original: disable strategies with <35% WR over 10+ trades via deep_memory.
 
-                    if _disabled:
-                        self.ensemble.set_disabled_strategies(_disabled)
+                    if _avoid and _fit_enforce:
+                        # Legacy enforcement path (kill-switch only)
+                        self.ensemble.set_disabled_strategies(_avoid)
                         logger.info(
-                            f"[{trace_id}][{symbol}] Regime filter: disabled {_disabled} "
+                            f"[{trace_id}][{symbol}] Regime filter (ENFORCED by "
+                            f"ROUTER_FIT_DISABLE_ENFORCE): disabled {_avoid} "
                             f"in {_cur_regime} regime"
                         )
                     else:
                         self.ensemble.set_disabled_strategies(set())
+                        try:
+                            self.ensemble.set_fit_avoid_annotations({
+                                _sname: f"avoid in {_cur_regime} (static theory, no n)"
+                                for _sname in _avoid
+                            })
+                        except Exception:
+                            pass
+                        if _avoid:
+                            logger.info(
+                                f"[{trace_id}][{symbol}] [SHADOW-ROUTER] R21d FIT table "
+                                f"would disable {sorted(_avoid)} in {_cur_regime} — "
+                                f"annotating votes instead (not enforced)"
+                            )
+                            self._mech_opinion[symbol]["fit_avoid"] = {
+                                "strategies": sorted(_avoid),
+                                "regime": _cur_regime,
+                                "label": "static theory, no n",
+                            }
                     # Set regime for regime-aware min_votes
                     self.ensemble.set_regime(symbol, _cur_regime)
                 else:
@@ -4831,11 +4891,34 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
                 _base = symbol.replace("/USDC:USDC", "").replace("/USDT:USDT", "")
                 _llm_first_active = getattr(self.config, 'llm_first_mode', False)
                 if _llm_first_active:
-                    # LLM-FIRST: all ≥60% solo signals go to the LLM. The LLM
-                    # is the filter, not the consensus gate. Log only when the
-                    # dispatch is actually novel (not suppressed by cooldown)
-                    # to prevent log spam.
-                    if _raw.confidence >= 60:
+                    # WAVE2B L1 (R3, FULL_PIPE_BUILD_MAP): the solo conf>=60
+                    # gate is DEAD by default — ensemble confidence has IC≈0
+                    # vs outcomes (FALLACY_AUDIT D4), so routing on it is
+                    # opinion, not physics. EVERY non-None evaluate_raw result
+                    # dispatches; confidence rides in the prompt as raw
+                    # context. Quota physics = 10-min cooldown + entry cache.
+                    # Kill-switch: ROUTER_SOLO_CONF_ENFORCE=true restores the
+                    # 60% floor (the May-31 classic's surviving twin).
+                    _solo_enforce = os.getenv("ROUTER_SOLO_CONF_ENFORCE", "false").lower() == "true"
+                    _spam_key = f"{_base}_{_raw.side}"
+                    if not hasattr(self, '_llm_first_solo_log_ts'):
+                        self._llm_first_solo_log_ts = {}
+                    _last_log = self._llm_first_solo_log_ts.get(_spam_key, 0)
+                    _log_novel = time.time() - _last_log >= 600  # match cooldown
+                    if _raw.confidence < 60:
+                        self._mech_opinion[symbol]["solo_conf_gate"] = {
+                            "conf": round(float(_raw.confidence), 1),
+                            "threshold": 60,
+                            "would_divert": True,
+                            "label": "IC≈0 stat — not enforced",
+                        }
+                        if _log_novel:
+                            logger.info(
+                                f"[{symbol}] [SHADOW-ROUTER] R3 would-divert solo: "
+                                f"{_base} {_raw.side} conf={_raw.confidence:.0f}% < 60% "
+                                f"({'ENFORCED' if _solo_enforce else 'not enforced — dispatching to LLM'})"
+                            )
+                    if _raw.confidence >= 60 or not _solo_enforce:
                         signal_result = _raw
                         if signal_result.metadata is None:
                             signal_result.metadata = {}
@@ -4843,32 +4926,19 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
                         signal_result.metadata["bypassed_consensus"] = True
                         # Only log the first occurrence per cooldown window.
                         # Matches the LLM-first cooldown key at line ~4164.
-                        _spam_key = f"{_base}_{_raw.side}"
-                        if not hasattr(self, '_llm_first_solo_log_ts'):
-                            self._llm_first_solo_log_ts = {}
-                        _last_log = self._llm_first_solo_log_ts.get(_spam_key, 0)
-                        if time.time() - _last_log >= 600:  # match cooldown
+                        if _log_novel:
                             logger.info(
                                 f"[{symbol}] LLM-FIRST solo → LLM: {_base} {_raw.side} "
                                 f"conf={_raw.confidence:.0f}% num_agree=1 (LLM decides)"
                             )
                             self._llm_first_solo_log_ts[_spam_key] = time.time()
-                else:
-                    # Legacy: hardcoded whitelist of proven-edge solos only.
-                    _PROVEN_SOLOS = {
-                        ("BTC", "SELL"),   # +$55 live, trending_bear golden
-                        ("ETH", "BUY"),    # 100% WR on 135 shadow signals
-                        ("SOL", "SELL"),   # +$44 live, 72% shadow WR via BB/MTQ
-                    }
-                    if (_base, _raw.side) in _PROVEN_SOLOS and _raw.confidence >= 65:
-                        signal_result = _raw
-                        if signal_result.metadata is None:
-                            signal_result.metadata = {}
-                        signal_result.metadata["llm_solo_evaluation"] = True
-                        logger.info(
-                            f"[{symbol}] PROVEN SOLO → LLM: {_base} {_raw.side} "
-                            f"conf={_raw.confidence:.0f}% (proven edge, LLM decides)"
-                        )
+                # WAVE2B L1 (R4): the legacy _PROVEN_SOLOS whitelist branch
+                # (BTC SELL / ETH BUY / SOL SELL, conf>=65) is DELETED — its
+                # stats came from the condemned ledger (M20: "100% WR on 135
+                # shadow signals") and it only executed when llm_first_mode
+                # silently flipped off, i.e. exactly when nobody was watching.
+                # LLM-first supersedes it; mechanical fallback execution is
+                # now gated by ALLOW_MECHANICAL_FALLBACK (R5).
 
         # ── EARLY: Sniper Signal Evaluation (before regime gating can null the signal) ──
         # Route ALL raw strategy signals to sniper, even if ensemble rejected them.
@@ -4887,20 +4957,13 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
                     if isinstance(_sig_meta, dict):
                         _sig_meta["funding_rate"] = _fr_for_sniper
                 try:
-                    # Quant Brain pre-filter for sniper signals
-                    if self._quant_brain is not None:
-                        try:
-                            _qb_sniper = self._quant_brain.evaluate_signal(_raw_sig)
-                            if _qb_sniper.action in ("veto", "skip"):
-                                logger.debug(
-                                    f"[SNIPER-QB] {_raw_sig.symbol} {_raw_sig.side} "
-                                    f"blocked by QuantBrain: {_qb_sniper.action} — "
-                                    f"{_qb_sniper.reasoning}"
-                                )
-                                continue  # Skip this raw signal for sniper
-                        except Exception:
-                            pass  # Fail-open: let sniper evaluate if QB errors
-
+                    # WAVE2B L1 (R20b): QuantBrain pre-filter for sniper raw
+                    # signals DELETED — QB is an owner-ruled anti-signal
+                    # (17% WR era) that `continue`d signals out of the channel
+                    # with no counterfactual logged (FALLACY_AUDIT D16). Inert
+                    # while QUANT_BRAIN_ENABLED=false but armed-when-flag-flips;
+                    # removed rather than left loaded. QB stats may re-enter
+                    # later as labeled context per THE_STANDARD §2b.
                     _sniper_sig = self._manual_sniper.evaluate(_raw_sig, equity=self.risk_mgr.equity)
                     if _sniper_sig is not None:
                         if self._sniper_simulator is not None:
@@ -4932,21 +4995,10 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
 
         # Also evaluate the consensus signal if it exists
         if signal_result is not None and self._manual_sniper is not None:
-            # Quant Brain pre-filter for consensus sniper signal
-            _qb_consensus_pass = True
-            if self._quant_brain is not None:
-                try:
-                    _qb_consensus = self._quant_brain.evaluate_signal(signal_result)
-                    if _qb_consensus.action in ("veto", "skip"):
-                        logger.debug(
-                            f"[SNIPER-QB] {signal_result.symbol} consensus "
-                            f"blocked by QuantBrain: {_qb_consensus.action}"
-                        )
-                        _qb_consensus_pass = False
-                except Exception:
-                    pass  # Fail-open
-
-            if _qb_consensus_pass:
+            # WAVE2B L1 (R20b): QuantBrain consensus pre-filter DELETED (same
+            # rationale as the raw-signal block above — anti-signal stat,
+            # no counterfactual, armed-when-flag-flips).
+            if True:
                 try:
                     _sniper_sig = self._manual_sniper.evaluate(
                         signal_result, equity=self.risk_mgr.equity
@@ -5095,6 +5147,19 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
                     regime = signal_result.metadata.get("regime", "unknown")
                     gater = get_signal_gater()
                     gating_result = gater.gate_signal(signal_result, regime)
+                    # WAVE2B L1 (R6): the gater has no enforcing branch (verified
+                    # — only this block consumes gating_result). Its verdict is
+                    # no longer a dead log: it rides into mech_opinion + signal
+                    # metadata as labeled context for the LLM.
+                    _rf_verdict = {
+                        "would_reject": not gating_result.approved,
+                        "conf": round(float(gating_result.signal_confidence), 1),
+                        "floor": round(float(gating_result.floor_applied), 1),
+                        "regime": regime,
+                    }
+                    self._mech_opinion.setdefault(symbol, {})["regime_floor"] = _rf_verdict
+                    if signal_result.metadata is not None:
+                        signal_result.metadata["mech_opinion_regime_floor"] = _rf_verdict
                     if not gating_result.approved:
                         logger.info(
                             f"[{symbol}] Regime floor would reject (bypassed): "
@@ -5102,7 +5167,7 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
                             f"floor={gating_result.floor_applied:.0f}% "
                             f"(regime={regime})"
                         )
-                        # Aggressive mode: don't reject, let it through
+                        # Not enforced: verdict passed to LLM as context above
             except Exception as e:
                 logger.debug(f"[{symbol}] Regime floor gating error: {e}")
                 # If gating fails, allow signal to proceed (fail-safe)
@@ -5158,20 +5223,38 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
         _llm_first = getattr(self.config, 'llm_first_mode', False)
         _llm_dual_track = getattr(self.config, 'llm_first_dual_track', False)
 
-        # Cost gate: skip LLM entirely for low-confidence signals (not worth the cost).
-        # OVERDRIVE: use the user's configured ensemble floor as the LLM gate -- the
-        # hardcoded 60% threshold was routing ETH BUY conf=52% to the mechanical path
-        # (where the EV gate then killed it) instead of letting the LLM trade-first
-        # pipeline decide. Falls back to 60 for safety if user didn't lower the floor.
+        # WAVE2B L1 (R7, FULL_PIPE_BUILD_MAP): the min(60, floor) LLM-divert is
+        # DEAD by default. It was the direct descendant of the May-31
+        # `conf<60 → _llm_first=False` classic — an OPINION router keyed on a
+        # confidence stat with IC≈0 vs outcomes (D4), dressed up as a "cost
+        # gate". Quota gates count calls; they don't judge signals (the 10-min
+        # cooldown + entry cache below are the real quota physics). Confidence
+        # is already in signal_ctx for the LLM to weigh.
+        # Kill-switch: ROUTER_CONF_DIVERT_ENFORCE=true restores the divert.
         _sig_conf = signal_result.confidence if hasattr(signal_result, 'confidence') else 0
         _llm_first_min = min(60.0, float(self.config.ensemble_confidence_floor))
         if _sig_conf < _llm_first_min:
-            logger.info(
-                f"[{trace_id}][{symbol}] LLM SKIP: confidence {_sig_conf:.0f}% < {_llm_first_min:.0f}% threshold"
-            )
-            # Fall through to mechanical path (no LLM cost incurred)
-            _llm_first = False
-            _llm_dual_track = False
+            if os.getenv("ROUTER_CONF_DIVERT_ENFORCE", "false").lower() == "true":
+                logger.info(
+                    f"[{trace_id}][{symbol}] LLM SKIP (ENFORCED by ROUTER_CONF_DIVERT_ENFORCE): "
+                    f"confidence {_sig_conf:.0f}% < {_llm_first_min:.0f}% threshold"
+                )
+                # Legacy: fall through to mechanical path (no LLM cost incurred)
+                _llm_first = False
+                _llm_dual_track = False
+            else:
+                logger.info(
+                    f"[{trace_id}][{symbol}] [SHADOW-ROUTER] R7 would-divert: "
+                    f"confidence {_sig_conf:.0f}% < {_llm_first_min:.0f}% — "
+                    f"dispatching to LLM anyway (not enforced)"
+                )
+                if hasattr(self, '_mech_opinion'):
+                    self._mech_opinion.setdefault(symbol, {})["conf_divert_gate"] = {
+                        "conf": round(float(_sig_conf), 1),
+                        "threshold": round(float(_llm_first_min), 1),
+                        "would_divert": True,
+                        "label": "IC≈0 stat — not enforced",
+                    }
 
         if _llm_first and self.llm_mode >= LLMMode.SIZING:
             _base_sym = symbol.replace("/USDC:USDC", "").replace("/USDT:USDT", "")
@@ -5181,20 +5264,59 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
             _llm_eval_key = f"{_base_sym}_{signal_result.side}"
             if not hasattr(self, '_llm_eval_cooldowns'):
                 self._llm_eval_cooldowns = {}
-            _last_eval = self._llm_eval_cooldowns.get(_llm_eval_key, 0)
+            _cd_entry = self._llm_eval_cooldowns.get(_llm_eval_key, (0.0, None))
+            if isinstance(_cd_entry, (int, float)):  # legacy float format
+                _cd_entry = (float(_cd_entry), None)
+            _last_eval, _last_eval_price = _cd_entry
             _cd_elapsed = time.time() - _last_eval
             if _cd_elapsed < 600:  # 10 minute cooldown to conserve credits (quota physics)
-                # WAVE2A L3 (FULL_PIPE_BUILD_MAP R9 defect a, 2026-07-02):
-                # the cooldown stays (quota physics) but the drop must never
-                # be silent — every suppressed signal leaves a trace.
-                logger.info(
-                    f"[{trace_id}][{symbol}] [COOLDOWN-DROP] {_llm_eval_key} "
-                    f"conf={_sig_conf:.0f}% dropped by 10-min LLM eval cooldown "
-                    f"({_cd_elapsed:.0f}s since last eval, "
-                    f"{600 - _cd_elapsed:.0f}s remaining)"
-                )
-                return  # Already evaluated this setup recently (drop logged above)
-            self._llm_eval_cooldowns[_llm_eval_key] = time.time()
+                # WAVE2B L1 (R9 defect b): price-move escape hatch mirroring
+                # coordinator._entry_cache_price_tolerance (0.3%) — a genuinely
+                # new setup on the same side within 10min (price moved) is NOT
+                # the same signal and must not be dropped.
+                _price_moved_pct = None
+                if _last_eval_price and current_price and _last_eval_price > 0:
+                    _price_moved_pct = abs(float(current_price) - _last_eval_price) / _last_eval_price
+                if _price_moved_pct is not None and _price_moved_pct >= 0.003:
+                    logger.info(
+                        f"[{trace_id}][{symbol}] [COOLDOWN-ESCAPE] {_llm_eval_key} "
+                        f"price moved {_price_moved_pct * 100:.2f}% >= 0.30% since last "
+                        f"eval — re-evaluating within cooldown (new setup)"
+                    )
+                else:
+                    # WAVE2A L3 (R9 defect a): the cooldown stays (quota
+                    # physics) but the drop must never be silent.
+                    logger.info(
+                        f"[{trace_id}][{symbol}] [COOLDOWN-DROP] {_llm_eval_key} "
+                        f"conf={_sig_conf:.0f}% dropped by 10-min LLM eval cooldown "
+                        f"({_cd_elapsed:.0f}s since last eval, "
+                        f"{600 - _cd_elapsed:.0f}s remaining)"
+                    )
+                    # WAVE2B L1 (R9 defect a remainder): stage-tag the drop in
+                    # the signal tracker so it's measurable, not just grep-able.
+                    try:
+                        from core.signal_tracker import get_signal_tracker
+                        get_signal_tracker().record_signal(
+                            symbol=symbol,
+                            side=signal_result.side,
+                            confidence=float(_sig_conf),
+                            strategy=getattr(signal_result, 'strategy', '') or '',
+                            passed=False,
+                            hard_rejected=False,
+                            hard_rejection_reason="llm_cooldown",
+                            filter_metadata={
+                                "stage": "llm_cooldown",
+                                "cooldown_remaining_s": round(600 - _cd_elapsed),
+                            },
+                            regime=(signal_result.metadata or {}).get("regime", "") if getattr(signal_result, 'metadata', None) else "",
+                        )
+                    except Exception:
+                        pass
+                    return  # Already evaluated this setup recently (drop logged above)
+            self._llm_eval_cooldowns[_llm_eval_key] = (
+                time.time(),
+                float(current_price) if current_price else None,
+            )
 
             try:
                 self._process_symbol_llm_first(
@@ -5210,6 +5332,37 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
             else:
                 return  # LLM-first handled it (or skipped it)
 
+        # WAVE2B L1 (R5): degraded-brain guard. If llm_first was CONFIGURED but
+        # its prerequisites lapsed at startup (llm_first_degraded=true), the
+        # mechanical path may annotate/track but must NOT execute without
+        # explicit owner consent (ALLOW_MECHANICAL_FALLBACK=true). Bots that
+        # were never llm_first-configured are unaffected.
+        if getattr(self, 'llm_first_degraded', False) and \
+                os.getenv("ALLOW_MECHANICAL_FALLBACK", "false").lower() != "true":
+            _now_dg = time.time()
+            if _now_dg - getattr(self, '_degraded_drop_last_log', 0.0) > 600:
+                self._degraded_drop_last_log = _now_dg
+                logger.warning(
+                    f"[{trace_id}][{symbol}] [SHADOW-ROUTER] R5 degraded-brain: "
+                    f"mechanical execution blocked (llm_first degraded, "
+                    f"ALLOW_MECHANICAL_FALLBACK=false) — signal tracked, not traded"
+                )
+            try:
+                from core.signal_tracker import get_signal_tracker
+                get_signal_tracker().record_signal(
+                    symbol=symbol,
+                    side=signal_result.side,
+                    confidence=float(_sig_conf),
+                    strategy=getattr(signal_result, 'strategy', '') or '',
+                    passed=False,
+                    hard_rejected=False,
+                    hard_rejection_reason="llm_first_degraded",
+                    filter_metadata={"stage": "llm_first_degraded"},
+                )
+            except Exception:
+                pass
+            return
+
         # Dual-track: run LLM-first path in background for comparison logging
         # but still execute through the mechanical path below.
         if _llm_dual_track and self.llm_mode >= LLMMode.SIZING:
@@ -5223,73 +5376,13 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
             except Exception as e:
                 logger.debug(f"[{trace_id}][{symbol}] Dual-track LLM error: {e}")
 
-        # ── QUANT BRAIN PRE-FILTER (zero-cost, runs before all expensive gates) ──
-        if self._quant_brain is not None:
-            try:
-                # Build market_data from available data
-                _qb_market = {}
-                _1h = data.get("1h")
-                if _1h is not None and not _1h.empty and len(_1h) > 20:
-                    _qb_market["rsi"] = float(_1h["close"].diff().apply(
-                        lambda x: max(x, 0)).rolling(14).mean().iloc[-1] / max(
-                        _1h["close"].diff().abs().rolling(14).mean().iloc[-1], 1e-9) * 100
-                    ) if len(_1h) > 14 else None
-                    _qb_market["ema20"] = float(_1h["close"].ewm(span=20).mean().iloc[-1])
-                    _qb_market["ema50"] = float(_1h["close"].ewm(span=50).mean().iloc[-1]) if len(_1h) > 50 else None
-                    _qb_market["volume_ratio"] = float(
-                        _1h["volume"].iloc[-1] / max(_1h["volume"].rolling(20).mean().iloc[-1], 1e-9)
-                    ) if "volume" in _1h.columns else None
-
-                _qb_decision = self._quant_brain.evaluate_signal(signal_result, _qb_market)
-
-                if _qb_decision.action == "veto":
-                    logger.info(
-                        f"[{trace_id}][{symbol}] QuantBrain VETO: {_qb_decision.reasoning}"
-                    )
-                    log_rejection(symbol, "quant_brain_veto",
-                                  confidence=signal_result.confidence,
-                                  reason=_qb_decision.reasoning)
-                    if self._missed_trade_tracker is not None:
-                        try:
-                            self._missed_trade_tracker.record_rejection(
-                                signal=signal_result,
-                                reason=f"quant_brain_veto: {_qb_decision.reasoning}",
-                                gate="quant_brain",
-                            )
-                        except Exception:
-                            pass
-                    signal_result = None
-                elif _qb_decision.action == "skip":
-                    logger.info(
-                        f"[{trace_id}][{symbol}] QuantBrain SKIP: {_qb_decision.reasoning}"
-                    )
-                    log_rejection(symbol, "quant_brain_skip",
-                                  confidence=signal_result.confidence,
-                                  reason=_qb_decision.reasoning)
-                    signal_result = None
-                elif _qb_decision.action == "go":
-                    # Apply confidence adjustment from quant brain
-                    if _qb_decision.confidence_adj and _qb_decision.confidence_adj != 1.0:
-                        _original_conf = signal_result.confidence
-                        signal_result.confidence = max(1.0, min(100.0,
-                            signal_result.confidence * _qb_decision.confidence_adj
-                        ))
-                        logger.debug(
-                            f"[{trace_id}][{symbol}] QuantBrain conf adj: "
-                            f"{_original_conf:.0f} -> {signal_result.confidence:.0f} "
-                            f"(x{_qb_decision.confidence_adj:.2f})"
-                        )
-                    # Store quant brain metadata for downstream use
-                    if hasattr(signal_result, 'metadata') and signal_result.metadata is not None:
-                        signal_result.metadata["quant_brain"] = {
-                            "regime": _qb_decision.regime,
-                            "sizing_tier": _qb_decision.sizing.tier,
-                            "risk_mult": _qb_decision.sizing.risk_multiplier,
-                            "reasoning": _qb_decision.reasoning,
-                        }
-            except Exception as _qb_err:
-                logger.debug(f"[{trace_id}][{symbol}] QuantBrain error (non-fatal): {_qb_err}")
-                # Fail-open: if quant brain errors, let signal proceed
+        # ── WAVE2B L1 (R20a): QUANT BRAIN PRE-FILTER DELETED (2026-07-02) ──
+        # QB veto/skip nulled signal_result and its "go" branch mutated
+        # confidence on the mechanical path — an owner-ruled anti-signal
+        # (17% WR era) judging signal quality (FULL_PIPE_BUILD_MAP R20a).
+        # Inert while QUANT_BRAIN_ENABLED=false (_quant_brain is None), but
+        # armed-when-flag-flips — deleted rather than left loaded. QB stats
+        # may re-enter later as labeled prompt context per THE_STANDARD §2b.
 
         if signal_result is None:
             return
@@ -6515,13 +6608,23 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
             risk_reward_tp1=rr1,
         )
 
-        # Cost gate: skip LLM veto for low-confidence signals (not worth the cost)
+        # WAVE2B L1 (R3 sibling): the conf<60 "cost gate" that skipped the LLM
+        # veto consult on the mechanical path is DEAD by default — same
+        # opinion-as-quota confusion as R3/R7 (IC≈0 confidence deciding who
+        # gets the brain). Kill-switch: ROUTER_VETO_CONF_ENFORCE=true restores.
         _veto_conf = signal_result.confidence if hasattr(signal_result, 'confidence') else 0
-        if llm_has_veto(self.llm_mode) and _veto_conf < 60:
+        _veto_conf_enforce = os.getenv("ROUTER_VETO_CONF_ENFORCE", "false").lower() == "true"
+        if llm_has_veto(self.llm_mode) and _veto_conf < 60 and _veto_conf_enforce:
             logger.info(
-                f"[{trace_id}][{symbol}] LLM SKIP: confidence {_veto_conf:.0f}% < 60% threshold"
+                f"[{trace_id}][{symbol}] LLM SKIP (ENFORCED by ROUTER_VETO_CONF_ENFORCE): "
+                f"confidence {_veto_conf:.0f}% < 60% threshold"
             )
         elif llm_has_veto(self.llm_mode):
+            if _veto_conf < 60:
+                logger.info(
+                    f"[{trace_id}][{symbol}] [SHADOW-ROUTER] veto-conf gate would skip "
+                    f"LLM veto (conf {_veto_conf:.0f}% < 60%) — consulting anyway (not enforced)"
+                )
             veto_result = self._llm_veto_check(candidate, trace_id)
             if veto_result is not None:
                 # LLM vetoed this trade
@@ -7610,6 +7713,12 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
             "basis_pct": _meta.get("basis_pct"),
             "oi_history": _meta.get("oi_history"),
             "open_interest": _meta.get("open_interest"),
+            # WAVE2B L1 (F4, FULL_PIPE_BUILD_MAP): mechanical would-have
+            # verdicts collected by the demoted routers in handle_symbol
+            # (R3 solo gate, R6 regime floor, R7 conf divert, R21d FIT).
+            # Formatted for prompts by L4's format_mech_opinion — "all
+            # mechanical analysis goes through Claude" as labeled context.
+            "mech_opinion": (getattr(self, '_mech_opinion', {}) or {}).get(symbol),
         }
 
         # Portfolio context
