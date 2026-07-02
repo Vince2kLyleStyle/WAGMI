@@ -1,7 +1,6 @@
 {
   "recent_outcomes": [
     false,
-    true,
     false,
     false,
     false,
@@ -15,7 +14,8 @@
     false,
     false,
     false,
-    false,
+    true,
+    true,
     false,
     false,
     false,
@@ -36,15 +36,15 @@
     },
     "consolidation": {
       "wins": 11,
-      "total": 39
+      "total": 44
     },
     "trend": {
       "wins": 0,
       "total": 6
     },
     "range": {
-      "wins": 0,
-      "total": 7
+      "wins": 1,
+      "total": 9
     },
     "trending_bull": {
       "wins": 0,
@@ -59,8 +59,8 @@
       "total": 1
     },
     "unknown": {
-      "wins": 3,
-      "total": 21
+      "wins": 5,
+      "total": 26
     }
   }
 }

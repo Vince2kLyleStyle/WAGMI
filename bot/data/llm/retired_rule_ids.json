@@ -311,6 +311,12 @@
       "statement": "Consolidation LONGs with MFE=0 at 1h mark lack thesis conviction. Implement mechanical rule: if MFE=0 by 1h, exit within 10min regardless of stop distance. Prevents capital drag on dead theses.",
       "reason": "D1 quarantine 2026-07-02: keyword-parsed graduation (inverted actions, n<13, no provenance/dollar validation) [FALLACY_AUDIT D1, THE_STANDARD 2b]",
       "retired_at": 1782963656.6709852
+    },
+    {
+      "rule_id": "hype_long_veto_v1",
+      "statement": "HYPE BUY is a net-negative setup: 23% WR on 35 live trades, -$77.26 total loss",
+      "reason": "auto-retired VETO: acc=0%, net_pnl_saved=-160.00% on n=10",
+      "retired_at": 1782990360.9394822
     }
   ]
 }

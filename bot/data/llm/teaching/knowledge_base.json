@@ -425,26 +425,6 @@
       "stale": true
     },
     {
-      "knowledge_type": "observation",
-      "content": "Failed breakouts (price breaks above resistance then immediately returns below) are one of the strongest reversal signals. Trade the failure, not the breakout.",
-      "confidence": 0.002,
-      "evidence_count": 0,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1774290803.4350154,
-      "last_validated": 1774290803.4350154,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "technical",
-      "tags": [
-        "failed_breakout",
-        "reversal",
-        "trap"
-      ],
-      "source": "student_course",
-      "stale": true
-    },
-    {
       "knowledge_type": "principle",
       "content": "Divergence between price and RSI/MACD is a leading indicator. Bullish divergence: price makes lower low, RSI makes higher low = potential bottom.",
       "confidence": 0.002,
@@ -712,26 +692,6 @@
       "stale": true
     },
     {
-      "knowledge_type": "observation",
-      "content": "Weekend markets are thinner, more manipulable, and produce more false signals. Reduce position size on weekends. Best signals come Tuesday-Thursday.",
-      "confidence": 0.002,
-      "evidence_count": 0,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1774290803.451605,
-      "last_validated": 1774290803.451605,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "crypto",
-      "tags": [
-        "weekend",
-        "liquidity",
-        "timing"
-      ],
-      "source": "student_course",
-      "stale": true
-    },
-    {
       "knowledge_type": "principle",
       "content": "Meme coins (DOGE, PEPE, FARTCOIN) have higher volatility and thinner books. They move 2-5x faster than BTC. Use wider stops, lower leverage, and expect bigger swings.",
       "confidence": 0.002,
@@ -943,25 +903,6 @@
         "agreement",
         "ensemble",
         "probability"
-      ],
-      "source": "student_course",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "Signals with vague entry zones ('buy around 95k-97k') are weaker than precise entries ('buy at 96,200 on the retest'). Precision = conviction from the signal source.",
-      "confidence": 0.002,
-      "evidence_count": 0,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1774290803.4693384,
-      "last_validated": 1774290803.4693384,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "signals",
-      "tags": [
-        "precision",
-        "conviction"
       ],
       "source": "student_course",
       "stale": true
@@ -1757,648 +1698,13 @@
     },
     {
       "knowledge_type": "observation",
-      "content": "1-strategy agreement: 47% win rate (30 trades)",
-      "confidence": 0.002,
-      "evidence_count": 17,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1774589487.9522927,
-      "last_validated": 1774640568.9281757,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 48% win rate (31 trades)",
-      "confidence": 0.002,
-      "evidence_count": 52,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1774646097.331306,
-      "last_validated": 1774824325.9955332,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 52% win rate (33 trades)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1774827097.1179967,
-      "last_validated": 1774833318.0496013,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 50% win rate (34 trades)",
-      "confidence": 0.002,
-      "evidence_count": 18,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1774838860.912257,
-      "last_validated": 1775009733.5381901,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 49% win rate (35 trades)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775016023.7628608,
-      "last_validated": 1775020758.0917988,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in  regime (33% WR)",
-      "confidence": 0.154,
-      "evidence_count": 55,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775025552.835997,
-      "last_validated": 1782956458.066716,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 47% win rate (36 trades)",
-      "confidence": 0.002,
-      "evidence_count": 8,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775025552.8386378,
-      "last_validated": 1775052586.047832,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in  regime (25% WR)",
-      "confidence": 0.053,
-      "evidence_count": 15,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775058161.4781928,
-      "last_validated": 1782431643.7343423,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 46% win rate (37 trades)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775058161.4843612,
-      "last_validated": 1775063683.1522708,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in  regime (20% WR)",
-      "confidence": 0.013,
-      "evidence_count": 34,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775068868.9028897,
-      "last_validated": 1782692778.239409,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "Overconfidence detected: 3 high-conf trades lost",
-      "confidence": 0.002,
-      "evidence_count": 84,
-      "supporting": [
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence",
-        "3 losses at >80% confidence"
-      ],
-      "contradicting": [],
-      "created_at": 1775068868.9056735,
-      "last_validated": 1775434589.4746952,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "calibration",
-      "tags": [
-        "overconfident"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 44% win rate (39 trades)",
-      "confidence": 0.002,
-      "evidence_count": 9,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775068868.908298,
-      "last_validated": 1775097335.5264792,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 45% win rate (40 trades)",
-      "confidence": 0.002,
-      "evidence_count": 2,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775100542.4609325,
-      "last_validated": 1775109104.581302,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 45% win rate (42 trades)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775112543.0641613,
-      "last_validated": 1775116009.0695524,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 47% win rate (43 trades)",
-      "confidence": 0.002,
-      "evidence_count": 0,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775129783.068551,
-      "last_validated": 1775129783.0685515,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System performs well in  regime (67% WR)",
-      "confidence": 0.002,
-      "evidence_count": 9,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775129967.8428202,
-      "last_validated": 1775933971.5469413,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 67% win rate (3 trades)",
-      "confidence": 0.158,
-      "evidence_count": 74,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775129967.8456247,
-      "last_validated": 1782332771.152668,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 48% win rate (44 trades)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775133332.2774801,
-      "last_validated": 1775137074.7490194,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System performs well in  regime (75% WR)",
-      "confidence": 0.002,
-      "evidence_count": 10,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775133644.304453,
-      "last_validated": 1775968161.1556962,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 75% win rate (4 trades)",
-      "confidence": 0.075,
-      "evidence_count": 33,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775133644.3074143,
-      "last_validated": 1782746569.5444467,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 60% win rate (5 trades)",
-      "confidence": 0.091,
-      "evidence_count": 6,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775139239.5884516,
-      "last_validated": 1782328025.8542774,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 47% win rate (45 trades)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775140865.0785155,
-      "last_validated": 1775144287.9633253,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "SOL performing poorly (25% WR, 4 trades, $+58)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [
-        "1/4 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775146612.4741912,
-      "last_validated": 1775146612.4741914,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "SOL",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 50% win rate (6 trades)",
-      "confidence": 0.002,
-      "evidence_count": 0,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775146612.4771898,
-      "last_validated": 1775146612.4771898,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 45% win rate (47 trades)",
-      "confidence": 0.002,
-      "evidence_count": 0,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775148084.0199506,
-      "last_validated": 1775148084.019951,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "SOL performing poorly (20% WR, 5 trades, $+48)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [
-        "1/5 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775148521.9150295,
-      "last_validated": 1775148521.9150298,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "SOL",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 33% win rate (6 trades)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775148521.9238834,
-      "last_validated": 1775837422.0620959,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "High leverage (5x+) trades losing at 67% - consider capping leverage",
-      "confidence": 0.003,
-      "evidence_count": 54,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775148521.93023,
-      "last_validated": 1776966565.889397,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "leverage",
-        "risk"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 46% win rate (48 trades)",
-      "confidence": 0.002,
-      "evidence_count": 0,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775151274.0003653,
-      "last_validated": 1775151274.0003655,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 45% win rate (49 trades)",
-      "confidence": 0.002,
-      "evidence_count": 0,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775158337.5154278,
-      "last_validated": 1775158337.515428,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 33% win rate (3 trades)",
-      "confidence": 0.487,
-      "evidence_count": 143,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775161054.4107184,
-      "last_validated": 1782803764.3163185,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition"
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 44% win rate (50 trades)",
-      "confidence": 0.002,
-      "evidence_count": 6,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775162237.2634747,
-      "last_validated": 1775192649.2812502,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "SOL performing poorly (25% WR, 4 trades, $+1)",
-      "confidence": 0.002,
-      "evidence_count": 7,
-      "supporting": [
-        "1/4 wins",
-        "1/4 wins",
-        "1/4 wins",
-        "1/4 wins",
-        "1/4 wins",
-        "1/4 wins",
-        "1/4 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775168442.368889,
-      "last_validated": 1775179331.1510596,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "SOL",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
       "content": "1-strategy agreement: 25% win rate (4 trades)",
       "confidence": 0.58,
-      "evidence_count": 73,
+      "evidence_count": 83,
       "supporting": [],
       "contradicting": [],
       "created_at": 1775168442.3768058,
-      "last_validated": 1782527363.6860113,
+      "last_validated": 1783018460.6831899,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "strategy",
@@ -2406,192 +1712,6 @@
         "agree_1"
       ],
       "source": "pattern_recognition"
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in  regime (35% WR)",
-      "confidence": 0.002,
-      "evidence_count": 26,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775196446.9134781,
-      "last_validated": 1775751532.652034,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 42% win rate (50 trades)",
-      "confidence": 0.002,
-      "evidence_count": 26,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775196446.921174,
-      "last_validated": 1775951862.5174115,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in  regime (32% WR)",
-      "confidence": 0.002,
-      "evidence_count": 17,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775239161.5941954,
-      "last_validated": 1775341200.0263777,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 40% win rate (50 trades)",
-      "confidence": 0.003,
-      "evidence_count": 64,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775239161.6006577,
-      "last_validated": 1776083205.5239651,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in  regime (30% WR)",
-      "confidence": 0.199,
-      "evidence_count": 72,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775283945.4986744,
-      "last_validated": 1782354444.2567465,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 38% win rate (50 trades)",
-      "confidence": 0.003,
-      "evidence_count": 19,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775283945.5070643,
-      "last_validated": 1776092812.8165023,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in  regime (29% WR)",
-      "confidence": 0.03,
-      "evidence_count": 3,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775316404.6574044,
-      "last_validated": 1782418448.562147,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in ranging regime (0% WR)",
-      "confidence": 0.003,
-      "evidence_count": 5,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775316404.660655,
-      "last_validated": 1776966565.8423648,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "ranging",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 36% win rate (50 trades)",
-      "confidence": 0.003,
-      "evidence_count": 54,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775316404.667724,
-      "last_validated": 1776815739.9352522,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in ranging regime (20% WR)",
-      "confidence": 0.002,
-      "evidence_count": 23,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775335021.143559,
-      "last_validated": 1775546091.8630722,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "ranging",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
     },
     {
       "knowledge_type": "rule",
@@ -2789,29 +1909,6 @@
     },
     {
       "knowledge_type": "rule",
-      "content": "Feedback systems deadlocked: cal offset -15, adaptive risk 0.60x, Kelly floor. Combined = 1.1% of full Kelly. Reset feedback state when root cause (oversizing) is fixed.",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [
-        "Feedback state inspection shows all at floor/ceiling"
-      ],
-      "contradicting": [],
-      "created_at": 1775338656.1558795,
-      "last_validated": 1775338656.1558795,
-      "validation_count": 1,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "feedback",
-        "deadlock",
-        "calibration",
-        "adaptive"
-      ],
-      "source": "system_audit_validated",
-      "stale": true
-    },
-    {
-      "knowledge_type": "rule",
       "content": "Execution costs: slippage 2.4 bps (fine), taker fees 4.5 bps (high). 100% market orders. Limit order system exists but not wired in. Would save 39% on fees. At 5+ trades/day = 21%/month fee drag on $500.",
       "confidence": 0.002,
       "evidence_count": 35,
@@ -2906,486 +2003,10 @@
       "stale": true
     },
     {
-      "knowledge_type": "observation",
-      "content": "System performs well in illiquid regime (67% WR)",
-      "confidence": 0.003,
-      "evidence_count": 18,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775372294.4818213,
-      "last_validated": 1776959110.31129,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (33% WR)",
-      "confidence": 0.003,
-      "evidence_count": 62,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775380078.5347564,
-      "last_validated": 1776981267.6893637,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "2-strategy agreement: 33% win rate (3 trades)",
-      "confidence": 0.003,
-      "evidence_count": 36,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775380078.5460994,
-      "last_validated": 1776300966.9987614,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_2"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System performs well in trending regime (100% WR)",
-      "confidence": 0.002,
-      "evidence_count": 18,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775398504.2389796,
-      "last_validated": 1775583486.492779,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "trending",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "2-strategy agreement: 67% win rate (6 trades)",
-      "confidence": 0.002,
-      "evidence_count": 0,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775398504.2506275,
-      "last_validated": 1775398504.2506278,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_2"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "2-strategy agreement: 80% win rate (5 trades)",
-      "confidence": 0.002,
-      "evidence_count": 4,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775400368.856665,
-      "last_validated": 1775407764.1189792,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_2"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "2-strategy agreement: 75% win rate (4 trades)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775409604.049167,
-      "last_validated": 1775411445.1767762,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_2"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "2-strategy agreement: 100% win rate (3 trades)",
-      "confidence": 0.002,
-      "evidence_count": 3,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775413277.7572684,
-      "last_validated": 1775418812.785287,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_2"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System performs well in trending regime (67% WR)",
-      "confidence": 0.003,
-      "evidence_count": 22,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775418501.9494324,
-      "last_validated": 1776297293.4041855,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "trending",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "2-strategy agreement: 67% win rate (3 trades)",
-      "confidence": 0.002,
-      "evidence_count": 5,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775426163.1778178,
-      "last_validated": 1775829913.0173793,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_2"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "SOL performing poorly (25% WR, 4 trades, $+20)",
-      "confidence": 0.002,
-      "evidence_count": 5,
-      "supporting": [
-        "1/4 wins",
-        "1/4 wins",
-        "1/4 wins",
-        "1/4 wins",
-        "1/4 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775427985.2093234,
-      "last_validated": 1775435396.7087436,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "SOL",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "High leverage (5x+) trades losing at 60% - consider capping leverage",
-      "confidence": 0.003,
-      "evidence_count": 23,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775427985.2360523,
-      "last_validated": 1776313356.138995,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "leverage",
-        "risk"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in ranging regime (17% WR)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775431371.5215101,
-      "last_validated": 1775434589.4651625,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "ranging",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "System currently favors shorts (0% long WR vs 67% short WR)",
-      "confidence": 0.002,
-      "evidence_count": 0,
-      "supporting": [
-        "Short WR=67%"
-      ],
-      "contradicting": [
-        "Short WR=46%",
-        "Short WR=46%",
-        "Short WR=46%",
-        "Short WR=46%",
-        "Short WR=46%",
-        "Short WR=46%",
-        "Short WR=46%",
-        "Short WR=46%",
-        "Short WR=46%"
-      ],
-      "created_at": 1775435396.7325618,
-      "last_validated": 1775468322.1195102,
-      "validation_count": 1,
-      "invalidation_count": 9,
-      "category": "direction",
-      "tags": [
-        "side_bias"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in ranging regime (33% WR)",
-      "confidence": 0.003,
-      "evidence_count": 33,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775437251.7251647,
-      "last_validated": 1776449016.8338635,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "ranging",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "Winning trades resolve faster than losing trades - consider tighter timeouts",
-      "confidence": 0.045,
-      "evidence_count": 12,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775439071.2829204,
-      "last_validated": 1782575265.2145007,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "timing",
-      "tags": [
-        "hold_time",
-        "timeout"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System performs well in trending regime (75% WR)",
-      "confidence": 0.002,
-      "evidence_count": 19,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775444517.6814513,
-      "last_validated": 1775768818.1740851,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "trending",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in ranging regime (25% WR)",
-      "confidence": 0.003,
-      "evidence_count": 48,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775444517.696136,
-      "last_validated": 1777003151.834709,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "ranging",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System performs well in trending regime (71% WR)",
-      "confidence": 0.002,
-      "evidence_count": 0,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775477761.2666728,
-      "last_validated": 1775477761.266673,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "trending",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "SOL performing poorly (30% WR, 30 trades, $-106)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [
-        "9/30 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775494974.1321692,
-      "last_validated": 1775494974.1321695,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "SOL",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System performs well in trending regime (80% WR)",
-      "confidence": 0.002,
-      "evidence_count": 4,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775494974.1474593,
-      "last_validated": 1775685823.762731,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "trending",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in ranging regime (22% WR)",
-      "confidence": 0.002,
-      "evidence_count": 3,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775494974.1629345,
-      "last_validated": 1775590222.5011885,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "ranging",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "SOL performing poorly (30% WR, 30 trades, $-108)",
-      "confidence": 0.002,
-      "evidence_count": 6,
-      "supporting": [
-        "9/30 wins",
-        "9/30 wins",
-        "9/30 wins",
-        "9/30 wins",
-        "9/30 wins",
-        "9/30 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775498057.1112227,
-      "last_validated": 1775546091.8400939,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "SOL",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "High leverage (5x+) trades losing at 75% - consider capping leverage",
-      "confidence": 0.003,
-      "evidence_count": 26,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775515245.3228562,
-      "last_validated": 1776618310.5457017,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "leverage",
-        "risk"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_SELL_0-agree: WIN in unknown, pnl=7.45%",
       "confidence": 0.051,
-      "evidence_count": 75,
+      "evidence_count": 101,
       "supporting": [
         "5 observations",
         "5 observations",
@@ -3410,7 +2031,7 @@
       ],
       "contradicting": [],
       "created_at": 1775576796.9817777,
-      "last_validated": 1782965833.8398795,
+      "last_validated": 1783033184.6858652,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -3422,7 +2043,7 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: LOSS in unknown, pnl=-4.04%",
       "confidence": 0.176,
-      "evidence_count": 190,
+      "evidence_count": 244,
       "supporting": [
         "5 observations",
         "5 observations",
@@ -3447,7 +2068,7 @@
       ],
       "contradicting": [],
       "created_at": 1775576798.0486548,
-      "last_validated": 1782965836.869676,
+      "last_validated": 1783033187.3208416,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -3459,8 +2080,10 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: SOL_BUY_0-agree: LOSS in unknown, pnl=-102.47%",
       "confidence": 0.003,
-      "evidence_count": 10,
+      "evidence_count": 12,
       "supporting": [
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -3474,7 +2097,7 @@
       ],
       "contradicting": [],
       "created_at": 1775576798.1493218,
-      "last_validated": 1782961960.0266864,
+      "last_validated": 1783032569.0300074,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -3510,8 +2133,12 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: LOSS in unknown, pnl=-1.04%",
       "confidence": 0.003,
-      "evidence_count": 15,
+      "evidence_count": 19,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -3530,7 +2157,7 @@
       ],
       "contradicting": [],
       "created_at": 1775576804.4396672,
-      "last_validated": 1782965649.0577893,
+      "last_validated": 1783032727.430313,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -3542,8 +2169,10 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: LOSS in unknown, pnl=-5.64%",
       "confidence": 0.187,
-      "evidence_count": 18,
+      "evidence_count": 22,
       "supporting": [
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -3565,7 +2194,7 @@
       ],
       "contradicting": [],
       "created_at": 1775576807.9476175,
-      "last_validated": 1782961946.9013808,
+      "last_validated": 1783032738.6552763,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -3626,126 +2255,15 @@
       "stale": true
     },
     {
-      "knowledge_type": "observation",
-      "content": "SOL performing poorly (28% WR, 29 trades, $-117)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [
-        "8/29 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775590222.469175,
-      "last_validated": 1775590222.4691756,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "SOL",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (30% WR)",
-      "confidence": 0.003,
-      "evidence_count": 43,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775590222.5088162,
-      "last_validated": 1776799444.091093,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 34% win rate (50 trades)",
-      "confidence": 0.003,
-      "evidence_count": 61,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775590222.518005,
-      "last_validated": 1776799444.1066706,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "High leverage (5x+) trades losing at 61% - consider capping leverage",
-      "confidence": 0.003,
-      "evidence_count": 4,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775590222.5224466,
-      "last_validated": 1776815740.0357282,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "leverage",
-        "risk"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (31% WR)",
-      "confidence": 0.003,
-      "evidence_count": 20,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775609187.94634,
-      "last_validated": 1776162340.7128592,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (25% WR)",
-      "confidence": 0.003,
-      "evidence_count": 62,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775609273.265004,
-      "last_validated": 1776983119.1027188,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: HYPE_BUY_0-agree: WIN in unknown, pnl=196.08%",
       "confidence": 0.003,
-      "evidence_count": 12,
+      "evidence_count": 16,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -3761,230 +2279,12 @@
       ],
       "contradicting": [],
       "created_at": 1775651051.3285258,
-      "last_validated": 1782962507.0096066,
+      "last_validated": 1783032940.0592835,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
       "tags": [],
       "source": "consolidation",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (0% WR, 3 trades, $-3)",
-      "confidence": 0.002,
-      "evidence_count": 3,
-      "supporting": [
-        "0/3 wins",
-        "0/3 wins",
-        "0/3 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775651968.612511,
-      "last_validated": 1775655681.4112103,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (20% WR)",
-      "confidence": 0.003,
-      "evidence_count": 14,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775651968.6224947,
-      "last_validated": 1776618310.4369867,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (0% WR, 4 trades, $-3)",
-      "confidence": 0.002,
-      "evidence_count": 3,
-      "supporting": [
-        "0/4 wins",
-        "0/4 wins",
-        "0/4 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775657507.4259214,
-      "last_validated": 1775668595.8740747,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 20% win rate (5 trades)",
-      "confidence": 0.421,
-      "evidence_count": 5,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775657507.4426303,
-      "last_validated": 1782573460.6444185,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition"
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (0% WR, 3 trades, $-2)",
-      "confidence": 0.002,
-      "evidence_count": 4,
-      "supporting": [
-        "0/3 wins",
-        "0/3 wins",
-        "0/3 wins",
-        "0/3 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775659398.9219294,
-      "last_validated": 1775664921.810461,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (27% WR, 11 trades, $-10)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [
-        "3/11 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775664734.273826,
-      "last_validated": 1775664734.2738261,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "ETH showing strong performance (80% WR, 5 trades, $+7)",
-      "confidence": 0.002,
-      "evidence_count": 14,
-      "supporting": [
-        "4/5 wins",
-        "4/5 wins",
-        "4/5 wins",
-        "4/5 wins",
-        "4/5 wins",
-        "4/5 wins",
-        "4/5 wins",
-        "4/5 wins",
-        "4/5 wins",
-        "4/5 wins",
-        "4/5 wins",
-        "4/5 wins",
-        "4/5 wins",
-        "4/5 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775664734.3273177,
-      "last_validated": 1775751532.6157641,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "ETH",
-        "strong"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in ranging regime (29% WR)",
-      "confidence": 0.003,
-      "evidence_count": 67,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775664734.3408546,
-      "last_validated": 1776162340.706294,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "ranging",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (27% WR)",
-      "confidence": 0.003,
-      "evidence_count": 10,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775664734.3507102,
-      "last_validated": 1776873737.42809,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (0% WR)",
-      "confidence": 0.003,
-      "evidence_count": 39,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775668595.8790767,
-      "last_validated": 1777003304.9482305,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
       "stale": true
     },
     {
@@ -4008,8 +2308,11 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: ETH_BUY_0-agree: WIN in unknown, pnl=3.29%",
       "confidence": 0.009,
-      "evidence_count": 15,
+      "evidence_count": 18,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -4028,7 +2331,7 @@
       ],
       "contradicting": [],
       "created_at": 1775669790.7027009,
-      "last_validated": 1782965866.834173,
+      "last_validated": 1783032956.9780347,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -4082,8 +2385,10 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: WIN in unknown, pnl=10.96%",
       "confidence": 0.038,
-      "evidence_count": 14,
+      "evidence_count": 16,
       "supporting": [
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -4101,7 +2406,7 @@
       ],
       "contradicting": [],
       "created_at": 1775669791.9095874,
-      "last_validated": 1782946382.5284348,
+      "last_validated": 1783030527.231741,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -4113,8 +2418,11 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: LOSS in unknown, pnl=-0.04%",
       "confidence": 0.136,
-      "evidence_count": 13,
+      "evidence_count": 16,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -4131,7 +2439,7 @@
       ],
       "contradicting": [],
       "created_at": 1775669793.9204247,
-      "last_validated": 1782946384.5752296,
+      "last_validated": 1783032426.2885475,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -4143,7 +2451,7 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: LOSS in unknown, pnl=-8.04%",
       "confidence": 0.136,
-      "evidence_count": 25,
+      "evidence_count": 30,
       "supporting": [
         "5 observations",
         "5 observations",
@@ -4168,7 +2476,7 @@
       ],
       "contradicting": [],
       "created_at": 1775669793.975794,
-      "last_validated": 1782965847.110098,
+      "last_validated": 1783032426.5048385,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -4201,8 +2509,10 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_SELL_0-agree: LOSS in unknown, pnl=-6.05%",
       "confidence": 0.007,
-      "evidence_count": 18,
+      "evidence_count": 23,
       "supporting": [
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -4224,58 +2534,12 @@
       ],
       "contradicting": [],
       "created_at": 1775669797.0393667,
-      "last_validated": 1782965846.5589008,
+      "last_validated": 1783032937.3909097,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
       "tags": [],
       "source": "consolidation",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (25% WR, 12 trades, $-11)",
-      "confidence": 0.002,
-      "evidence_count": 3,
-      "supporting": [
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775674217.343915,
-      "last_validated": 1775685823.7180705,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "SOL performing poorly (30% WR, 27 trades, $-4)",
-      "confidence": 0.002,
-      "evidence_count": 3,
-      "supporting": [
-        "8/27 wins",
-        "8/27 wins",
-        "8/27 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775674217.36387,
-      "last_validated": 1775685823.737613,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "SOL",
-        "weak"
-      ],
-      "source": "pattern_recognition",
       "stale": true
     },
     {
@@ -4301,237 +2565,6 @@
       "stale": true
     },
     {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (25% WR, 12 trades, $-9)",
-      "confidence": 0.002,
-      "evidence_count": 12,
-      "supporting": [
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775693536.7383742,
-      "last_validated": 1775772299.4166045,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (24% WR)",
-      "confidence": 0.003,
-      "evidence_count": 24,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775693536.7575912,
-      "last_validated": 1776981096.293906,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System performs well in trending regime (83% WR)",
-      "confidence": 0.002,
-      "evidence_count": 9,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775693536.7626345,
-      "last_validated": 1775751532.6764274,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "trending",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "SOL performing poorly (28% WR, 25 trades, $-97)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [
-        "7/25 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775768818.1451557,
-      "last_validated": 1775768818.145156,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "SOL",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in trending regime (33% WR)",
-      "confidence": 0.003,
-      "evidence_count": 8,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775770697.6933687,
-      "last_validated": 1776310109.496888,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "trending",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "SOL performing poorly (29% WR, 24 trades, $-78)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [
-        "7/24 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775772299.4107015,
-      "last_validated": 1775772299.4107015,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "SOL",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in  regime (31% WR)",
-      "confidence": 0.008,
-      "evidence_count": 2,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775772299.4223561,
-      "last_validated": 1782895163.7752807,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (28% WR)",
-      "confidence": 0.002,
-      "evidence_count": 3,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775775531.291217,
-      "last_validated": 1775968161.1619692,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (29% WR, 14 trades, $-1)",
-      "confidence": 0.002,
-      "evidence_count": 2,
-      "supporting": [
-        "4/14 wins",
-        "4/14 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775782888.1774354,
-      "last_validated": 1775786750.6358757,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (0% WR, 3 trades, $-23)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [
-        "0/3 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775803895.88157,
-      "last_validated": 1775803895.8815703,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "High leverage (5x+) trades losing at 80% - consider capping leverage",
-      "confidence": 0.003,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775803895.9353538,
-      "last_validated": 1776620226.9518101,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "leverage",
-        "risk"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: HYPE_BUY_0-agree: WIN in unknown, pnl=25.42%",
       "confidence": 0.002,
@@ -4548,109 +2581,6 @@
       "tags": [],
       "source": "consolidation",
       "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (25% WR, 4 trades, $+2)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [
-        "1/4 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775807591.899543,
-      "last_validated": 1775807591.8995433,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (29% WR, 17 trades, $+2)",
-      "confidence": 0.002,
-      "evidence_count": 7,
-      "supporting": [
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775812764.7382445,
-      "last_validated": 1775855212.0075443,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (21% WR)",
-      "confidence": 0.003,
-      "evidence_count": 8,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775812764.7661054,
-      "last_validated": 1776637827.3578525,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System performs well in trending regime (70% WR)",
-      "confidence": 0.002,
-      "evidence_count": 35,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775812764.7781603,
-      "last_validated": 1776030646.4335656,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "trending",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 0% win rate (4 trades)",
-      "confidence": 0.406,
-      "evidence_count": 91,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775829913.005274,
-      "last_validated": 1782931799.8631673,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition"
     },
     {
       "knowledge_type": "principle",
@@ -4674,8 +2604,9 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: SOL_SELL_0-agree: WIN in unknown, pnl=10.00%",
       "confidence": 0.009,
-      "evidence_count": 17,
+      "evidence_count": 18,
       "supporting": [
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -4696,74 +2627,12 @@
       ],
       "contradicting": [],
       "created_at": 1775835756.8902936,
-      "last_validated": 1782965830.470382,
+      "last_validated": 1782972100.4564438,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
       "tags": [],
       "source": "consolidation",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System performs well in illiquid regime (75% WR)",
-      "confidence": 0.002,
-      "evidence_count": 18,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775839325.5336688,
-      "last_validated": 1775879735.486593,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 50% win rate (4 trades)",
-      "confidence": 0.165,
-      "evidence_count": 55,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775839325.5471725,
-      "last_validated": 1782325507.0781255,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "ETH showing strong performance (71% WR, 7 trades, $+13)",
-      "confidence": 0.002,
-      "evidence_count": 5,
-      "supporting": [
-        "5/7 wins",
-        "5/7 wins",
-        "5/7 wins",
-        "5/7 wins",
-        "5/7 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775844746.4336886,
-      "last_validated": 1775858703.5963137,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "ETH",
-        "strong"
-      ],
-      "source": "pattern_recognition",
       "stale": true
     },
     {
@@ -4783,63 +2652,6 @@
         "favorable"
       ],
       "source": "pattern_recognition"
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System performs well in illiquid regime (80% WR)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775855973.5903988,
-      "last_validated": 1775861478.8879714,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System performs well in illiquid regime (100% WR)",
-      "confidence": 0.002,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775857782.0761461,
-      "last_validated": 1775859621.7699642,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (32% WR)",
-      "confidence": 0.003,
-      "evidence_count": 3,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775858703.645988,
-      "last_validated": 1776815739.8255765,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
     },
     {
       "knowledge_type": "principle",
@@ -4881,8 +2693,13 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: LOSS in unknown, pnl=-20.09%",
       "confidence": 0.068,
-      "evidence_count": 15,
+      "evidence_count": 22,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -4901,7 +2718,7 @@
       ],
       "contradicting": [],
       "created_at": 1775922998.5611956,
-      "last_validated": 1782965836.1609893,
+      "last_validated": 1783033186.9745288,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -4913,8 +2730,15 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_SELL_0-agree: LOSS in unknown, pnl=-4.04%",
       "confidence": 0.003,
-      "evidence_count": 9,
+      "evidence_count": 16,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
+        "5 observations",
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -4927,7 +2751,7 @@
       ],
       "contradicting": [],
       "created_at": 1775922998.7448366,
-      "last_validated": 1782965836.343701,
+      "last_validated": 1783033187.097049,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -4939,7 +2763,7 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: LOSS in unknown, pnl=-6.05%",
       "confidence": 0.003,
-      "evidence_count": 23,
+      "evidence_count": 31,
       "supporting": [
         "5 observations",
         "5 observations",
@@ -4964,7 +2788,7 @@
       ],
       "contradicting": [],
       "created_at": 1775923006.1302388,
-      "last_validated": 1782962822.8805065,
+      "last_validated": 1783033196.7370481,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -4976,8 +2800,12 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_SELL_0-agree: LOSS in unknown, pnl=-5.66%",
       "confidence": 0.003,
-      "evidence_count": 9,
+      "evidence_count": 13,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -4990,7 +2818,7 @@
       ],
       "contradicting": [],
       "created_at": 1775923007.2699764,
-      "last_validated": 1782946381.4305184,
+      "last_validated": 1783033197.1642895,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5002,8 +2830,12 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: WIN in unknown, pnl=194.45%",
       "confidence": 0.003,
-      "evidence_count": 8,
+      "evidence_count": 12,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5015,7 +2847,7 @@
       ],
       "contradicting": [],
       "created_at": 1775923009.846851,
-      "last_validated": 1776712978.1903524,
+      "last_validated": 1783033199.2723079,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5027,7 +2859,7 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: TEST_BUY_0-agree: WIN in unknown, pnl=500.00%",
       "confidence": 0.325,
-      "evidence_count": 45,
+      "evidence_count": 58,
       "supporting": [
         "5 observations",
         "5 observations",
@@ -5052,7 +2884,7 @@
       ],
       "contradicting": [],
       "created_at": 1775923010.0030227,
-      "last_validated": 1782965849.3666625,
+      "last_validated": 1783033199.43616,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5063,8 +2895,12 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_SELL_0-agree: LOSS in unknown, pnl=-4.00%",
       "confidence": 0.033,
-      "evidence_count": 10,
+      "evidence_count": 14,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5078,7 +2914,7 @@
       ],
       "contradicting": [],
       "created_at": 1775923020.8937864,
-      "last_validated": 1782965846.4406366,
+      "last_validated": 1783033213.3566344,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5090,7 +2926,7 @@
       "knowledge_type": "principle",
       "content": "[surprise] Pattern from 5 observations: Surprise TEST_BUY_0-agree: expected win at 75% but lost",
       "confidence": 0.003,
-      "evidence_count": 23,
+      "evidence_count": 35,
       "supporting": [
         "5 observations",
         "5 observations",
@@ -5115,7 +2951,7 @@
       ],
       "contradicting": [],
       "created_at": 1775924422.6196115,
-      "last_validated": 1782961701.648432,
+      "last_validated": 1783032951.7493165,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "surprise",
@@ -5127,8 +2963,11 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: WIN in unknown, pnl=6.00%",
       "confidence": 0.009,
-      "evidence_count": 16,
+      "evidence_count": 19,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5148,7 +2987,7 @@
       ],
       "contradicting": [],
       "created_at": 1775924424.8327916,
-      "last_validated": 1782961724.126029,
+      "last_validated": 1783032753.608325,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5178,8 +3017,11 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: LOSS in unknown, pnl=-12.04%",
       "confidence": 0.014,
-      "evidence_count": 11,
+      "evidence_count": 14,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5194,7 +3036,7 @@
       ],
       "contradicting": [],
       "created_at": 1775924651.4587228,
-      "last_validated": 1782942950.3528337,
+      "last_validated": 1783032924.2735333,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5206,8 +3048,10 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_SELL_0-agree: LOSS in unknown, pnl=-7.55%",
       "confidence": 0.01,
-      "evidence_count": 18,
+      "evidence_count": 22,
       "supporting": [
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5229,7 +3073,7 @@
       ],
       "contradicting": [],
       "created_at": 1775924652.090736,
-      "last_validated": 1782945868.3262486,
+      "last_validated": 1783032924.9440377,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5277,8 +3121,10 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: WIN in unknown, pnl=0.02%",
       "confidence": 0.003,
-      "evidence_count": 12,
+      "evidence_count": 14,
       "supporting": [
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5294,7 +3140,7 @@
       ],
       "contradicting": [],
       "created_at": 1775956132.4489322,
-      "last_validated": 1782965863.3633604,
+      "last_validated": 1783032206.563858,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5332,8 +3178,10 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: WIN in unknown, pnl=15.96%",
       "confidence": 0.041,
-      "evidence_count": 17,
+      "evidence_count": 19,
       "supporting": [
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5354,7 +3202,7 @@
       ],
       "contradicting": [],
       "created_at": 1775956135.6952612,
-      "last_validated": 1782962813.7742121,
+      "last_validated": 1783032210.0941339,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5366,8 +3214,12 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: WIN in unknown, pnl=15.94%",
       "confidence": 0.003,
-      "evidence_count": 14,
+      "evidence_count": 18,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5385,7 +3237,7 @@
       ],
       "contradicting": [],
       "created_at": 1775956139.5188966,
-      "last_validated": 1782962823.5377066,
+      "last_validated": 1783032220.7486186,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5397,7 +3249,7 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: SOL_BUY_0-agree: LOSS in consolidation, pnl=-40.38%",
       "confidence": 0.038,
-      "evidence_count": 24,
+      "evidence_count": 37,
       "supporting": [
         "5 observations",
         "5 observations",
@@ -5422,7 +3274,7 @@
       ],
       "contradicting": [],
       "created_at": 1775956139.5362158,
-      "last_validated": 1782961724.0279338,
+      "last_validated": 1783033199.523182,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5434,7 +3286,7 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: WIN in unknown, pnl=19.45%",
       "confidence": 0.003,
-      "evidence_count": 25,
+      "evidence_count": 30,
       "supporting": [
         "5 observations",
         "5 observations",
@@ -5459,7 +3311,7 @@
       ],
       "contradicting": [],
       "created_at": 1775956141.316759,
-      "last_validated": 1782965849.2836144,
+      "last_validated": 1783032490.0121017,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5468,70 +3320,12 @@
       "stale": true
     },
     {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (29% WR, 17 trades, $-4)",
-      "confidence": 0.003,
-      "evidence_count": 41,
-      "supporting": [
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1775958850.366368,
-      "last_validated": 1776158707.4581764,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (29% WR)",
-      "confidence": 0.003,
-      "evidence_count": 39,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1775972237.0970104,
-      "last_validated": 1776782251.8383489,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: WIN in unknown, pnl=7.50%",
       "confidence": 0.11,
-      "evidence_count": 11,
+      "evidence_count": 12,
       "supporting": [
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5546,7 +3340,7 @@
       ],
       "contradicting": [],
       "created_at": 1776019174.2733026,
-      "last_validated": 1782965829.501404,
+      "last_validated": 1783033044.9392092,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5558,8 +3352,10 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: SOL_BUY_0-agree: LOSS in high_volatility, pnl=-40.38%",
       "confidence": 0.003,
-      "evidence_count": 11,
+      "evidence_count": 13,
       "supporting": [
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5574,7 +3370,7 @@
       ],
       "contradicting": [],
       "created_at": 1776019773.8925922,
-      "last_validated": 1782961687.2000058,
+      "last_validated": 1783030621.6802478,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5586,8 +3382,11 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_SELL_0-agree: WIN in unknown, pnl=4.00%",
       "confidence": 0.003,
-      "evidence_count": 11,
+      "evidence_count": 14,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5602,7 +3401,7 @@
       ],
       "contradicting": [],
       "created_at": 1776027821.8678768,
-      "last_validated": 1782962810.0384202,
+      "last_validated": 1783032383.9315977,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5613,7 +3412,7 @@
     {
       "knowledge_type": "principle",
       "content": "SOL SHORT illiquid regime at 5.6x: stopped early despite correct direction. Illiquid = wide wicks kill tight SLs. Avoid 5.5x+ in illiquid; cap at 4.5x or widen SL to 3.5%+.",
-      "confidence": 0.003,
+      "confidence": 0.002,
       "evidence_count": 1,
       "supporting": [
         "SOL in illiquid"
@@ -5635,7 +3434,7 @@
     {
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: SOL_SELL_multi_tier_quality: LOSS in illiquid, pnl=-8.79%",
-      "confidence": 0.003,
+      "confidence": 0.002,
       "evidence_count": 1,
       "supporting": [
         "5 observations"
@@ -5654,8 +3453,11 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: WIN in unknown, pnl=18.56%",
       "confidence": 0.008,
-      "evidence_count": 7,
+      "evidence_count": 10,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5666,7 +3468,7 @@
       ],
       "contradicting": [],
       "created_at": 1776093226.7450469,
-      "last_validated": 1782943214.7229924,
+      "last_validated": 1783032927.3777585,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5678,8 +3480,10 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: WIN in unknown, pnl=14.96%",
       "confidence": 0.006,
-      "evidence_count": 8,
+      "evidence_count": 10,
       "supporting": [
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5691,7 +3495,7 @@
       ],
       "contradicting": [],
       "created_at": 1776093230.5284076,
-      "last_validated": 1782961724.4128358,
+      "last_validated": 1783032937.7694988,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5703,8 +3507,10 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: LOSS in unknown, pnl=-4.00%",
       "confidence": 0.005,
-      "evidence_count": 8,
+      "evidence_count": 10,
       "supporting": [
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations",
@@ -5716,7 +3522,7 @@
       ],
       "contradicting": [],
       "created_at": 1776093232.3230252,
-      "last_validated": 1782965673.1003861,
+      "last_validated": 1783032939.985279,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -5727,7 +3533,7 @@
     {
       "knowledge_type": "principle",
       "content": "ETH LONG at 7.0x leverage in unknown regime lost $0.13 in 40min. High conf (69.7%) + leverage mismatch = noise kill. Hold time suggests stopped early.",
-      "confidence": 0.003,
+      "confidence": 0.002,
       "evidence_count": 1,
       "supporting": [
         "ETH in "
@@ -5743,45 +3549,6 @@
         "eth"
       ],
       "source": "learning_agent",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (27% WR, 11 trades, $-37)",
-      "confidence": 0.003,
-      "evidence_count": 19,
-      "supporting": [
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776096402.1587791,
-      "last_validated": 1776185213.95683,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
       "stale": true
     },
     {
@@ -5804,31 +3571,6 @@
         "trending"
       ],
       "source": "learning_agent",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (28% WR, 18 trades, $-7)",
-      "confidence": 0.003,
-      "evidence_count": 5,
-      "supporting": [
-        "5/18 wins",
-        "5/18 wins",
-        "5/18 wins",
-        "5/18 wins",
-        "5/18 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776162340.6930852,
-      "last_validated": 1776185213.9498262,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
       "stale": true
     },
     {
@@ -5914,274 +3656,6 @@
       "stale": true
     },
     {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (25% WR, 16 trades, $-7)",
-      "confidence": 0.003,
-      "evidence_count": 9,
-      "supporting": [
-        "4/16 wins",
-        "4/16 wins",
-        "4/16 wins",
-        "4/16 wins",
-        "4/16 wins",
-        "4/16 wins",
-        "4/16 wins",
-        "4/16 wins",
-        "4/16 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776193276.5270216,
-      "last_validated": 1776227992.318063,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (25% WR, 12 trades, $-46)",
-      "confidence": 0.003,
-      "evidence_count": 11,
-      "supporting": [
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776193276.5349414,
-      "last_validated": 1776271344.1006486,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (24% WR, 17 trades, $-9)",
-      "confidence": 0.003,
-      "evidence_count": 2,
-      "supporting": [
-        "4/17 wins",
-        "4/17 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776230996.3482997,
-      "last_validated": 1776271344.0847113,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 32% win rate (50 trades)",
-      "confidence": 0.003,
-      "evidence_count": 39,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776230996.3840563,
-      "last_validated": 1776937842.82418,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (18% WR, 11 trades, $-50)",
-      "confidence": 0.003,
-      "evidence_count": 2,
-      "supporting": [
-        "2/11 wins",
-        "2/11 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776278528.9954934,
-      "last_validated": 1776282019.9280462,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (20% WR, 10 trades, $-37)",
-      "confidence": 0.003,
-      "evidence_count": 2,
-      "supporting": [
-        "2/10 wins",
-        "2/10 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776285563.9444685,
-      "last_validated": 1776289034.6325758,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (26% WR)",
-      "confidence": 0.003,
-      "evidence_count": 11,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776285563.951905,
-      "last_validated": 1776388179.7752674,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "2-strategy agreement: 25% win rate (4 trades)",
-      "confidence": 0.003,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776295436.030046,
-      "last_validated": 1776299130.282637,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_2"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (29% WR, 17 trades, $+15)",
-      "confidence": 0.003,
-      "evidence_count": 3,
-      "supporting": [
-        "5/17 wins",
-        "5/17 wins",
-        "5/17 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776303922.398763,
-      "last_validated": 1776311166.6791182,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (20% WR, 10 trades, $-36)",
-      "confidence": 0.003,
-      "evidence_count": 3,
-      "supporting": [
-        "2/10 wins",
-        "2/10 wins",
-        "2/10 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776303922.4063406,
-      "last_validated": 1776311166.6862907,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (23% WR)",
-      "confidence": 0.003,
-      "evidence_count": 17,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776303922.413837,
-      "last_validated": 1777003151.802711,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (18% WR, 11 trades, $-37)",
-      "confidence": 0.003,
-      "evidence_count": 2,
-      "supporting": [
-        "2/11 wins",
-        "2/11 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776313356.1016293,
-      "last_validated": 1776316396.1788568,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: ETH_BUY_BB: WIN in trending, pnl=0.93%",
       "confidence": 0.003,
@@ -6197,117 +3671,6 @@
       "category": "trade_outcome",
       "tags": [],
       "source": "consolidation",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (9% WR, 11 trades, $-40)",
-      "confidence": 0.003,
-      "evidence_count": 4,
-      "supporting": [
-        "1/11 wins",
-        "1/11 wins",
-        "1/11 wins",
-        "1/11 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776319910.6383557,
-      "last_validated": 1776330461.4688523,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "High leverage (5x+) trades losing at 63% - consider capping leverage",
-      "confidence": 0.003,
-      "evidence_count": 20,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776319910.6810431,
-      "last_validated": 1776799444.1254466,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "leverage",
-        "risk"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "High leverage (5x+) trades losing at 64% - consider capping leverage",
-      "confidence": 0.003,
-      "evidence_count": 0,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776323400.683559,
-      "last_validated": 1776323400.683559,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "leverage",
-        "risk"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (10% WR, 10 trades, $-37)",
-      "confidence": 0.003,
-      "evidence_count": 10,
-      "supporting": [
-        "1/10 wins",
-        "1/10 wins",
-        "1/10 wins",
-        "1/10 wins",
-        "1/10 wins",
-        "1/10 wins",
-        "1/10 wins",
-        "1/10 wins",
-        "1/10 wins",
-        "1/10 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776348119.1030643,
-      "last_validated": 1776388179.7601333,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "High leverage (5x+) trades losing at 100% - consider capping leverage",
-      "confidence": 0.003,
-      "evidence_count": 5,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776348257.1916668,
-      "last_validated": 1776357539.0711637,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "leverage",
-        "risk"
-      ],
-      "source": "causal_analysis",
       "stale": true
     },
     {
@@ -6353,57 +3716,6 @@
       "stale": true
     },
     {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (0% WR, 9 trades, $-41)",
-      "confidence": 0.003,
-      "evidence_count": 12,
-      "supporting": [
-        "0/9 wins",
-        "0/9 wins",
-        "0/9 wins",
-        "0/9 wins",
-        "0/9 wins",
-        "0/9 wins",
-        "0/9 wins",
-        "0/9 wins",
-        "0/9 wins",
-        "0/9 wins",
-        "0/9 wins",
-        "0/9 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776399393.7176745,
-      "last_validated": 1776532768.168179,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "High leverage (5x+) trades losing at 66% - consider capping leverage",
-      "confidence": 0.003,
-      "evidence_count": 11,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776399393.7488074,
-      "last_validated": 1776532768.3389578,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "leverage",
-        "risk"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: SOL_BUY_BB: WIN in trending, pnl=40.03%",
       "confidence": 0.003,
@@ -6422,159 +3734,6 @@
       "stale": true
     },
     {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (0% WR, 8 trades, $-40)",
-      "confidence": 0.003,
-      "evidence_count": 7,
-      "supporting": [
-        "0/8 wins",
-        "0/8 wins",
-        "0/8 wins",
-        "0/8 wins",
-        "0/8 wins",
-        "0/8 wins",
-        "0/8 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776564223.6421976,
-      "last_validated": 1776599108.4828563,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (22% WR)",
-      "confidence": 0.003,
-      "evidence_count": 2,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776564223.6897016,
-      "last_validated": 1776571591.2012568,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "High leverage (5x+) trades losing at 65% - consider capping leverage",
-      "confidence": 0.003,
-      "evidence_count": 14,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776564223.7672966,
-      "last_validated": 1776873737.4510999,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "leverage",
-        "risk"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (29% WR, 14 trades, $-13)",
-      "confidence": 0.003,
-      "evidence_count": 10,
-      "supporting": [
-        "4/14 wins",
-        "4/14 wins",
-        "4/14 wins",
-        "4/14 wins",
-        "4/14 wins",
-        "4/14 wins",
-        "4/14 wins",
-        "4/14 wins",
-        "4/14 wins",
-        "4/14 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776588805.6560645,
-      "last_validated": 1776637827.339611,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (0% WR, 9 trades, $-54)",
-      "confidence": 0.003,
-      "evidence_count": 1,
-      "supporting": [
-        "0/9 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776606661.7472975,
-      "last_validated": 1776606661.7472975,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 30% win rate (50 trades)",
-      "confidence": 0.003,
-      "evidence_count": 6,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776606661.7787397,
-      "last_validated": 1776981096.3104708,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "High leverage (5x+) trades losing at 68% - consider capping leverage",
-      "confidence": 0.003,
-      "evidence_count": 6,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776606661.786457,
-      "last_validated": 1776981096.32078,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "leverage",
-        "risk"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: SOL_BUY_0-agree: LOSS in unknown, pnl=-15.85%",
       "confidence": 0.003,
@@ -6590,123 +3749,6 @@
       "category": "trade_outcome",
       "tags": [],
       "source": "consolidation",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in illiquid regime (17% WR)",
-      "confidence": 0.003,
-      "evidence_count": 0,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776620226.8488941,
-      "last_validated": 1776620226.8488958,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "illiquid",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (0% WR, 8 trades, $-36)",
-      "confidence": 0.003,
-      "evidence_count": 5,
-      "supporting": [
-        "0/8 wins",
-        "0/8 wins",
-        "0/8 wins",
-        "0/8 wins",
-        "0/8 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776624360.5165393,
-      "last_validated": 1776637827.350116,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (25% WR, 12 trades, $-15)",
-      "confidence": 0.003,
-      "evidence_count": 4,
-      "supporting": [
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776640978.6912365,
-      "last_validated": 1776663009.8488948,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (12% WR, 8 trades, $-25)",
-      "confidence": 0.003,
-      "evidence_count": 10,
-      "supporting": [
-        "1/8 wins",
-        "1/8 wins",
-        "1/8 wins",
-        "1/8 wins",
-        "1/8 wins",
-        "1/8 wins",
-        "1/8 wins",
-        "1/8 wins",
-        "1/8 wins",
-        "1/8 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776640978.7015953,
-      "last_validated": 1776694695.4841614,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System performs well in ranging regime (67% WR)",
-      "confidence": 0.003,
-      "evidence_count": 28,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776640978.717127,
-      "last_validated": 1776799444.083137,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "ranging",
-        "favorable"
-      ],
-      "source": "pattern_recognition",
       "stale": true
     },
     {
@@ -6740,51 +3782,6 @@
     },
     {
       "knowledge_type": "hypothesis",
-      "content": "High leverage (5x+) trades losing at 62% - consider capping leverage",
-      "confidence": 0.003,
-      "evidence_count": 20,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776640978.7512283,
-      "last_validated": 1776782251.8928747,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "leverage",
-        "risk"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (27% WR, 11 trades, $-15)",
-      "confidence": 0.003,
-      "evidence_count": 6,
-      "supporting": [
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins",
-        "3/11 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776672799.2644527,
-      "last_validated": 1776694695.4931042,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
       "content": "System currently favors shorts (29% long WR vs 56% short WR)",
       "confidence": 0.003,
       "evidence_count": 5,
@@ -6810,86 +3807,6 @@
         "side_bias"
       ],
       "source": "causal_analysis",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (25% WR, 12 trades, $-18)",
-      "confidence": 0.003,
-      "evidence_count": 26,
-      "supporting": [
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins",
-        "3/12 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776700865.771848,
-      "last_validated": 1776937842.7926877,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (14% WR, 7 trades, $-23)",
-      "confidence": 0.003,
-      "evidence_count": 39,
-      "supporting": [
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins",
-        "1/7 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776700865.7912436,
-      "last_validated": 1776937842.800566,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
       "stale": true
     },
     {
@@ -6937,28 +3854,6 @@
       "category": "trade_outcome",
       "tags": [],
       "source": "consolidation",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (27% WR, 11 trades, $-17)",
-      "confidence": 0.003,
-      "evidence_count": 2,
-      "supporting": [
-        "3/11 wins",
-        "3/11 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776795910.1945386,
-      "last_validated": 1776799444.066361,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
       "stale": true
     },
     {
@@ -7022,45 +3917,6 @@
       "stale": true
     },
     {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (0% WR, 3 trades, $-45)",
-      "confidence": 0.003,
-      "evidence_count": 1,
-      "supporting": [
-        "0/3 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776966565.8172343,
-      "last_validated": 1776966565.8172348,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 40% win rate (5 trades)",
-      "confidence": 0.003,
-      "evidence_count": 1,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776966565.86723,
-      "last_validated": 1776983119.1197615,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
       "knowledge_type": "hypothesis",
       "content": "System currently favors longs (50% long WR vs 0% short WR)",
       "confidence": 0.003,
@@ -7086,114 +3942,6 @@
       "category": "direction",
       "tags": [
         "side_bias"
-      ],
-      "source": "causal_analysis",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "HYPE performing poorly (21% WR, 14 trades, $-51)",
-      "confidence": 0.003,
-      "evidence_count": 6,
-      "supporting": [
-        "3/14 wins",
-        "3/14 wins",
-        "3/14 wins",
-        "3/14 wins",
-        "3/14 wins",
-        "3/14 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776981096.2381163,
-      "last_validated": 1777003151.7435951,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "HYPE",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "BTC performing poorly (12% WR, 8 trades, $-40)",
-      "confidence": 0.003,
-      "evidence_count": 6,
-      "supporting": [
-        "1/8 wins",
-        "1/8 wins",
-        "1/8 wins",
-        "1/8 wins",
-        "1/8 wins",
-        "1/8 wins"
-      ],
-      "contradicting": [],
-      "created_at": 1776981096.2520201,
-      "last_validated": 1777003151.7806482,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "symbol",
-      "tags": [
-        "BTC",
-        "weak"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "System struggles in  regime (22% WR)",
-      "confidence": 0.13,
-      "evidence_count": 25,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776986340.2934816,
-      "last_validated": 1782571146.368935,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "regime",
-      "tags": [
-        "",
-        "unfavorable"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "observation",
-      "content": "1-strategy agreement: 28% win rate (50 trades)",
-      "confidence": 0.003,
-      "evidence_count": 4,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776986340.3102658,
-      "last_validated": 1777003151.8446572,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "strategy",
-      "tags": [
-        "agree_1"
-      ],
-      "source": "pattern_recognition",
-      "stale": true
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "High leverage (5x+) trades losing at 69% - consider capping leverage",
-      "confidence": 0.003,
-      "evidence_count": 4,
-      "supporting": [],
-      "contradicting": [],
-      "created_at": 1776986340.3187704,
-      "last_validated": 1777003151.8560665,
-      "validation_count": 0,
-      "invalidation_count": 0,
-      "category": "risk",
-      "tags": [
-        "leverage",
-        "risk"
       ],
       "source": "causal_analysis",
       "stale": true
@@ -7349,7 +4097,7 @@
     {
       "knowledge_type": "graduated_rule",
       "content": "[AVOID] HYPE SELL is permanently blocked: 2.3% WR on n=411 clean trades (edge_analysis_raw n=172 + time_edge_results n=173 + 66 live). EV=-3.57%/trade. Catastrophic capital destruction. NO exceptions \u2014 not regime, not session, not confidence level.",
-      "confidence": 0.95,
+      "confidence": 0.757,
       "evidence_count": 411,
       "evidence_ratio": 0.023,
       "category": "risk",
@@ -7375,7 +4123,7 @@
     {
       "knowledge_type": "graduated_rule",
       "content": "[EDGE] SOL SELL in US session (14-22 UTC) = 62% WR on n=213 clean trades. EV=+0.99%/trade. Grade B alpha. Confirmed: edge_analysis_raw.json 62% (n=213) and time_edge_results.json 58.7% (n=225) at 18 UTC. Prior hard-block (36% WR n=42) was from broken-execution all-hours data \u2014 overridden.",
-      "confidence": 0.9,
+      "confidence": 0.707,
       "evidence_count": 213,
       "evidence_ratio": 0.62,
       "category": "strategy",
@@ -7405,7 +4153,7 @@
     {
       "knowledge_type": "graduated_rule",
       "content": "[CAUTION] BTC BUY in US session (14-22 UTC) is a hard block: 15% WR at 18 UTC (n=147), 22% WR overall US session (n=99). BTC LONG is ONLY viable in trending regime outside 14-22 UTC (56% WR mechanical backtest). Two separate signals \u2014 US session = block, non-US trending = allow.",
-      "confidence": 0.92,
+      "confidence": 0.727,
       "evidence_count": 246,
       "evidence_ratio": 0.15,
       "category": "risk",
@@ -7435,7 +4183,7 @@
     {
       "knowledge_type": "graduated_rule",
       "content": "[EDGE] HYPE BUY in US session (14-22 UTC) = 85-88% WR. Grade A+ alpha. edge_analysis_raw: 88.1% WR n=194 EV=+4.75%/trade. time_edge_results: 85.1% WR n=201 at 18 UTC specifically. Outside US session: drops to 35-40% WR. The 18-20 UTC window is the prime entry window. Optimal: trending regime, RSI 35-65, 2-3x leverage, 3.75% TP, 2.5% SL.",
-      "confidence": 0.93,
+      "confidence": 0.737,
       "evidence_count": 395,
       "evidence_ratio": 0.875,
       "category": "strategy",
@@ -7465,7 +4213,7 @@
     {
       "knowledge_type": "graduated_rule",
       "content": "[EDGE] HYPE BUY during US session (14-22 UTC) has 85-88% WR (n=395). Time-of-day filter worth +30pp over all-hours baseline. Hour 18 UTC (US close + Asian open) is the peak. Strong positive EV at confidence_adj=+15pts.",
-      "confidence": 0.87,
+      "confidence": 0.781,
       "evidence_count": 395,
       "evidence_ratio": 0.87,
       "category": "strategy",
@@ -8845,11 +5593,11 @@
       "knowledge_type": "observation",
       "content": "System struggles in consolidation regime (0% WR)",
       "confidence": 0.7,
-      "evidence_count": 52,
+      "evidence_count": 57,
       "supporting": [],
       "contradicting": [],
       "created_at": 1780882236.641443,
-      "last_validated": 1782942183.9522316,
+      "last_validated": 1783030077.9538999,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "regime",
@@ -9799,35 +6547,6 @@
         "agree_2"
       ],
       "source": "pattern_recognition"
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "System currently favors shorts (25% long WR vs 50% short WR)",
-      "confidence": 0.05,
-      "evidence_count": 0,
-      "supporting": [
-        "Short WR=50%"
-      ],
-      "contradicting": [
-        "Short WR=33%",
-        "Short WR=33%",
-        "Short WR=33%",
-        "Short WR=33%",
-        "Short WR=33%",
-        "Short WR=33%",
-        "Short WR=33%",
-        "Short WR=33%",
-        "Short WR=33%"
-      ],
-      "created_at": 1781036484.986477,
-      "last_validated": 1781061391.57213,
-      "validation_count": 1,
-      "invalidation_count": 9,
-      "category": "direction",
-      "tags": [
-        "side_bias"
-      ],
-      "source": "causal_analysis"
     },
     {
       "knowledge_type": "principle",
@@ -10908,35 +7627,6 @@
       "source": "pattern_recognition"
     },
     {
-      "knowledge_type": "hypothesis",
-      "content": "System currently favors shorts (22% long WR vs 43% short WR)",
-      "confidence": 0.05,
-      "evidence_count": 0,
-      "supporting": [
-        "Short WR=43%"
-      ],
-      "contradicting": [
-        "Short WR=39%",
-        "Short WR=0%",
-        "Short WR=0%",
-        "Short WR=0%",
-        "Short WR=0%",
-        "Short WR=0%",
-        "Short WR=0%",
-        "Short WR=0%",
-        "Short WR=0%"
-      ],
-      "created_at": 1781656232.9787736,
-      "last_validated": 1781727151.5572023,
-      "validation_count": 1,
-      "invalidation_count": 9,
-      "category": "direction",
-      "tags": [
-        "side_bias"
-      ],
-      "source": "causal_analysis"
-    },
-    {
       "knowledge_type": "principle",
       "content": "ETH LONG consolidation+confidence_scorer: regime zero-edge+signal 0% WR on symbol. BLOCK: never take consolidation trades, disable signal on ETH.",
       "confidence": 0.8,
@@ -11359,34 +8049,6 @@
         "agree_2"
       ],
       "source": "pattern_recognition"
-    },
-    {
-      "knowledge_type": "hypothesis",
-      "content": "System currently favors shorts (17% long WR vs 38% short WR)",
-      "confidence": 0.05,
-      "evidence_count": 0,
-      "supporting": [],
-      "contradicting": [
-        "Short WR=38%",
-        "Short WR=0%",
-        "Short WR=0%",
-        "Short WR=0%",
-        "Short WR=0%",
-        "Short WR=0%",
-        "Short WR=0%",
-        "Short WR=0%",
-        "Short WR=0%",
-        "Short WR=0%"
-      ],
-      "created_at": 1781741092.880654,
-      "last_validated": 1781761575.3387241,
-      "validation_count": 0,
-      "invalidation_count": 10,
-      "category": "direction",
-      "tags": [
-        "side_bias"
-      ],
-      "source": "causal_analysis"
     },
     {
       "knowledge_type": "principle",
@@ -14015,11 +10677,11 @@
       "knowledge_type": "observation",
       "content": "System struggles in consolidation regime (25% WR)",
       "confidence": 0.7,
-      "evidence_count": 0,
+      "evidence_count": 1,
       "supporting": [],
       "contradicting": [],
       "created_at": 1782092147.081334,
-      "last_validated": 1782092147.081334,
+      "last_validated": 1782975779.021137,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "regime",
@@ -17835,11 +14497,11 @@
       "knowledge_type": "observation",
       "content": "System struggles in unknown regime (33% WR)",
       "confidence": 0.6666666666666667,
-      "evidence_count": 14,
+      "evidence_count": 15,
       "supporting": [],
       "contradicting": [],
       "created_at": 1782717133.728552,
-      "last_validated": 1782746569.5135643,
+      "last_validated": 1783020822.2595773,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "regime",
@@ -19416,15 +16078,16 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: ETH_BUY_0-agree: LOSS in unknown, pnl=-0.04%",
       "confidence": 0.75,
-      "evidence_count": 3,
+      "evidence_count": 4,
       "supporting": [
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations"
       ],
       "contradicting": [],
       "created_at": 1782943243.043466,
-      "last_validated": 1782965827.8741374,
+      "last_validated": 1782990533.8217483,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -19503,15 +16166,18 @@
       "knowledge_type": "principle",
       "content": "[trade_outcome] Pattern from 5 observations: ETH_BUY_0-agree: WIN in unknown, pnl=9.96%",
       "confidence": 0.75,
-      "evidence_count": 3,
+      "evidence_count": 6,
       "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
         "5 observations",
         "5 observations",
         "5 observations"
       ],
       "contradicting": [],
       "created_at": 1782946414.3032491,
-      "last_validated": 1782965656.059659,
+      "last_validated": 1783032566.3935487,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
@@ -19564,14 +16230,15 @@
       "knowledge_type": "observation",
       "content": "SOL performing poorly (25% WR, 8 trades, $+7)",
       "confidence": 0.75,
-      "evidence_count": 2,
+      "evidence_count": 3,
       "supporting": [
+        "2/8 wins",
         "2/8 wins",
         "2/8 wins"
       ],
       "contradicting": [],
       "created_at": 1782950592.4747374,
-      "last_validated": 1782956457.9655514,
+      "last_validated": 1782975778.9354994,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "symbol",
@@ -19640,11 +16307,11 @@
       "knowledge_type": "observation",
       "content": "2-strategy agreement: 33% win rate (9 trades)",
       "confidence": 0.6799999999999999,
-      "evidence_count": 1,
+      "evidence_count": 2,
       "supporting": [],
       "contradicting": [],
       "created_at": 1782950592.7546422,
-      "last_validated": 1782956458.3118167,
+      "last_validated": 1783004570.1058927,
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "strategy",
@@ -19656,17 +16323,19 @@
     {
       "knowledge_type": "hypothesis",
       "content": "System currently favors shorts (6% long WR vs 38% short WR)",
-      "confidence": 0.20000000000000004,
+      "confidence": 0.05,
       "evidence_count": 1,
       "supporting": [],
       "contradicting": [
         "Short WR=38%",
-        "Short WR=38%"
+        "Short WR=38%",
+        "Short WR=31% vs live baseline=51% (bar=56%)",
+        "Short WR=28% vs live baseline=51% (bar=56%)"
       ],
       "created_at": 1782950592.7945387,
-      "last_validated": 1782956458.4078405,
+      "last_validated": 1783004570.1490495,
       "validation_count": 0,
-      "invalidation_count": 2,
+      "invalidation_count": 4,
       "category": "direction",
       "tags": [
         "side_bias"
@@ -19913,6 +16582,810 @@
       "validation_count": 0,
       "invalidation_count": 0,
       "category": "trade_outcome",
+      "tags": [],
+      "source": "consolidation"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "HYPE SHORT strategy edge broken: 4th loss, 24% WR symbol, 8% WR on confidence_scorer. Block or require 2+ strategy agreement.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (HYPE in ?), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1782969628.5293303,
+      "last_validated": 1782969628.5293307,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "pattern_loss",
+      "tags": [
+        "pattern_loss",
+        "hype"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "HYPE SHORT: 4 consecutive losses. confidence_scorer 8% WR on symbol. Block SHORT or require 2+ strategy agreement.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (HYPE in ?), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1782969665.5869708,
+      "last_validated": 1782969665.586971,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "pattern_loss",
+      "tags": [
+        "pattern_loss",
+        "hype"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "HYPE performing poorly (12% WR, 8 trades, $-24)",
+      "confidence": 0.8,
+      "evidence_count": 1,
+      "supporting": [
+        "1/8 wins"
+      ],
+      "contradicting": [],
+      "created_at": 1782975778.8094907,
+      "last_validated": 1782975778.8094914,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "symbol",
+      "tags": [
+        "HYPE",
+        "weak"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "BTC performing poorly (10% WR, 10 trades, $-50)",
+      "confidence": 0.8,
+      "evidence_count": 1,
+      "supporting": [
+        "1/10 wins"
+      ],
+      "contradicting": [],
+      "created_at": 1782975778.8516252,
+      "last_validated": 1782975778.8516254,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "symbol",
+      "tags": [
+        "BTC",
+        "weak"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "XRP performing poorly (27% WR, 11 trades, $-16)",
+      "confidence": 0.7272727272727273,
+      "evidence_count": 1,
+      "supporting": [
+        "3/11 wins"
+      ],
+      "contradicting": [],
+      "created_at": 1782975778.9898777,
+      "last_validated": 1782975778.9898782,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "symbol",
+      "tags": [
+        "XRP",
+        "weak"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "System struggles in unknown regime (21% WR)",
+      "confidence": 0.7,
+      "evidence_count": 0,
+      "supporting": [],
+      "contradicting": [],
+      "created_at": 1782975779.1505337,
+      "last_validated": 1782975779.1505342,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime",
+      "tags": [
+        "unknown",
+        "unfavorable"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "0-strategy agreement: 33% win rate (18 trades)",
+      "confidence": 0.86,
+      "evidence_count": 0,
+      "supporting": [],
+      "contradicting": [],
+      "created_at": 1782975779.1909707,
+      "last_validated": 1782975779.1909707,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "strategy",
+      "tags": [
+        "agree_0"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "1-strategy agreement: 17% win rate (24 trades)",
+      "confidence": 0.98,
+      "evidence_count": 0,
+      "supporting": [],
+      "contradicting": [],
+      "created_at": 1782975779.2418885,
+      "last_validated": 1782975779.2418888,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "strategy",
+      "tags": [
+        "agree_1"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "2-strategy agreement: 25% win rate (8 trades)",
+      "confidence": 0.66,
+      "evidence_count": 0,
+      "supporting": [],
+      "contradicting": [],
+      "created_at": 1782975779.293693,
+      "last_validated": 1782975779.2936935,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "strategy",
+      "tags": [
+        "agree_2"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "System currently favors shorts (11% long WR vs 31% short WR)",
+      "confidence": 0.20000000000000004,
+      "evidence_count": 0,
+      "supporting": [],
+      "contradicting": [
+        "Short WR=31% vs live baseline=51% (bar=56%)",
+        "Short WR=28% vs live baseline=51% (bar=56%)"
+      ],
+      "created_at": 1782975779.3447917,
+      "last_validated": 1783004570.191824,
+      "validation_count": 0,
+      "invalidation_count": 2,
+      "category": "direction",
+      "tags": [
+        "side_bias"
+      ],
+      "source": "causal_analysis"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "XRP LONG in range = 11% WR (n=9) known pattern loser\u2014skip or wait for breakout confirmation before entry",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (XRP in range), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1782978955.6815503,
+      "last_validated": 1782978955.6815512,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime_mismatch",
+      "tags": [
+        "regime_mismatch",
+        "xrp",
+        "range"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "XRP LONG in range (11% WR, n=9)\u2014skip unless breakout >80% + 2TF confirm. Chop invalidates thesis by 3h.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (XRP in range), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1782978995.8846178,
+      "last_validated": 1782978995.884618,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime_mismatch",
+      "tags": [
+        "regime_mismatch",
+        "xrp",
+        "range"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "Consolidation LONG: 9.65h hold = thesis decay (-$1.53). Mechanical exits (49% WR) beat LLM exits (0%). Use mechanical 5h timer for consolidation.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (SOL in consolidation), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1782979018.7074656,
+      "last_validated": 1782979018.7074656,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "exit_timing",
+      "tags": [
+        "exit_timing",
+        "sol",
+        "consolidation"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "BTC LONG in consolidation (-$0.43): violates trending-only rule (88% acc n=8). Hard block: reject BTC LONG outside trending regimes.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (BTC in consolidation), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1782980561.3885517,
+      "last_validated": 1782980561.3885517,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime_mismatch",
+      "tags": [
+        "regime_mismatch",
+        "btc",
+        "consolidation"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "BTC LONG in consolidation violates trending-only rule (88% accuracy, n=8)\u2014hard-block entry",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (BTC in consolidation), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1782980602.2166529,
+      "last_validated": 1782980602.2166529,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime_mismatch",
+      "tags": [
+        "regime_mismatch",
+        "btc",
+        "consolidation"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "principle",
+      "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: WIN in unknown, pnl=11.30%",
+      "confidence": 0.75,
+      "evidence_count": 4,
+      "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations",
+        "5 observations"
+      ],
+      "contradicting": [],
+      "created_at": 1782990516.1451364,
+      "last_validated": 1783032740.9169781,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "trade_outcome",
+      "tags": [],
+      "source": "consolidation"
+    },
+    {
+      "knowledge_type": "principle",
+      "content": "[surprise] Pattern from 5 observations: Surprise ETH_BUY_0-agree: expected win at 57% but lost",
+      "confidence": 0.75,
+      "evidence_count": 1,
+      "supporting": [
+        "5 observations"
+      ],
+      "contradicting": [],
+      "created_at": 1782990533.7662575,
+      "last_validated": 1782990533.7662575,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "surprise",
+      "tags": [],
+      "source": "consolidation"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "Unknown regime EXPLORATION lost 5.3h\u2014untradeable direction. Hard SKIP unknown-regime entries OR cut leverage 50% + require regime re-classification.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (HYPE in unknown), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1782992499.038367,
+      "last_validated": 1782992499.0383675,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime_mismatch",
+      "tags": [
+        "regime_mismatch",
+        "hype",
+        "unknown"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "Unknown-regime EXPLORATION: 17% WR (24 trades), HYPE baseline 22%. SL hit 5.3h. Hard-skip pattern\u2014prior rule violated twice.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (HYPE in unknown), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1782992583.306571,
+      "last_validated": 1782992583.3065712,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime_mismatch",
+      "tags": [
+        "regime_mismatch",
+        "hype",
+        "unknown"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "XRP range +0.85 was outlier in 10% WR regime. 4.93h hold + 60% confidence = mean-reversion catch, not edge. Require 3-agree for range trades.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (XRP in range), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1783002147.0344965,
+      "last_validated": 1783002147.0344973,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime_mismatch",
+      "tags": [
+        "regime_mismatch",
+        "xrp",
+        "range"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "confidence_scorer XRP LONG range +$0.85\u2014low-WR signal (20%) won via mechanical trailing exit. Exit mechanism > signal quality. Mechanical trailing on weak signals with 4h+ holds reaches 50% WR.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (XRP in range), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1783002201.3848472,
+      "last_validated": 1783002201.3848479,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "exit_timing",
+      "tags": [
+        "exit_timing",
+        "xrp",
+        "range"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "HYPE confidence_scorer LONG consolidation lost -$0.001 after 1.8h hold. 8% WR on HYPE + short hold time. SOLUTION: Mute or require 3+ confluence + 4h minimum.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (HYPE in consolidation), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1783003851.5267766,
+      "last_validated": 1783003851.5267773,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "pattern_loss",
+      "tags": [
+        "pattern_loss",
+        "hype",
+        "consolidation"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "HYPE confidence_scorer consolidation 7% WR edge lost again after 1.8h\u2014confirm mute + require 4h mechanical hold",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (HYPE in consolidation), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1783003888.250953,
+      "last_validated": 1783003888.2509532,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "pattern_loss",
+      "tags": [
+        "pattern_loss",
+        "hype",
+        "consolidation"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "SOL performing poorly (22% WR, 9 trades, $-10)",
+      "confidence": 0.7777777777777778,
+      "evidence_count": 1,
+      "supporting": [
+        "2/9 wins"
+      ],
+      "contradicting": [],
+      "created_at": 1783004569.7394435,
+      "last_validated": 1783004569.7394445,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "symbol",
+      "tags": [
+        "SOL",
+        "weak"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "XRP performing poorly (25% WR, 12 trades, $-28)",
+      "confidence": 0.75,
+      "evidence_count": 1,
+      "supporting": [
+        "3/12 wins"
+      ],
+      "contradicting": [],
+      "created_at": 1783004569.7805715,
+      "last_validated": 1783004569.7805715,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "symbol",
+      "tags": [
+        "XRP",
+        "weak"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "BTC performing poorly (10% WR, 10 trades, $-24)",
+      "confidence": 0.8,
+      "evidence_count": 1,
+      "supporting": [
+        "1/10 wins"
+      ],
+      "contradicting": [],
+      "created_at": 1783004569.8124156,
+      "last_validated": 1783004569.812416,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "symbol",
+      "tags": [
+        "BTC",
+        "weak"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "HYPE performing poorly (11% WR, 9 trades, $-14)",
+      "confidence": 0.8,
+      "evidence_count": 1,
+      "supporting": [
+        "1/9 wins"
+      ],
+      "contradicting": [],
+      "created_at": 1783004569.8470683,
+      "last_validated": 1783004569.8470693,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "symbol",
+      "tags": [
+        "HYPE",
+        "weak"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "System struggles in consolidation regime (10% WR)",
+      "confidence": 0.7,
+      "evidence_count": 0,
+      "supporting": [],
+      "contradicting": [],
+      "created_at": 1783004569.9810061,
+      "last_validated": 1783004569.9810066,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime",
+      "tags": [
+        "consolidation",
+        "unfavorable"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "System struggles in unknown regime (24% WR)",
+      "confidence": 0.7,
+      "evidence_count": 0,
+      "supporting": [],
+      "contradicting": [],
+      "created_at": 1783004570.012201,
+      "last_validated": 1783004570.0122013,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime",
+      "tags": [
+        "unknown",
+        "unfavorable"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "0-strategy agreement: 30% win rate (20 trades)",
+      "confidence": 0.9,
+      "evidence_count": 0,
+      "supporting": [],
+      "contradicting": [],
+      "created_at": 1783004570.0469744,
+      "last_validated": 1783004570.0469747,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "strategy",
+      "tags": [
+        "agree_0"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "1-strategy agreement: 14% win rate (21 trades)",
+      "confidence": 0.9199999999999999,
+      "evidence_count": 0,
+      "supporting": [],
+      "contradicting": [],
+      "created_at": 1783004570.0747285,
+      "last_validated": 1783004570.074729,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "strategy",
+      "tags": [
+        "agree_1"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "1-strategy agreement: 33% win rate (3 trades)",
+      "confidence": 0.56,
+      "evidence_count": 2,
+      "supporting": [],
+      "contradicting": [],
+      "created_at": 1783004910.3800564,
+      "last_validated": 1783008724.0235002,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "strategy",
+      "tags": [
+        "agree_1"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "BTC LONG in consolidation (21% WR toxic). Exit agent correctly closed 3.2h in. Avoid, or require conf>75% + breakout.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (BTC in consolidation), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1783010591.5199428,
+      "last_validated": 1783010591.519943,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime_mismatch",
+      "tags": [
+        "regime_mismatch",
+        "btc",
+        "consolidation"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "BTC LONG consolidation 21% WR (39t)\u2014regime mismatch structural. Entry conf 60% < 75% threshold. Exit agent correct at 3.2h. Avoid or require 75%+ + breakout.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (BTC in consolidation), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1783010661.4751654,
+      "last_validated": 1783010661.4751656,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime_mismatch",
+      "tags": [
+        "regime_mismatch",
+        "btc",
+        "consolidation"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "Unknown regime + trending_bull thesis (0% WR n=28) + 65% confidence = entry gate failure. Block until regime classified or 3-strategy agreement minimum",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (SOL in unknown), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1783020336.3006508,
+      "last_validated": 1783020336.300651,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime_mismatch",
+      "tags": [
+        "regime_mismatch",
+        "sol",
+        "unknown"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "SOL LONG in trend regime = 0% WR (n=28) confirmed anti-pattern. Block or require extreme confluence. Exit Agent closed correctly.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (SOL in trend), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1783020403.0618937,
+      "last_validated": 1783020403.061894,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "pattern_loss",
+      "tags": [
+        "pattern_loss",
+        "sol",
+        "trend"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "observation",
+      "content": "1-strategy agreement: 20% win rate (5 trades)",
+      "confidence": 0.6,
+      "evidence_count": 5,
+      "supporting": [],
+      "contradicting": [],
+      "created_at": 1783020822.2958634,
+      "last_validated": 1783030078.035836,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "strategy",
+      "tags": [
+        "agree_1"
+      ],
+      "source": "pattern_recognition"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "Consolidation LONG w/o ensemble \u2192 dead capital (3.3h held). Gate failure: require 3-agreement or bounce confirmation for consolidation entries.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (XRP in consolidation), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1783021858.0515792,
+      "last_validated": 1783021858.0515795,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime_mismatch",
+      "tags": [
+        "regime_mismatch",
+        "xrp",
+        "consolidation"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "hypothesis",
+      "content": "Consolidation LONG (solo LLM): dead capital 3.3h. Block solo entries in consolidation\u2014require 3-strategy confluence or bounce confirmation.",
+      "confidence": 0.55,
+      "evidence_count": 1,
+      "supporting": [
+        "n=1 single-trade lesson (XRP in consolidation), era=2026-07 \u2014 needs n>=13 dollar-positive validation"
+      ],
+      "contradicting": [],
+      "created_at": 1783021921.3244321,
+      "last_validated": 1783021921.3244324,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "regime_mismatch",
+      "tags": [
+        "regime_mismatch",
+        "xrp",
+        "consolidation"
+      ],
+      "source": "learning_agent"
+    },
+    {
+      "knowledge_type": "principle",
+      "content": "[trade_outcome] Pattern from 5 observations: BTC_BUY_0-agree: LOSS in unknown, pnl=-0.13%",
+      "confidence": 0.75,
+      "evidence_count": 3,
+      "supporting": [
+        "5 observations",
+        "5 observations",
+        "5 observations"
+      ],
+      "contradicting": [],
+      "created_at": 1783030422.3331623,
+      "last_validated": 1783032209.9311106,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "trade_outcome",
+      "tags": [],
+      "source": "consolidation"
+    },
+    {
+      "knowledge_type": "principle",
+      "content": "[surprise] Pattern from 5 observations: Surprise ETH_BUY_0-agree: expected win at 65% but lost",
+      "confidence": 0.75,
+      "evidence_count": 2,
+      "supporting": [
+        "5 observations",
+        "5 observations"
+      ],
+      "contradicting": [],
+      "created_at": 1783032956.9508812,
+      "last_validated": 1783032957.0587845,
+      "validation_count": 0,
+      "invalidation_count": 0,
+      "category": "surprise",
       "tags": [],
       "source": "consolidation"
     }
