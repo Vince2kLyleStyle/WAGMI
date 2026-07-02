@@ -1,11 +1,12 @@
-# 🧠 STATE OF THE BRAIN — 2026-07-02 20:50 UTC
+# 🧠 STATE OF THE BRAIN — 2026-07-02 22:27 UTC
 _Auto-generated every learning-engine pass (bot/tools/gen_state.py). This is the shared page._
 
 ## Bot
-🟢 ALIVE — pid 43824, uptime 9.2h, scan 1208, errors 0, equity $4998.73 (heartbeat 0m old)
+🟢 ALIVE — pid 33604, uptime 0.0h, scan 2, errors 0, equity $4998.73 (heartbeat 0m old)
 
 ## Open book
 - **ETH LONG** @ 1646.11 | SL 1687.44 TP1 1693.97 | conf 65.4 | opened 2026-07-02T11:47
+- **HYPE LONG** @ 65.494 | SL 63.2296 TP1 68.8744 | conf 65.0 | opened 2026-07-02T22:14
 
 ## Last 5 closes
 | time (UTC) | trade | pnl | outcome | conf | entry_type |
