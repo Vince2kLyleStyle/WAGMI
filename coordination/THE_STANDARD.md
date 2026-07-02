@@ -10,7 +10,7 @@ This unifies the contracts already in force: WIRING_INVARIANTS.md (the wiring), 
 
 ## 2. Change standard — how anything ships
 - Measurement/logging fixes: autonomous, tested, scoped commits, safe restart, live-verified on next data.
-- Behavior changes (sizing, exits, entries, rules): EXTENSIVE backtest → counterfactual replay → adversarial self-audit (try to break the finding) → flag-gated / A/B with auto-retire → SHIP AUTONOMOUSLY → watch window (15-20 closes) → keep or revert → REPORT the result to the owner. Owner directive 2026-07-02: validated+reversible changes do NOT wait for sign-off; deferring is the failure mode. What still reaches the owner BEFORE action: real-money mode flips, circuit-breaker/gate changes, spending, and anything that fails the reversibility test.
+- Behavior changes (sizing, exits, entries, rules): EXTENSIVE backtest → counterfactual replay → adversarial self-audit (try to break the finding) → flag-gated / A/B with auto-retire → SHIP AUTONOMOUSLY → watch window (15-20 closes) → keep or revert → REPORT the result to the owner. Owner directive 2026-07-02: validated+reversible changes do NOT wait for sign-off; deferring is the failure mode. What still reaches the owner BEFORE action: real-money mode flips, spending, and anything that fails the reversibility test. v1.4 (owner, 2026-07-02): evidence-backed RECOMMENDED changes — including gate-stack — do NOT sit in a queue; they SHIP with the recommendation, flag-gated + reversible, and the owner is notified with one-line revert instructions (veto-after replaces approval-before). "We both know I'm just going to say yes to the recommended." Decision queues are reserved for genuine forks where the evidence doesn't pick a side.
 - Risk-reducing-only changes (cut-only ladders, tighter guards) still follow the pipeline but may ship on backtest + flag without waiting on unrelated results.
 - Never: weaken circuit breakers, reorder gates, hardcode directional opinion, add features during an open rewire.
 
@@ -52,5 +52,6 @@ Amendments are committed to this file with date + reason. An unamended standard 
 ## Amendment log
 - 2026-07-02: v1 adopted.
 - 2026-07-02: v1.3 — added §3b LLM input standard (raw truth + honest statistics + full-information symmetry; no naked opinions).
+- 2026-07-02: v1.4 — recommended+evidence-backed ships immediately with veto-after; approval-before reserved for real-money/spend/irreversible/genuine-fork decisions.
 - 2026-07-02: v1.2 — added §2b learned-rule provenance & quarantine (anti-poisoning) per owner concern re: circular mech->LLM->mech corruption.
 - 2026-07-02: v1.1 — owner directive: DO-NOW items are questioned/audited/fixed/re-tested and SHIPPED autonomously; owner receives results, not requests. Owner-gated set narrowed to: live-money flips, CB/gate changes, spend, irreversibles.
