@@ -1013,3 +1013,9 @@ Owner wants max speed. Sequencing unlock: the A/B does NOT need to wait for the 
 
 === 2026-07-02 ~23:15 UTC — STANDING MODE ratified: autonomous opportunity research ===
 Owner: autonomous exploration/auditing/backtesting for opportunities = standing mode. ENGINE DIRECTIVE: when LEFT_ON_THE_TABLE.md lands, its SHIP-NOW rows enter the burn queue automatically (v1.4); PILOT rows get their auto-tests scheduled per Lane B's protocol; the agenda (Q29 scenarios, Q30 concordance) continues the mode indefinitely. The loop: hunt -> rank -> ship/pilot -> grade -> hunt again.
+
+=== 2026-07-02 ~23:30 UTC — OWNER EPISTEMOLOGY: selection ≠ blanket refusal (A/B verdict metric upgrade) ===
+Owner: "the cage selecting better does not mean it's better at choosing." Correct — the cage's +$194/mo is base-rate profit on a net-negative stream (ROC origin, zero discrimination; a wall doesn't choose). DIRECTIVE for the A/B verdict (extends FULL_PIPE_BUILD_MAP §4) — REQUIRED metrics:
+1. DISCRIMINATION SPREAD: forward-return of brain-APPROVED signals minus brain-REJECTED signals, per window + pooled (the brain's selection skill; cage scores 0 by construction).
+2. POSITIVE-SUBSET TEST: does the approved subset clear fees (net-positive expectancy)? Any positive subset strictly dominates the cage (which forfeits all).
+3. Aggregate PnL vs baselines stays, but the VERDICT is: brain beats cage iff (1) spread > 0 with honest n AND (2) approved subset net-positive in >=2 regimes. Blanket-refusal profit is not choosing.
