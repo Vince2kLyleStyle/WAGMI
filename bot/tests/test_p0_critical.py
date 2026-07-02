@@ -265,27 +265,30 @@ class TestRiskFilterChainGates:
         assert not result.approved
         assert "R:R" in result.rejection_reason or "Invalid" in result.rejection_reason
 
-    # ── Gate 1b: Config min R:R ──
+    # ── Gate 1b: Config min R:R — DELETED (DECHOKE 2, 2026-07-02) ──
 
-    def test_gate1b_min_rr_from_config(self):
-        """Gate 1b: If config min_signal_rr is 1.5, a 1.2 R:R signal is rejected."""
+    def test_gate1b_min_rr_deleted(self):
+        """DECHOKE 2: rr_floor gate deleted (zero live firings, GM_GATE_ROC).
+        A 1.2 R:R signal is no longer rejected for config min_signal_rr."""
         # entry=100, sl=97 (3 stop), tp1=103.6 (3.6 gain) → R:R=1.2
         sig = self._make_signal(entry=100.0, sl=97.0, tp1=103.6, tp2=112.0)
         chain, _, _ = self._make_chain()
         chain.config.min_signal_rr = 1.5
         result = chain.evaluate(sig, equity=10000, num_strategies_agree=3, total_strategies=4)
-        assert not result.approved
-        assert "R:R" in result.rejection_reason
+        assert "R:R" not in result.rejection_reason
 
-    # ── Gate 1c: Minimum EV ──
+    # ── Gate 1c: Minimum EV — DELETED (DECHOKE 2, 2026-07-02) ──
 
-    def test_gate1c_rejects_low_ev(self):
-        """Gate 1c: EV below min_signal_ev threshold is rejected."""
+    def test_gate1c_ev_floor_deleted(self):
+        """DECHOKE 2: ev_floor gate deleted (zero live firings; ev_per_dollar
+        input measured anti-predictive, AUC .44-.47, FALLACY_AUDIT D4).
+        Low EV no longer rejects; the number stays as labeled context."""
         sig = self._make_signal(metadata={"ev_per_dollar": 0.05})
         chain, _, _ = self._make_chain()
         result = chain.evaluate(sig, equity=10000, num_strategies_agree=3, total_strategies=4)
-        assert not result.approved
-        assert "EV" in result.rejection_reason
+        assert "EV" not in result.rejection_reason
+        if result.approved:
+            assert result.metadata.get("ev_per_dollar") == 0.05
 
     def test_gate1c_passes_high_ev(self):
         """Gate 1c: EV above threshold passes."""

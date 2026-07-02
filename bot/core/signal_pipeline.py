@@ -290,14 +290,13 @@ class RiskFilterChain:
                 signal.metadata.setdefault("advisory_warnings", []).append(
                     f"BTC tight stop {signal.stop_width_pct:.4f} — historical 47/47 SL hits"
                 )
-        # Gate 1b: Minimum R:R from config (stricter than is_valid's 1.0 floor)
+        # DECHOKE 2 (2026-07-02, GM_GATE_ROC_56K §3 — owner-approved):
+        # Gate 1b (rr_floor) DELETED. Re-verified in the live rejection DB
+        # (ml_data/bot.db signal_rejections): ZERO firings ever — Signal.is_valid
+        # already enforces R:R >= 1.0 (validity gate, untouched), and config
+        # min_signal_rr never exceeded that, so this gate was unwired sediment.
+        # The R:R numbers stay in meta as labeled LLM context.
         min_rr = getattr(self.config, "min_signal_rr", 1.0)
-        if signal.risk_reward_tp1 < min_rr:
-            _reason = f"R:R {signal.risk_reward_tp1:.2f} < min {min_rr:.1f}"
-            if _pt: _pt.record_gate(signal.symbol, "rr_floor", False, signal.risk_reward_tp1, min_rr, _reason)
-            _log_rejection(signal, "rr_floor", _reason)
-            self._log_signal_filtered(signal, "rr_floor", _reason)
-            return FilterResult(approved=False, signal=signal, rejection_reason=_reason)
         if _pt: _pt.record_gate(signal.symbol, "validity", True, signal.risk_reward_tp1, min_rr)
         meta["rr_tp1"] = round(signal.risk_reward_tp1, 2)
         meta["rr_tp2"] = round(signal.risk_reward_tp2, 2)
@@ -321,38 +320,19 @@ class RiskFilterChain:
         if stop_pct > 0:
             fee_drag_pct = round_trip_fee_pct / stop_pct
             meta["fee_drag_pct"] = round(fee_drag_pct * 100, 1)
-            # 3+ agree can tolerate more fee drag (higher WR compensates)
-            _n_agree = signal.metadata.get("num_agree", 1) if signal.metadata else 1
-            max_fee_drag = 0.35 if _n_agree >= 3 else 0.30
-            if fee_drag_pct > max_fee_drag:
-                _reason = (f"Fee drag {fee_drag_pct:.0%} > {max_fee_drag:.0%} "
-                           f"(fees={round_trip_fee_pct:.4f}, stop={stop_pct:.4f})")
-                if _pt: _pt.record_gate(signal.symbol, "fee_drag", False, fee_drag_pct, max_fee_drag, _reason)
-                _log_rejection(signal, "fee_drag", _reason)
-                self._log_signal_filtered(signal, "fee_drag", _reason)
-                return FilterResult(
-                    approved=False, signal=signal,
-                    rejection_reason=_reason,
-                    metadata=meta,
-                )
+            # DECHOKE 2 (2026-07-02, GM_GATE_ROC_56K §3 — owner-approved):
+            # Gate 1c (fee_drag hard reject) DELETED. Re-verified in the live
+            # rejection DB: 2 firings ever, both 2026-06-02, none since —
+            # effectively unwired. The fee-drag ARITHMETIC stays (meta above)
+            # as labeled LLM context per the FALLACY_AUDIT gate verdict table.
 
-        # Gate 1d: Minimum Expected Value filter (stop-width aware)
-        # Tight stops have higher fee drag, requiring higher EV to be viable.
+        # DECHOKE 2 (2026-07-02, GM_GATE_ROC_56K §3 — owner-approved):
+        # Gate 1d (ev_floor hard reject) DELETED. Re-verified in the live
+        # rejection DB: ZERO firings ever (config MIN_SIGNAL_EV kept it off),
+        # and its input ev_per_dollar is measured ANTI-predictive
+        # (AUC 0.444-0.470, FALLACY_AUDIT D4) — never re-enable a gate on
+        # this input. The EV number stays in meta as labeled LLM context.
         ev = signal.metadata.get("ev_per_dollar") if signal.metadata else None
-        min_ev = getattr(self.config, "min_signal_ev", 0.10)
-        if stop_pct > 0 and stop_pct < 0.004:
-            min_ev = max(min_ev, 0.16)  # Tight stops: fee-drag filter handles worst cases separately
-        elif stop_pct > 0 and stop_pct < 0.006:
-            min_ev = max(min_ev, 0.14)  # Medium-tight: moderate bump, not double-filtering with fee-drag
-        if ev is not None and ev < min_ev:
-            _reason = f"EV {ev:.3f} < min {min_ev:.2f} (low expected value)"
-            if _pt: _pt.record_gate(signal.symbol, "ev_floor", False, ev, min_ev, _reason)
-            _log_rejection(signal, "ev_floor", _reason)
-            self._log_signal_filtered(signal, "ev_floor", _reason)
-            return FilterResult(
-                approved=False, signal=signal,
-                rejection_reason=_reason,
-            )
         if ev is not None:
             meta["ev_per_dollar"] = ev
 
@@ -1048,10 +1028,13 @@ class RiskFilterChain:
         rr = signal.risk_reward_tp1
         meta["rr_tp1"] = round(rr, 2)
         meta["rr_tp2"] = round(signal.risk_reward_tp2, 2)
+        # DECHOKE 2: rr_floor enforcement deleted (zero live firings); the
+        # annotation stays informational — max severity "warning" so it can
+        # never mark a signal soft-rejected for a gate that no longer exists.
         annotations.append(FilterAnnotation(
             gate="rr_floor",
             passed=rr >= min_rr,
-            severity="reject" if rr < min_rr else ("warning" if rr < min_rr * 1.15 else "ok"),
+            severity="warning" if rr < min_rr * 1.15 else "ok",
             value=round(rr, 2),
             threshold=min_rr,
             detail=f"rr={rr:.2f} vs {min_rr:.1f}",
@@ -1074,11 +1057,12 @@ class RiskFilterChain:
             meta["fee_drag_pct"] = round(fee_drag_pct * 100, 1)
             _n_agree_ann = signal.metadata.get("num_agree", 1) if signal.metadata else 1
             max_fee_drag = 0.35 if _n_agree_ann >= 3 else 0.30
+            # DECHOKE 2: fee_drag enforcement deleted (2 firings ever, both
+            # 2026-06-02); annotation stays informational — max "warning".
             annotations.append(FilterAnnotation(
                 gate="fee_drag",
                 passed=fee_drag_pct <= max_fee_drag,
-                severity="reject" if fee_drag_pct > max_fee_drag else (
-                    "warning" if fee_drag_pct > max_fee_drag * 0.8 else "ok"),
+                severity="warning" if fee_drag_pct > max_fee_drag * 0.8 else "ok",
                 value=round(fee_drag_pct * 100, 1),
                 threshold=round(max_fee_drag * 100, 0),
                 detail=f"fd={fee_drag_pct:.0%} vs {max_fee_drag:.0%}",
@@ -1093,10 +1077,13 @@ class RiskFilterChain:
             min_ev = max(min_ev, 0.22)
         if ev is not None:
             meta["ev_per_dollar"] = ev
+            # DECHOKE 2: ev_floor enforcement deleted (zero live firings;
+            # ev_per_dollar input is anti-predictive per FALLACY_AUDIT D4);
+            # annotation stays informational — max "warning".
             annotations.append(FilterAnnotation(
                 gate="ev_floor",
                 passed=ev >= min_ev,
-                severity="reject" if ev < min_ev else ("warning" if ev < min_ev * 1.2 else "ok"),
+                severity="warning" if ev < min_ev * 1.2 else "ok",
                 value=round(ev, 3),
                 threshold=min_ev,
                 detail=f"ev={ev:.3f} vs {min_ev:.2f}",

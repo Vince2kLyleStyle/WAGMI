@@ -197,11 +197,13 @@ class TestSignalFilteringReasons:
         assert not result.approved
         assert "Max positions" in result.rejection_reason
 
-    def test_rr_floor_reason(self):
-        """R:R floor rejection includes actual vs required R:R."""
+    def test_rr_floor_deleted_no_longer_rejects(self):
+        """DECHOKE 2 (2026-07-02): the rr_floor gate was deleted (zero live
+        firings ever — GM_GATE_ROC). A signal below config min_signal_rr is
+        no longer rejected for R:R; validity (R:R >= 1.0) still applies."""
         chain, rm = _make_filter_chain()
         chain.config.min_signal_rr = 3.0
-        # Signal passes is_valid (R:R >= 1.0) but fails config floor (R:R < 3.0)
+        # Signal passes is_valid (R:R >= 1.0) but is below the old config floor
         signal = Signal(
             strategy="test", symbol="BTC", side="BUY",
             confidence=82.0, entry=50000.0,
@@ -212,8 +214,10 @@ class TestSignalFilteringReasons:
         )
         assert signal.is_valid, "Signal should pass is_valid (R:R >= 1.0)"
         result = chain.evaluate(signal, equity=10000.0, num_strategies_agree=2, total_strategies=4)
-        assert not result.approved
-        assert "R:R" in result.rejection_reason
+        assert "R:R" not in result.rejection_reason
+        # R:R numbers still surface as labeled context
+        if result.approved:
+            assert result.metadata.get("rr_tp1") == 1.33
 
     def test_sizing_zero_reason(self):
         """Zero position size carries a clear reason."""

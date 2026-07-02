@@ -325,11 +325,12 @@ class TestRejectionPaths:
         # The test validates the liquidation check runs without error
         assert isinstance(result, FilterResult)
 
-    def test_low_rr_rejected(self):
-        """Signal with R:R below config minimum is rejected."""
+    def test_low_rr_no_longer_rejected(self):
+        """DECHOKE 2 (2026-07-02): rr_floor gate deleted (zero live firings,
+        GM_GATE_ROC). R:R below config minimum no longer rejects; the
+        structural validity floor (R:R >= 1.0) still applies."""
         chain, rm, lm, cfg = _make_filter_chain()
-        cfg.min_signal_rr = 2.0  # Strict R:R requirement
-        # Signal passes is_valid (R:R >= 1.0) but fails config floor (R:R < 2.0)
+        cfg.min_signal_rr = 2.0  # Old strict R:R requirement (now advisory-only)
         signal = Signal(
             strategy="test",
             symbol="BTC",
@@ -343,8 +344,7 @@ class TestRejectionPaths:
         )
         assert signal.is_valid, "Signal should pass is_valid (R:R >= 1.0)"
         result = chain.evaluate(signal, equity=10000.0, num_strategies_agree=2, total_strategies=4)
-        assert not result.approved
-        assert "R:R" in result.rejection_reason
+        assert "R:R" not in result.rejection_reason
 
     def test_low_confidence_gets_low_leverage(self):
         """Very low confidence should still get some leverage but small size."""

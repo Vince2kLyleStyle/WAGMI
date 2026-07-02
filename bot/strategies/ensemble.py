@@ -1236,38 +1236,14 @@ class EnsembleStrategy:
             detail=f"conf={result.confidence:.0f} vs floor={effective_floor:.0f} (chop={smoothed_chop:.2f})",
         ))
 
-        # ── Soft-annotated trend alignment ──
-        _driver = result.strategy or ""
-        _duration_hint = self._infer_duration(_driver)
-        trend_result = self._trend_alignment_adjust(symbol, data, deepcopy(result), _duration_hint)
-
-        if trend_result is None:
-            annotations.append(FilterAnnotation(
-                gate="trend_alignment",
-                passed=False,
-                severity="reject",
-                value=0.0,
-                threshold=0.0,
-                detail="counter-trend rejected",
-            ))
-            # Use original result (not None) so LLM can see the signal
-            result.metadata["trend_rejected"] = True
-        else:
-            # Trend may have adjusted confidence
-            trend_score = trend_result.metadata.get("trend_score", 0)
-            result = trend_result
-            annotations.append(FilterAnnotation(
-                gate="trend_alignment",
-                passed=True,
-                severity="ok" if trend_score >= 0 else "warning",
-                value=round(trend_score, 1) if trend_score else 0.0,
-                threshold=0.0,
-                detail=f"trend={trend_score:+.1f}" if trend_score else "trend=ok",
-            ))
-            # Re-check confidence after trend adjustment
-            if result.confidence < effective_floor:
-                # Don't kill — already annotated above
-                result.metadata["post_trend_below_floor"] = True
+        # DECHOKE 2 (2026-07-02, GM_GATE_ROC_56K §3 — owner-approved):
+        # trend_alignment annotation gate DELETED. Re-verified: 51,257 evals,
+        # ZERO rejects in signal_outcomes.jsonl; value and threshold logged
+        # 0.0 always — decorative sediment. The live LLM-first path rebuilds
+        # from evaluate_raw(), which never calls _trend_alignment_adjust, so
+        # dropping it here also makes this telemetry copy consistent with
+        # the signal the LLM actually receives. (_trend_alignment_adjust
+        # itself remains in evaluate() for the mechanical-fallback path.)
 
         # Build filter metadata from result
         filter_meta = dict(result.metadata) if result.metadata else {}
