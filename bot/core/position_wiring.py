@@ -753,6 +753,30 @@ class PositionWiringMixin:
                                 pos_data, market_data=snapshot
                             )
 
+                            # RQ9 measurement fix (2026-07-02): HOLD decisions were
+                            # NEVER logged (0 records ever in exit_decisions.jsonl),
+                            # so the agent's most frequent output was unscoreable.
+                            # Log them (sampled 1-in-N via EXIT_HOLD_LOG_SAMPLE_N,
+                            # default 1 = every hold). Advisory-only: nothing applied.
+                            if exit_rec and exit_rec.get("action", "hold") == "hold":
+                                try:
+                                    _hold_n = max(1, int(os.getenv("EXIT_HOLD_LOG_SAMPLE_N", "1") or "1"))
+                                    self._hold_log_counter = getattr(self, "_hold_log_counter", 0) + 1
+                                    if self._hold_log_counter % _hold_n == 0:
+                                        _hold_decision = ExitDecision(
+                                            symbol=symbol,
+                                            exit_action="hold",
+                                            exit_confidence=0.5,
+                                            reason=f"[LLM-EXIT] {exit_rec.get('reason', '')[:120]}",
+                                        )
+                                        self.exit_engine._log_decision(
+                                            _hold_decision, pos, True,
+                                            f"hold (advisory; urgency={exit_rec.get('urgency', 'low')}, "
+                                            f"thesis_valid={exit_rec.get('thesis_still_valid')})",
+                                        )
+                                except Exception as _hle:
+                                    logger.debug(f"[EXIT-INTEL-LLM] hold-log error for {symbol}: {_hle}")
+
                             if exit_rec and exit_rec.get("action", "hold") != "hold":
                                 exit_action = exit_rec["action"]
                                 urgency = exit_rec.get("urgency", "medium")

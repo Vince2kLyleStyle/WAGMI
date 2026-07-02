@@ -127,34 +127,89 @@ class ExitEngine:
         # Profitable positions need MUCH higher bar to close — let trailing stop handle exits.
         # Only close a winner if thesis is truly dead (regime shift, not normal pullback).
         if decision.exit_action == "close":
-            # EVIDENCE GATE (2026-06-23): LLM exit-agent FULL-CLOSE authority is OFF by default.
-            # Measured 0 wins / 71 closes (-$1,502.92); it produced ZERO of the 19 winners while
-            # mechanical SL/TP/trailing produce 100% of profit. The agent keeps tighten_sl / partial /
-            # hold authority; mechanical exits handle full closes. Re-enable per-regime once it
-            # demonstrates positive exit edge on counterfactual scoring. Reversible: EXIT_AGENT_FULL_CLOSE=true.
+            # RQ9 GATE (2026-07-02, coordination/RQ9_EXIT_AGENT_SKILL.md): the
+            # 2026-06-30 carve-out was INVERTED vs the counterfactual evidence.
+            # The old "0/71 disaster" measured realized PnL of cut trades, not the
+            # hold counterfactual — by counterfactual the agent's closes were
+            # ~51-57% right. Where the skill actually lives (n=74 applied / 72
+            # blocked episodes, 24h horizon):
+            #   - WINNER closes w/ thesis_invalidated / regime_mismatch reasons:
+            #     61-72% correct, +$951 after removing the one HYPE outlier —
+            #     these were BLOCKED (blocking cost +$860-class).
+            #   - LOSER cuts: right often but -$1,306 when wrong — these were
+            #     ALLOWED via the dead-capital carve-out.
+            # Fix: allow winner-closes with those reasons; and per the NEWER
+            # dollar replay BT_EXITAGENT_CLOSES (2026-07-02, 128 episodes):
+            # do NOT fully block dead-capital loser-cuts — raise their conf
+            # floor 0.60 -> 0.80 instead (DEAD_CONF80: E3 +$110.57 vs actual,
+            # n=25 changed, survives remove-best +$40.21; beats full DISABLE
+            # +$98). Calls are bimodal 0.75/0.85, so 0.80 keeps only the
+            # critical-urgency dead-capital escape hatch and cuts the
+            # value-negative 0.75-conf slice.
+            # Fragility-fragile per RQ9 => flag-gated watch window (15-20 closes).
+            # Revert: EXIT_AGENT_CLOSE_WINNERS=false restores the 06-30 gate
+            # (with the BT-recommended 0.80 dead-cap floor); floor tunable via
+            # EXIT_DEADCAP_CONF_FLOOR.
             is_profitable = (current_price > position.entry) if is_long else (current_price < position.entry)
             _gate_open = os.getenv("EXIT_AGENT_FULL_CLOSE", "false").lower() == "true"
             _reason_l = (decision.reason or "").lower()
             _dead_capital = any(k in _reason_l for k in (
                 "dead capital", "no-progress", "no progress", "no progres",
                 "thesis invalidated", "thesis invalid", "invalidated", "toxic"))
-            # CONDITIONAL RE-ENABLE (2026-06-30, owner-approved): the blanket OFF was right for the
-            # agent CUTTING WINNERS (measured 0/71). But it also blocked legitimate dead-capital /
-            # thesis-invalidated exits on NON-winners, so flat/losing positions piled up forever
-            # (5 stuck ~11h, 0 closes). Allow full_close ONLY when the reason is dead-capital/
-            # thesis-invalid AND the position is not a winner; still block discretionary closes and
-            # all winner-cutting (those still need EXIT_AGENT_FULL_CLOSE=true or >=0.90 conf below).
-            if not _gate_open and not (_dead_capital and not is_profitable):
-                return False, ("Exit-agent full-close disabled except dead-capital/thesis-invalid losers "
-                               "(measured 0/71 on discretionary closes); mechanical SL/TP/trailing handle the rest.")
-            if is_profitable:
-                # Winning trade: require 0.90 confidence to override trailing stop
-                if decision.exit_confidence < 0.90:
-                    return False, f"Closing WINNER requires confidence >= 0.90 (got {decision.exit_confidence:.2f}). Let trailing stop handle it."
+            _rq9_reason = any(k in _reason_l for k in (
+                "thesis invalidated", "thesis invalid", "invalidated",
+                "regime mismatch", "regime_mismatch", "regime shift", "regime shifted"))
+            _close_winners = os.getenv(
+                "EXIT_AGENT_CLOSE_WINNERS", "true").lower() in ("1", "true", "yes")
+            try:
+                _deadcap_floor = float(os.getenv("EXIT_DEADCAP_CONF_FLOOR", "0.80"))
+            except (TypeError, ValueError):
+                _deadcap_floor = 0.80
+            if _close_winners:
+                _rq9_winner_close = is_profitable and _rq9_reason
+                _deadcap_loser_close = (not is_profitable) and _dead_capital
+                if not _gate_open and not (_rq9_winner_close or _deadcap_loser_close):
+                    if is_profitable:
+                        return False, ("Winner-close requires thesis_invalidated/regime_mismatch "
+                                       "reason (RQ9: that cell graded 61-72% correct; discretionary "
+                                       "winner-cuts stay blocked). EXIT_AGENT_FULL_CLOSE=true overrides.")
+                    return False, ("Exit-agent discretionary LOSER-cut blocked (RQ9: right often, "
+                                   "-$1,306 when wrong; dead-capital reasons pass at conf>="
+                                   f"{_deadcap_floor:.2f}). EXIT_AGENT_FULL_CLOSE=true overrides.")
+                if _rq9_winner_close:
+                    if decision.exit_confidence < 0.60:
+                        return False, f"Close requires confidence >= 0.60 (got {decision.exit_confidence:.2f})"
+                elif _deadcap_loser_close and not _gate_open:
+                    # BT_EXITAGENT_CLOSES DEAD_CONF80: only the 0.85-conf
+                    # (critical-urgency) dead-capital closes carry value;
+                    # the 0.75-conf slice graded value-negative in E3.
+                    if decision.exit_confidence < _deadcap_floor:
+                        return False, (f"Dead-capital loser-close requires confidence >= "
+                                       f"{_deadcap_floor:.2f} (got {decision.exit_confidence:.2f}) — "
+                                       "BT_EXITAGENT_CLOSES: 0.75-conf dead-cap closes were value-negative.")
+                elif is_profitable:
+                    # _gate_open discretionary winner close: keep the high bar
+                    if decision.exit_confidence < 0.90:
+                        return False, f"Closing WINNER requires confidence >= 0.90 (got {decision.exit_confidence:.2f}). Let trailing stop handle it."
+                else:
+                    if decision.exit_confidence < 0.60:
+                        return False, f"Close requires confidence >= 0.60 (got {decision.exit_confidence:.2f})"
             else:
-                # Losing trade: normal threshold
-                if decision.exit_confidence < 0.60:
-                    return False, f"Close requires confidence >= 0.60 (got {decision.exit_confidence:.2f})"
+                # Legacy 2026-06-30 gate (EXIT_AGENT_CLOSE_WINNERS=false):
+                # dead-capital/thesis-invalid LOSERS only — at the
+                # BT-recommended 0.80 floor (the one-line rec applied here too).
+                if not _gate_open and not (_dead_capital and not is_profitable):
+                    return False, ("Exit-agent full-close disabled except dead-capital/thesis-invalid losers "
+                                   "(measured 0/71 on discretionary closes); mechanical SL/TP/trailing handle the rest.")
+                if is_profitable:
+                    # Winning trade: require 0.90 confidence to override trailing stop
+                    if decision.exit_confidence < 0.90:
+                        return False, f"Closing WINNER requires confidence >= 0.90 (got {decision.exit_confidence:.2f}). Let trailing stop handle it."
+                else:
+                    # Losing trade: BT_EXITAGENT_CLOSES floor (was 0.60)
+                    if decision.exit_confidence < _deadcap_floor:
+                        return False, (f"Close requires confidence >= {_deadcap_floor:.2f} "
+                                       f"(got {decision.exit_confidence:.2f}) — BT_EXITAGENT_CLOSES DEAD_CONF80")
 
         # Rule 4: Partial close requires sufficient remaining qty
         if decision.exit_action == "partial":
