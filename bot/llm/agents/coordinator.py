@@ -1272,9 +1272,19 @@ class AgentCoordinator:
                     },
                 )
 
-        # ── Quant Agent confidence adjustment ─────────────────
-        # If Quant Agent flagged signal as noise or adjusted confidence, apply.
-        # Skip if consistency already overrode to avoid cascading reductions.
+        # ── Quant Agent confidence adjustment — ADVISORY+SHADOW ─────────────
+        # DECHOKE 5 (2026-07-02, FALLACY_AUDIT D8 + GM_AGENT_SKILL_24K — owner-
+        # approved): the Quant Agent was the only enforcer with ZERO accuracy
+        # gating (Risk and Critic both have one) while its measured signal is
+        # a pure week-1 artifact (shorts wk1 +311bps → mid −22 → late −1) and
+        # its noise-tag has zero separating power (|move| 106.5 vs 104.5bps).
+        # Its ±0.15 confidence mutations, forced skips, and size reductions no
+        # longer mutate the pipeline: they are shadow-logged ([SHADOW-QUANT])
+        # for dollar scoring, and its assessment still reaches the Risk agent
+        # as labeled advisory input via _build_risk_input (provenance intact).
+        # Kill-switch: QUANT_AGENT_ENFORCE=true restores enforcement — only
+        # after n>=13 dollar-positive shadow validation per THE_STANDARD §2b.
+        _quant_enforce = os.getenv("QUANT_AGENT_ENFORCE", "false").lower() == "true"
         _consistency_overrode = "consistency_override" in trade_out.data.get("n", "")
         if quant_out and quant_out.ok and not _consistency_overrode:
             sq_raw = quant_out.data.get("signal_quality", {})
@@ -1286,50 +1296,64 @@ class AgentCoordinator:
                 td = trade_out.data
                 old_c = float(td.get("c", td.get("confidence", 0.0)))
                 new_c = max(0.0, min(1.0, old_c + quant_adj))
-                # Update trade_out data in-place for downstream consensus
-                trade_out = AgentOutput(
-                    role=AgentRole.TRADE,
-                    data={**trade_out.data, "c": new_c,
-                          "n": (td.get("n", "") + f" | QUANT_ADJ: {quant_adj:+.2f}")},
-                    raw_text=trade_out.raw_text,
-                    model_used=trade_out.model_used,
-                    input_tokens=trade_out.input_tokens,
-                    output_tokens=trade_out.output_tokens,
-                    latency_ms=trade_out.latency_ms,
-                )
-            # If quant says it's noise, apply graduated response:
-            # - Very low confidence (<0.20): hard skip (genuinely garbage)
-            # - Low confidence (0.20-0.40): reduce size 50% but let Critic review
-            # - Above 0.40: leave alone (may have positive EV with good R:R)
-            # NOTE: Thresholds relaxed from 0.35/0.50 to 0.20/0.40 — previous
-            # values killed 88% of signals as quant_noise, far too aggressive.
-            # Support both old is_noise (bool) and new noise_probability (float)
-            _noise_prob = sq.get("noise_probability", 1.0 if sq.get("is_noise") else 0.0)
-            if _noise_prob > 0.6:
-                trade_conf = float(trade_out.data.get("c", 0))
-                noise_reason = sq.get("reason", "statistical noise")
-                if trade_conf < 0.20:
+                if _quant_enforce:
+                    # Update trade_out data in-place for downstream consensus
                     trade_out = AgentOutput(
                         role=AgentRole.TRADE,
-                        data={**trade_out.data, "a": "skip", "c": 0.0,
-                              "n": f"QUANT_NOISE: {noise_reason}"},
-                        raw_text=trade_out.raw_text,
-                        model_used=trade_out.model_used,
-                    )
-                elif trade_conf < 0.40:
-                    # Reduce size but let trade proceed for Critic review
-                    td = trade_out.data
-                    old_sm = float(td.get("sm", td.get("size_multiplier", 1.0)))
-                    trade_out = AgentOutput(
-                        role=AgentRole.TRADE,
-                        data={**td, "sm": round(old_sm * 0.5, 2),
-                              "n": (td.get("n", "") + f" | QUANT_NOISE_REDUCE: {noise_reason}")},
+                        data={**trade_out.data, "c": new_c,
+                              "n": (td.get("n", "") + f" | QUANT_ADJ: {quant_adj:+.2f}")},
                         raw_text=trade_out.raw_text,
                         model_used=trade_out.model_used,
                         input_tokens=trade_out.input_tokens,
                         output_tokens=trade_out.output_tokens,
                         latency_ms=trade_out.latency_ms,
                     )
+                else:
+                    logger.info(
+                        f"[SHADOW-QUANT] would_adjust_conf {old_c:.2f}->{new_c:.2f} "
+                        f"(adj={quant_adj:+.2f}; advisory only, QUANT_AGENT_ENFORCE=true re-enables)"
+                    )
+            # Noise verdict: graduated response (hard skip / size reduce).
+            # Support both old is_noise (bool) and new noise_probability (float)
+            _noise_prob = sq.get("noise_probability", 1.0 if sq.get("is_noise") else 0.0)
+            if _noise_prob > 0.6:
+                trade_conf = float(trade_out.data.get("c", 0))
+                noise_reason = sq.get("reason", "statistical noise")
+                if trade_conf < 0.20:
+                    if _quant_enforce:
+                        trade_out = AgentOutput(
+                            role=AgentRole.TRADE,
+                            data={**trade_out.data, "a": "skip", "c": 0.0,
+                                  "n": f"QUANT_NOISE: {noise_reason}"},
+                            raw_text=trade_out.raw_text,
+                            model_used=trade_out.model_used,
+                        )
+                    else:
+                        logger.info(
+                            f"[SHADOW-QUANT] would_skip (noise_prob={_noise_prob:.2f}, "
+                            f"conf={trade_conf:.2f}, reason={str(noise_reason)[:80]})"
+                        )
+                elif trade_conf < 0.40:
+                    td = trade_out.data
+                    old_sm = float(td.get("sm", td.get("size_multiplier", 1.0)))
+                    if _quant_enforce:
+                        # Reduce size but let trade proceed for Critic review
+                        trade_out = AgentOutput(
+                            role=AgentRole.TRADE,
+                            data={**td, "sm": round(old_sm * 0.5, 2),
+                                  "n": (td.get("n", "") + f" | QUANT_NOISE_REDUCE: {noise_reason}")},
+                            raw_text=trade_out.raw_text,
+                            model_used=trade_out.model_used,
+                            input_tokens=trade_out.input_tokens,
+                            output_tokens=trade_out.output_tokens,
+                            latency_ms=trade_out.latency_ms,
+                        )
+                    else:
+                        logger.info(
+                            f"[SHADOW-QUANT] would_reduce_size {old_sm:.2f}->"
+                            f"{old_sm * 0.5:.2f} (noise_prob={_noise_prob:.2f}, "
+                            f"reason={str(noise_reason)[:80]})"
+                        )
 
         # ── Network Learning: apply calibration adjustment ────
         _net_cal = snapshot_data.get("network_calibration_adj", 0) if snapshot_data else 0
@@ -4761,20 +4785,30 @@ class AgentCoordinator:
                 risk_reason = rk.get("reason", rk.get("n", ""))
                 notes += f" | RISK: sizing {old_mult:.1f}x→{size_mult:.1f}x ({risk_reason})"
 
-        # Kelly Criterion modulation from Quant Agent
-        # If Quant Agent computed a half-Kelly fraction, use it to modulate size.
-        # Kelly fraction ~0.15 is our "normal" baseline. Scale around it:
-        #   kelly=0.30 → 1.5x size (strong edge), kelly=0.05 → 0.5x (weak edge)
-        # Clamped to [0.5, 1.5] to prevent extreme swings.
+        # Kelly Criterion modulation from Quant Agent — ADVISORY+SHADOW
+        # DECHOKE 5 (2026-07-02, FALLACY_AUDIT D8 — owner-approved): the Quant
+        # Agent's ungated Kelly path scaled real position size 0.5-1.5x with
+        # zero accuracy gating, from an agent with no surviving measured
+        # signal (GM_AGENT_SKILL_24K). Shadow-logged, not applied.
+        # QUANT_AGENT_ENFORCE=true restores (requires n>=13 dollar-positive).
         scratchpad = get_pipeline_scratchpad()
         kelly_frac = scratchpad.read_by_key("kelly_fraction")
         if kelly_frac is not None and isinstance(kelly_frac, (int, float)) and kelly_frac > 0:
             kelly_baseline = 0.15  # normalized baseline
             kelly_mult = max(0.5, min(1.5, kelly_frac / kelly_baseline))
-            old_size = size_mult
-            size_mult = max(0.0, min(2.0, size_mult * kelly_mult))
-            if abs(kelly_mult - 1.0) > 0.05:
-                notes += f" | KELLY: f={kelly_frac:.3f} mult={kelly_mult:.2f} sz={old_size:.2f}→{size_mult:.2f}"
+            _quant_enforce_kelly = os.getenv(
+                "QUANT_AGENT_ENFORCE", "false").lower() == "true"
+            if _quant_enforce_kelly:
+                old_size = size_mult
+                size_mult = max(0.0, min(2.0, size_mult * kelly_mult))
+                if abs(kelly_mult - 1.0) > 0.05:
+                    notes += f" | KELLY: f={kelly_frac:.3f} mult={kelly_mult:.2f} sz={old_size:.2f}→{size_mult:.2f}"
+            elif abs(kelly_mult - 1.0) > 0.05:
+                logger.info(
+                    f"[SHADOW-QUANT] kelly would_resize sz {size_mult:.2f}->"
+                    f"{max(0.0, min(2.0, size_mult * kelly_mult)):.2f} "
+                    f"(f={kelly_frac:.3f} mult={kelly_mult:.2f}; advisory only)"
+                )
 
         # ── Graduated Risk: apply drawdown-proportional size reduction ──
         try:

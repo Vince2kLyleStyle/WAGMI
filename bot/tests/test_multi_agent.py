@@ -320,9 +320,10 @@ class TestCoordinatorPipeline:
         assert decision.action == "proceed"
         assert 0.5 <= decision.confidence <= 0.80  # Calibration may adjust from 0.78
         assert decision.regime == "trend"
-        # Kelly modulation: kelly_fraction=0.25, baseline=0.15 → mult=1.5 (clamped)
-        # Risk Agent sz=1.3 × kelly_mult=1.5 = 1.95
-        assert abs(decision.size_multiplier - 1.95) < 0.01
+        # DECHOKE 5 (2026-07-02, FALLACY_AUDIT D8): Quant Kelly modulation is
+        # SHADOW-ONLY by default — size stays at Risk Agent's sz=1.3.
+        # (With QUANT_AGENT_ENFORCE=true it would be 1.3 × 1.5 = 1.95.)
+        assert abs(decision.size_multiplier - 1.3) < 0.01
 
     def test_pipeline_regime_failure_aborts(self):
         """If regime agent fails and is required, pipeline should return None."""
