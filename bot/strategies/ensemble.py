@@ -1123,15 +1123,39 @@ class EnsembleStrategy:
                     threshold=0.65,
                     detail=f"chop={chop_score:.2f}",
                 ))
-        elif self._is_low_volume(symbol, data):
-            annotations.append(FilterAnnotation(
-                gate="volume_chop",
-                passed=False,
-                severity="reject",
-                value=0.0,
-                threshold=0.5,
-                detail="low volume",
-            ))
+        else:
+            # DECHOKE 1 (2026-07-02, GM_GATE_ROC_56K §3 — owner-approved):
+            # volume_chop was the biggest rejector in the stack (59% of all
+            # raw rejections; re-verified 32,596/32,596 rejects in
+            # signal_outcomes.jsonl) while logging a HARDCODED value=0.0
+            # against threshold 0.5 — unauditable from its own log, below
+            # base-rate precision, and its unique rejects would have MADE
+            # +36.6 bps/24h (n=1,620). Two fixes:
+            #   1) INPUT REPAIR: log the real measured volume ratio.
+            #   2) DE-GATE: severity drops to "warning" (advisory context for
+            #      the LLM; no longer marks the signal soft-rejected). A
+            #      [SHADOW-GATE] line accumulates would-reject data for a
+            #      fresh dollar re-score per THE_STANDARD §2b.
+            # Kill-switch: VOLUME_CHOP_ENFORCE=true restores hard "reject".
+            _vol_ratio = self._volume_ratio(symbol, data)
+            if _vol_ratio is not None and _vol_ratio < 0.5:
+                import os as _os
+                _vc_enforce = _os.environ.get(
+                    "VOLUME_CHOP_ENFORCE", "false").lower() == "true"
+                if not _vc_enforce:
+                    logger.info(
+                        f"[SHADOW-GATE] volume_chop would_reject {symbol} "
+                        f"vol_ratio={_vol_ratio:.3f} < 0.5 (advisory only; "
+                        f"VOLUME_CHOP_ENFORCE=true re-enables)"
+                    )
+                annotations.append(FilterAnnotation(
+                    gate="volume_chop",
+                    passed=False,
+                    severity="reject" if _vc_enforce else "warning",
+                    value=round(_vol_ratio, 3),
+                    threshold=0.5,
+                    detail=f"low volume (ratio={_vol_ratio:.2f})",
+                ))
 
         # Run voting/merge — if min_votes not met, no signal to annotate
         if self.mode == "voting":
@@ -1333,20 +1357,30 @@ class EnsembleStrategy:
         except Exception:
             pass  # Non-critical — don't let tracking break trading
 
-    def _is_low_volume(self, symbol: str, data: Dict[str, pd.DataFrame]) -> bool:
-        """Check if current volume is too low for reliable signals.
-        Returns True if volume < 50% of 20-bar average (choppy market)."""
+    def _volume_ratio(self, symbol: str, data: Dict[str, pd.DataFrame]) -> Optional[float]:
+        """Current 1h volume as a fraction of the 20-bar average.
+
+        Returns None when it cannot be measured (missing/short data, zero avg).
+        DECHOKE 1 input repair: this real measurement is what the volume_chop
+        assessment logs — previously a hardcoded 0.0 was written (GM_GATE_ROC).
+        """
         df_1h = data.get("1h")
         if df_1h is None or df_1h.empty or len(df_1h) < 20:
-            return False  # can't determine, allow trading
+            return None  # can't determine
         vol = df_1h["volume"]
         avg_vol = float(vol.tail(20).mean())
         if avg_vol <= 0:
-            return False
-        current_vol = float(vol.iloc[-1])
-        ratio = current_vol / avg_vol
+            return None
+        return float(vol.iloc[-1]) / avg_vol
+
+    def _is_low_volume(self, symbol: str, data: Dict[str, pd.DataFrame]) -> bool:
+        """Check if current volume is too low for reliable signals.
+        Returns True if volume < 50% of 20-bar average (choppy market)."""
+        ratio = self._volume_ratio(symbol, data)
+        if ratio is None:
+            return False  # can't determine, allow trading
         if ratio < 0.5:
-            logger.info(f"[{symbol}] Volume ratio {ratio:.2f} (current={current_vol:.0f}, avg={avg_vol:.0f})")
+            logger.info(f"[{symbol}] Volume ratio {ratio:.2f} < 0.5 (low volume)")
             return True
         return False
 
