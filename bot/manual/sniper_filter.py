@@ -1245,6 +1245,14 @@ class ManualSniperFilter:
                 "num_agree": meta.get("num_agree", 0),
                 "regime": meta.get("regime", "unknown"),
                 "chop": meta.get("chop_score_smoothed", meta.get("chop_score", 0)),
+                # GM_REJECTIONS_79K measurement fix (2026-07-02): without the
+                # bracket geometry, rejections could only be scored on fixed
+                # horizons — true TP/SL counterfactual EV was unknowable for
+                # all 79,855 prior records. Log it going forward.
+                "entry": getattr(signal, 'entry', None),
+                "sl": getattr(signal, 'sl', None),
+                "tp1": getattr(signal, 'tp1', None),
+                "tp2": getattr(signal, 'tp2', None),
             }
             with open(self._rejection_log_path, "a") as f:
                 f.write(json.dumps(entry) + "\n")

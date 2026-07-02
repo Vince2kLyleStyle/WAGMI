@@ -1407,6 +1407,12 @@ class EnsembleStrategy:
                 skip_reason=skip_reason,
                 strategy=signal.strategy or "",
                 regime=signal.metadata.get("regime", "") or self._current_regime.get(signal.symbol, ""),
+                # BT_VETO_RESCORE DO-NOW #5: stamp strategies_agree + num_agree
+                # so strategy-conditioned rules become measurable (17/59 were not).
+                metadata={
+                    "strategies_agree": signal.metadata.get("strategies_agree", []),
+                    "num_agree": signal.metadata.get("num_agree", 0),
+                },
             )
         except Exception:
             pass  # Non-critical — don't let tracking break trading
@@ -1446,6 +1452,11 @@ class EnsembleStrategy:
                 veto_rule_ids=veto_rule_ids,
                 strategy=signal.strategy or "",
                 regime=_regime,
+                # BT_VETO_RESCORE DO-NOW #5: strategies_agree + num_agree stamp.
+                metadata={
+                    "strategies_agree": signal.metadata.get("strategies_agree", []),
+                    "num_agree": signal.metadata.get("num_agree", 0),
+                },
             )
         except Exception:
             pass  # Non-critical — don't let tracking break trading

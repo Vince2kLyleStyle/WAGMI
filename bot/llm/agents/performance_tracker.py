@@ -58,6 +58,10 @@ class AgentDecisionRecord:
     # Outcome fields — filled when trade closes
     scored: bool = False
     outcome: Optional[Dict[str, Any]] = None
+    # "agent" = confidence actually emitted by the model; "default" = 0.5
+    # filler because the role's schema has no confidence field. Scorers must
+    # exclude "default" rows (GM_AGENT_SKILL_24K: 7/9 roles were constant 0.5).
+    confidence_source: str = "agent"
 
 
 @dataclass
@@ -193,7 +197,7 @@ class AgentPerformanceTracker:
                 continue
 
             decision = self._extract_decision(role, output)
-            confidence = self._extract_confidence(role, output)
+            confidence, conf_source = self._extract_confidence(role, output)
             reasoning = self._extract_reasoning(role, output)
 
             record = AgentDecisionRecord(
@@ -205,10 +209,14 @@ class AgentPerformanceTracker:
                 side=side,
                 decision=decision,
                 confidence=confidence,
-                reasoning_summary=reasoning[:200],
+                # 200 -> 400: side words were truncated out of trade/critic
+                # records, leaving 66% of "go" calls unscoreable for direction
+                # (GM_AGENT_SKILL_24K side-coverage 33.7%, era-biased).
+                reasoning_summary=reasoning[:400],
                 model_used=output.model_used,
                 latency_ms=output.latency_ms,
                 raw_data=output.data,
+                confidence_source=conf_source,
             )
             records.append(record)
 
@@ -1070,14 +1078,45 @@ class AgentPerformanceTracker:
         return str(d.get("action", d.get("a", "unknown")))
 
     @staticmethod
-    def _extract_confidence(role: AgentRole, output: AgentOutput) -> float:
-        """Extract confidence from agent output."""
+    def _extract_confidence(role: AgentRole, output: AgentOutput) -> tuple:
+        """Extract confidence from agent output.
+
+        GM_AGENT_SKILL_24K measurement fix (2026-07-02): 7/9 roles logged a
+        constant 0.5 because only the generic c/conf/confidence keys were
+        checked — the role-specific schemas keep confidence elsewhere.
+        Returns (confidence, source) where source is "agent" (real emitted
+        number) or "default" (0.5 filler — scorers must exclude these).
+        """
         d = output.data
-        conf = d.get("c", d.get("conf", d.get("confidence", 0.5)))
-        try:
-            return float(conf)
-        except (TypeError, ValueError):
-            return 0.5
+        role_val = role.value if isinstance(role, AgentRole) else str(role)
+
+        candidates = [d.get("c"), d.get("conf"), d.get("confidence")]
+        if role_val == "critic":
+            # adjusted_confidence (nullable) or confidence_in_assessment (round1)
+            candidates.extend([d.get("adjusted_confidence"), d.get("adj_c"),
+                               d.get("confidence_in_assessment")])
+        elif role_val == "quant":
+            ev = d.get("ev")
+            if isinstance(ev, dict):
+                candidates.append(ev.get("confidence"))
+        elif role_val == "scout":
+            rf = d.get("regime_forecast")
+            if isinstance(rf, dict):
+                candidates.append(rf.get("confidence"))
+        elif role_val == "exit":
+            candidates.append(d.get("exit_confidence"))
+
+        for conf in candidates:
+            if conf is None:
+                continue
+            try:
+                return float(conf), "agent"
+            except (TypeError, ValueError):
+                continue
+        # No real confidence in the schema (e.g. risk/overseer/learning):
+        # keep the 0.5 filler for shape-compat but MARK it so it can never
+        # again masquerade as a calibration instrument.
+        return 0.5, "default"
 
     @staticmethod
     def _extract_reasoning(role: AgentRole, output: AgentOutput) -> str:
@@ -1107,6 +1146,7 @@ class AgentPerformanceTracker:
                         "side": rec.side,
                         "decision": rec.decision,
                         "confidence": rec.confidence,
+                        "confidence_source": rec.confidence_source,
                         "reasoning_summary": rec.reasoning_summary,
                         "model_used": rec.model_used,
                         "latency_ms": rec.latency_ms,
@@ -1156,6 +1196,7 @@ class AgentPerformanceTracker:
                                     model_used=entry.get("model_used", ""),
                                     latency_ms=entry.get("latency_ms", 0),
                                     raw_data=entry.get("raw_data", {}),
+                                    confidence_source=entry.get("confidence_source", "agent"),
                                 )
                             )
                         elif entry_type in ("scored_trade", "veto_counterfactual"):
