@@ -4,7 +4,7 @@ Owner mandate (2026-07-02): "have everything run seamlessly without junk." Every
 ## The junk classes and their kill-rules
 1. **Watcher-stall / echo storms** (agent ends "standing by", re-fires empty notifications forever): agents NEVER launch-and-wait. Work only on what exists on disk; detached processes are monitored by the ENGINE CRON, not by the spawning agent. One bounded attempt max on anything external.
 2. **Session-limit guillotine**: workflows must be resume-safe (cache-friendly structure); heavy work paced smoothly under the ceiling, never burst; when a limit hits: checkpoint, journal the resume command, exit clean.
-3. **Parallel-edit collisions**: every swarm runs on LANES with exclusive file ownership declared up front (FULL_PIPE_BUILD_MAP pattern). Scoped `git add <files>` ALWAYS — `git add -A` is banned (it swept another agent's WIP once).
+3. **Parallel-edit collisions**: every swarm runs on LANES with exclusive file ownership declared up front (FULL_PIPE_BUILD_MAP pattern). Scoped `git add <files>` ALWAYS — `git add -A` is banned (swept an agent's WIP once). AND: `git commit` commits the whole INDEX — a parallel agent's STAGED files ride along even with scoped adds (happened 2026-07-02, L4 swept into a snapshot commit). Before committing: `git diff --cached --stat` must show ONLY your files, or use `git commit -- <paths>`.
 4. **Silent kill failures**: process kills via PowerShell CommandLine match + VERIFY-dead, never wmic loops (failed silently, caused a fought-over equity reset).
 5. **Stale-read edit failures**: Read-tool the region before every Edit; shell peeks don't count.
 6. **State surgery races**: bot STOPPED for any state-file edit; archive before modify; era markers on discontinuities.
