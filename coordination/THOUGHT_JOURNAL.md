@@ -993,3 +993,6 @@ OPEN QUESTION for the synthesis: C3's sit-out — shorts were the one historical
 
 === 2026-07-02 evening — OWNER ARCHITECTURE END-STATE (doctrine) ===
 Owner: "Ideally ALL of the mechanical signal and analysis goes straight through our Claude's brains." Target: every ensemble SIGNAL reaches the LLM coordinator with raw data + honest stats (v1.3); mechanical layer vetoes ONLY physics (validity/CB/limits/liquidation); ALL opinion lives inside Claude's pipeline, graded against price. Boundary: quota (no-signal scans don't call). NEXT-PASS CHECK (post-dechoke): grep for residual LLM-routing thresholds (the May-31 `conf < 60 -> _llm_first=False` class) — verify NO remaining path diverts signals around Claude; any found = dechoke follow-up, autonomous.
+
+=== 2026-07-02 ~22:00 UTC — SPEED DIRECTIVE (owner: "speed up greatly") ===
+Wave-2/re-campaign SPEED SPEC: the C1'-C6' A/B re-campaign runs with inter-call sleep 15s->6s, TWO windows in parallel (quota reclaimed from killed routines), skip-ahead on zero-signal stretches, same caps/seeds otherwise (A/B purity: only the architecture varies). Est 12h -> 3-4h. Current campaign (C5 139/180, C6 next) finishes at its own pace = the baseline. No extra swarm stacking (session-limit guillotine costs more than it saves; smooth > burst).
