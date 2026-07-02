@@ -30,6 +30,8 @@ A fallacy = ANY of: (a) a standard violation (v1.2/v1.3), (b) code that could be
 
 28. DATA EXPANSION: what free trade/market streams do we NOT collect that would sharpen EV? (HL: L2 book depth/spread/imbalance snapshots, liquidation events, trade-tape aggregates; Binance: long/short account ratio, taker buy/sell flow, basis.) Time-series can't be backfilled — every uncollected day is lost forever. Collector must be ISOLATED (own daemon/task, new files, zero contact with the trade path during the open rewire).
 
+29. SCENARIO LIBRARY (owner, 2026-07-02): mine the full corpus (56k signals, 79k rejections, graded theses, multi-year candles) to extract per-setup ARCHETYPES — the exact conditions where each setup historically peaked — then scenario-targeted emulation: replay each archetype through the (post-dechoke) brain for a per-archetype verdict: does it recognize + monetize its ideal scenario? Runs on the campaign infrastructure; fires after the C1'-C6' A/B lands.
+
 ## ANSWERED (verdict + report)
 - Q2 Exit intent restoration: RESTORED S3 geometry beats current + naive control in EVERY year/symbol/side over 2.5y (+91.7R vs −65.0R, t=3.80, n=1,131) — structural, not era-luck; standalone-alpha claim does NOT survive worst-case ordering — RQ_MULTIYEAR_SIM.md
 - Q11 Sessions: NO session is a real dollar edge; night-block "savings" = generic selectivity, not the clock; "night is dead" premise factually wrong (EU 06-12 quietest) — RQ11_SESSIONS.md
