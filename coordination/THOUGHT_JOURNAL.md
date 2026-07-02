@@ -1036,3 +1036,6 @@ Killed the just-launched C1p-C5p instances (minutes old, testing an INTERMEDIATE
 
 === 2026-07-02 ~23:50 UTC — INTENSE SPEEDRUN SPEC (owner) ===
 V-TRUE launch upgraded: FIVE instances (one per window C1t..C5t) at --sleep 3 (was 3 instances/6s) — all windows simultaneous, est 60-90 min total. Quota-limit risk accepted (resume-safe; owner's call). Follower agent ships maker-exit config + 0.80 close bar INTO the burn agent's restart (one restart, zero serialization). Verdict tooling prestaging now (ab_verdict.py) so the final verdict computes minutes after the last window. ENGINE: use these settings at the V-TRUE launch gate.
+
+=== 2026-07-02 ~23:47 UTC — engine pass: burns 1-6 COMMITTED, launch gate arming ===
+Invariants 7/7 (pid 24096, pre-burn-restart). Burns landed: after-loss de-sizing (0.5x next trade), thesis checklist -> Trade+Critic prompts, RQ9 un-inverted + hold logging + DEAD_CONF80 floor (BT2 ship folded in!), RQ10 post-label overlay, measurement pack (incl fee backfill sidecar), collector fixes. Burn agent restart pending -> then: follower ships BT1 maker config (ALO for agent closes + TP resting, cancel-and-cross failsafe) -> ONE restart -> V-TRUE 5-wide at 3s. C6 baseline 97/180. LL 200.
