@@ -631,6 +631,18 @@ class BacktestLLMIntegration:
                                            if decision else None,
                     "regime": getattr(decision, "regime", None)
                               if decision else None,
+                    # A/B verdict metrics (THOUGHT_JOURNAL 2026-07-02 23:30Z):
+                    # discrimination spread + positive-subset test need the
+                    # forward return of REJECTED signals too — journal the
+                    # signal's side/price/sim-time so synthesis can score
+                    # approved vs rejected against the candle cache.
+                    "signal_side": str(getattr(signal, "side", "") or ""),
+                    "signal_entry": getattr(signal, "entry", None),
+                    "signal_strategy": str(getattr(signal, "strategy", "")
+                                           or ""),
+                    "signal_confidence": getattr(signal, "confidence", None),
+                    "sim_ts": (getattr(signal, "metadata", None)
+                               or {}).get("replay_sim_ts"),
                 },
             )
 

@@ -31,9 +31,13 @@ Usage (from bot/):
     python tools/replay_campaign.py                # full campaign
     python tools/replay_campaign.py --resume       # continue after a pause
     python tools/replay_campaign.py --synthesize-only
+    # A/B arm (FULL_PIPE_BUILD_MAP §4): suffixed run dirs (C1p..), window
+    # subsets for parallel instances, baseline candle-cache reuse + SHA stamp:
+    python tools/replay_campaign.py --suffix p --windows C1,C2 --sleep 6
 """
 import argparse
 import csv
+import hashlib
 import json
 import os
 import subprocess
@@ -139,6 +143,26 @@ def _tail_text(path: Path, max_bytes: int = 80_000) -> str:
 
 def _has_limit_signature(text: str) -> bool:
     return any(sig in text for sig in LIMIT_SIGNATURES)
+
+
+def _sha256_files(paths) -> str:
+    """Order-stable SHA-256 over a set of files (name + bytes)."""
+    h = hashlib.sha256()
+    for p in sorted(paths, key=lambda x: x.name):
+        h.update(p.name.encode("utf-8"))
+        h.update(p.read_bytes())
+    return h.hexdigest()
+
+
+def _resolve_ab_seed(base_id: str) -> Path | None:
+    """For a suffixed (A/B arm) window, find the baseline's candle cache so
+    both arms replay bit-identical price paths (FULL_PIPE_BUILD_MAP §4):
+    prefer the original seed dir, else the baseline run's sandbox cache."""
+    for cand in (REPLAY_ROOT / f"seed_{base_id}",
+                 REPLAY_ROOT / base_id / "sandbox" / "data" / "cache"):
+        if cand.is_dir() and any(cand.glob("*.csv")):
+            return cand
+    return None
 
 
 # ── Window runner ────────────────────────────────────────────────────
@@ -349,11 +373,14 @@ def _coverage_note(win_id: str) -> str:
     return "; ".join(lines[:3])
 
 
-def synthesize(state: dict, args):
-    """Write coordination/REPLAY_CAMPAIGN_RESULTS.md aggregating all windows."""
+def synthesize(state: dict, args, windows=None):
+    """Write the campaign results MD aggregating all selected windows."""
+    windows = windows if windows is not None else WINDOWS
+    suffix = getattr(args, "suffix", "") or ""
     all_trades = []
     win_rows = []
-    for win_id, start, end, regime in WINDOWS:
+    for base_id, start, end, regime in windows:
+        win_id = base_id + suffix
         wstate = state.get("windows", {}).get(win_id, {})
         status = wstate.get("status", "not_run")
         trades = _load_trades(win_id) if status == "done" else []
@@ -370,7 +397,8 @@ def synthesize(state: dict, args):
                 summary = {}
         st = _stats(trades)
         win_rows.append({
-            "id": win_id, "window": f"{start} -> {end}", "regime": regime,
+            "id": win_id, "base": base_id,
+            "window": f"{start} -> {end}", "regime": regime,
             "status": status, "note": wstate.get("note", ""),
             "seeded": wstate.get("seeded", False),
             "stats": st,
@@ -386,9 +414,15 @@ def synthesize(state: dict, args):
     live = _live_era_stats()
 
     lines = [
-        "# REPLAY_CAMPAIGN_RESULTS — 6-window regime campaign",
+        f"# REPLAY_CAMPAIGN_RESULTS{('_' + suffix) if suffix else ''} — "
+        f"{len(windows)}-window regime campaign",
         f"Generated {_utcnow()} by tools/replay_campaign.py "
         "(THE_STANDARD v1.3 compliant reporting)",
+        *([f"Arm: suffix='{suffix}' windows={[r['id'] for r in win_rows]} "
+           "(architecture A/B per FULL_PIPE_BUILD_MAP §4 — identical "
+           "windows/seeds/fees/caps; only the pipeline architecture varies; "
+           "seed/cache SHA-256 stamps in campaign log + state)"]
+          if (suffix or len(windows) != len(WINDOWS)) else []),
         "",
         "## Question under test",
         "Does the repaired brain show ENTRY edge in ANY regime? "
@@ -449,7 +483,7 @@ def synthesize(state: dict, args):
     grouped = _group(all_trades, "_window")
     positive = [w for w, s in grouped.items() if s["pnl"] > 0 and s["n"] >= 3]
     negative = [w for w, s in grouped.items() if s["pnl"] < 0 and s["n"] >= 3]
-    chop_row = next((r for r in win_rows if r["id"] == "C4"), None)
+    chop_row = next((r for r in win_rows if r["base"] == "C4"), None)
     lines += [
         f"- Windows with positive PnL at n>=3: {positive or 'NONE'}",
         f"- Windows with negative PnL at n>=3: {negative or 'NONE'}",
@@ -457,7 +491,7 @@ def synthesize(state: dict, args):
         f"{chop_row['stats']['n'] if chop_row else '?'} closes, "
         f"{chop_row['entry_events'] if chop_row else '?'} entry events",
         f"- Success criteria (plan §2.4): (i) >0 closes in C1-C3/C5: "
-        f"{[r['id'] for r in win_rows if r['id'] in ('C1', 'C2', 'C3', 'C5') and r['stats']['n'] > 0] or 'NOT MET'}; "
+        f"{[r['id'] for r in win_rows if r['base'] in ('C1', 'C2', 'C3', 'C5') and r['stats']['n'] > 0] or 'NOT MET'}; "
         f"(ii) C4 quiet vs trend windows: see table; "
         f"(iii) per-regime WR/PF vs live ranging-entry pathology: see by-regime; "
         f"(iv) isolation: see per-window REPLAY_RUN_C*.md isolation sections.",
@@ -465,8 +499,8 @@ def synthesize(state: dict, args):
         "statistically decisive; treat direction + regime contrast as the "
         "signal, and require live confirmation before any policy change.",
         "",
-        "Artifacts: bot/data/replay/C1..C6/, bot/data/replay/campaign.log, "
-        "coordination/REPLAY_RUN_C1..C6.md",
+        f"Artifacts: bot/data/replay/{{{','.join(r['id'] for r in win_rows)}}}/, "
+        f"{CAMPAIGN_LOG.name}, coordination/REPLAY_RUN_<id>.md",
     ]
     RESULTS_MD.write_text("\n".join(lines), encoding="utf-8")
     clog(f"SYNTHESIS written -> {RESULTS_MD}")
@@ -489,20 +523,60 @@ def main() -> int:
     ap.add_argument("--resume", action="store_true",
                     help="skip windows already completed/skipped")
     ap.add_argument("--synthesize-only", action="store_true")
+    ap.add_argument("--suffix", default="",
+                    help="A/B arm suffix for run dirs + reports (e.g. 'p' -> "
+                         "run dir C1p, coordination/REPLAY_RUN_C1p.md); also "
+                         "suffixes campaign log/state/results so instances "
+                         "never collide with the baseline campaign")
+    ap.add_argument("--windows", default="",
+                    help="comma-separated subset of window ids to run "
+                         "(e.g. C1,C2); default = all windows")
     args = ap.parse_args()
+
+    sel = [w.strip().upper() for w in args.windows.split(",") if w.strip()]
+    known = {w[0] for w in WINDOWS}
+    unknown = [w for w in sel if w not in known]
+    if unknown:
+        print(f"unknown --windows ids: {unknown} (known: {sorted(known)})",
+              file=sys.stderr)
+        return 2
+    windows = [w for w in WINDOWS if not sel or w[0] in sel]
+
+    # Per-instance log/state/results so parallel A/B instances and the
+    # baseline campaign never write over each other. Defaults unchanged.
+    global CAMPAIGN_LOG, STATE_PATH, RESULTS_MD
+    if args.suffix or sel:
+        tag = f"{args.suffix}{('_' + '-'.join(sel)) if sel else ''}"
+        CAMPAIGN_LOG = REPLAY_ROOT / f"campaign_{tag}.log"
+        STATE_PATH = REPLAY_ROOT / f"campaign_state_{tag}.json"
+        RESULTS_MD = (REPO_DIR / "coordination"
+                      / f"REPLAY_CAMPAIGN_RESULTS_{tag}.md")
 
     REPLAY_ROOT.mkdir(parents=True, exist_ok=True)
     state = load_state()
 
     if args.synthesize_only:
-        synthesize(state, args)
+        # Aggregate synthesis across parallel instances of the same arm:
+        # merge every campaign_state_<suffix>*.json window record.
+        if args.suffix:
+            for p in sorted(REPLAY_ROOT.glob(
+                    f"campaign_state_{args.suffix}*.json")):
+                try:
+                    other = json.loads(p.read_text(encoding="utf-8"))
+                    for k, v in other.get("windows", {}).items():
+                        state.setdefault("windows", {}).setdefault(k, v)
+                except (OSError, json.JSONDecodeError):
+                    pass
+        synthesize(state, args, windows)
         return 0
 
-    clog(f"CAMPAIGN_START windows={[w[0] for w in WINDOWS]} cap={args.cap} "
-         f"sleep={args.sleep}s resume={args.resume} pid={os.getpid()}")
+    clog(f"CAMPAIGN_START windows={[w[0] + args.suffix for w in windows]} "
+         f"cap={args.cap} sleep={args.sleep}s resume={args.resume} "
+         f"suffix={args.suffix!r} pid={os.getpid()}")
 
     consecutive_limit_pauses = 0
-    for win_id, start, end, regime in WINDOWS:
+    for base_id, start, end, regime in windows:
+        win_id = base_id + args.suffix
         wstate = state.setdefault("windows", {}).setdefault(win_id, {})
         # Resume skips only DONE windows: skipped_data windows get another
         # chance via the Coinbase seed path.
@@ -512,6 +586,23 @@ def main() -> int:
 
         seed_dir = None
         attempted_seed = False
+        # A/B arm: reuse the BASELINE window's candles (seed dir or its
+        # sandbox cache) so both arms replay bit-identical price paths;
+        # stamp the cache SHA-256 (launch gate: no stamp, no A/B).
+        if args.suffix:
+            ab_seed = _resolve_ab_seed(base_id)
+            if ab_seed is not None:
+                seed_dir = ab_seed
+                attempted_seed = True
+                sha = _sha256_files(ab_seed.glob("*.csv"))
+                clog(f"{win_id} SEED_REUSE {ab_seed} sha256={sha} "
+                     f"(bit-identical price path vs {base_id} baseline)")
+                wstate["seed_source"] = str(ab_seed)
+                wstate["seed_sha256"] = sha
+            else:
+                clog(f"{win_id} SEED_MISSING no baseline cache for {base_id} "
+                     f"— will fetch (deterministic historical candles; "
+                     f"cache SHA stamped post-run)")
         while True:
             result = run_window(win_id, start, end, regime, args,
                                 seed_dir=seed_dir)
@@ -542,6 +633,14 @@ def main() -> int:
             wstate.update(status=result.status, note=result.note,
                           window=f"{start}->{end}", regime=regime,
                           seeded=seed_dir is not None)
+            if result.status == "done":
+                cache = (REPLAY_ROOT / win_id / "sandbox" / "data" / "cache")
+                cache_files = list(cache.glob("*.csv")) if cache.is_dir() else []
+                if cache_files:
+                    sha = _sha256_files(cache_files)
+                    wstate["cache_sha256"] = sha
+                    clog(f"{win_id} CACHE_SHA256 {sha} "
+                         f"({len(cache_files)} files)")
             save_state(state)
             if result.status == "skipped_data":
                 clog(f"{win_id} WINDOW_SKIPPED_DATA {result.note}")
@@ -551,7 +650,7 @@ def main() -> int:
 
         time.sleep(INTER_WINDOW_SLEEP_S)
 
-    synthesize(state, args)
+    synthesize(state, args, windows)
     clog("CAMPAIGN_DONE")
     return 0
 
