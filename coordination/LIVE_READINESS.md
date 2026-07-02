@@ -24,10 +24,15 @@ Created 2026-07-02 (owner: "get locked in... so I can actually use it to trade")
 ## GATE 4 — Sizing discipline (the lesson of 2026-07-02) — 🔴 NOT STARTED (by design)
 - [ ] Leverage stays 1.0x until: 15-20 clean closes confirm the 80+ conf band live, THEN the RQ16/20 Monte-Carlo ramp table governs each step (P(50% DD) < 5%)
 - [ ] Per-trade notional cap so no single idea can be an "all-in" (the exact failure that cost $450 manually today — the bot must be structurally incapable of it)
-- [ ] Live capital starts SMALL (owner sets the number) and scales only per the ramp table
+- [x] Live capital PRE-COMMITTED (2026-07-02): first live deployment = $100-250, scaling only per the ramp table
 
 ## GATE 5 — Owner decisions cleared — 🟡 9 PENDING
 - [ ] The 9 gate-stack decisions in RETURN_PACKAGE §3 answered (several directly affect entry quality: volume_chop input fix, dead-gate cleanup, quant-agent demotion)
+
+## PRE-AUTHORIZATIONS (owner, 2026-07-02 — no round-trips needed)
+- A/B validates -> PAPER sizing ramp per the Monte-Carlo table: STANDING AUTHORITY, ship immediately.
+- First live capital: $100-250 (pre-committed; live flip itself remains owner-only).
+- Notifications: EVERY MILESTONE proactively to phone (window completions, ships, verdicts) — not just emergencies.
 
 ## THE SEQUENCE FROM HERE
 1. Fix the order-side inversion (next autonomous ship)
