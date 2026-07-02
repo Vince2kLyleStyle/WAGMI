@@ -187,6 +187,15 @@ try:
 except ImportError:
     _EXTERNAL_DATA_AVAILABLE = False
 
+# Market depth feed (F1, FULL_PIPE map §2b — L2 spread/depth/imbalance/tape).
+# Separate guard from external_data so a depth import failure can never mute
+# the funding/liquidation feeds. Flag: EXT_DEPTH_ENABLED (module-side, default true).
+try:
+    from llm.agents.market_depth import get_depth_for_snapshot
+    _MARKET_DEPTH_AVAILABLE = True
+except ImportError:
+    _MARKET_DEPTH_AVAILABLE = False
+
 # Strategic agents (Portfolio, Forecaster, Hypothesis, Correlator)
 # These are optional Phase 3 agents
 try:
@@ -482,6 +491,23 @@ class AgentCoordinator:
         _markets = snapshot_data.get("m", [])
         if _markets and isinstance(_markets, list) and _markets:
             _enrich_symbol = _markets[0].get("s", _markets[0].get("sym", ""))
+
+        # ── Inject market depth (F1: L2 spread/depth/imbalance/tape) ──
+        # Scoped to the decision's symbol (~300 tokens/decision budget).
+        # Skip in backtest: depth reads LIVE collector data (look-ahead); in
+        # replay the file is absent for historical windows and the module
+        # auto-mutes on staleness anyway.
+        if _MARKET_DEPTH_AVAILABLE and not _is_backtest:
+            try:
+                _depth = get_depth_for_snapshot(
+                    symbols=[_enrich_symbol] if _enrich_symbol else None
+                )
+                if _depth:
+                    snapshot_data.update(_depth)
+                    logger.info("[MULTI-AGENT] Market depth injected: %s",
+                                ", ".join(_depth.keys()))
+            except Exception as e:
+                logger.warning("[MULTI-AGENT] Market depth injection failed: %s", e)
 
         # Technical indicators (needs ohlcv_1h in snapshot)
         if _TECHNICALS_AVAILABLE:
@@ -986,35 +1012,16 @@ class AgentCoordinator:
         if regime_out.data.get("expected_duration_h"):
             scratchpad.write("regime", "expected_duration_h", regime_out.data["expected_duration_h"])
 
-        # ── Step 1.25: Tiered Pipeline Router ───────────────────
-        # Decide if this signal deserves full pipeline, standard, or early-skip.
-        # Cuts API cost by 50-70% by not calling Quant/Risk/Critic on low-quality signals.
-        # Enabled via env flag AGENT_TIERED_ROUTING=true (default: disabled for safety)
-        _tier = 3  # Default: run everything (current behavior)
-        if os.getenv("AGENT_TIERED_ROUTING", "false").lower() == "true":
-            _tier = self._decide_pipeline_tier(snapshot_data, regime_out)
+        # ── Step 1.25: Tiered Pipeline Router — DELETED (R12, FULL_PIPE map, 2026-07-02) ──
+        # Tier-1 auto-flat decided "no LLM judgment needed" from regime+conf
+        # heuristics — an OPINION router that returned a FLAT decision without
+        # any agent seeing the signal (flag was default-off but armed). Per the
+        # doctrine, call-tiering must be quota-count-based, never signal-quality
+        # based, so the heuristic router was removed rather than left armed.
 
-            if _tier == 1:
-                # Early skip: log and return a FLAT decision without calling any more agents
-                # LLMDecision is already imported at module level (line 51) — don't shadow
-                self.last_pipeline_results = pipeline_results
-                _skip_decision = LLMDecision(
-                    action="flat",
-                    confidence=0.0,
-                    regime=regime_out.data.get("rg", "unknown"),
-                    size_mult=0.0,
-                    reasoning="Tier 1 skip: low-quality regime + weak signal — no LLM judgment needed",
-                    raw_response="{\"action\":\"flat\",\"reasoning\":\"tier_1_skip\"}",
-                )
-                return _skip_decision
-
-        # ── Step 1.5: Quant Agent (Tier 3 only when routing enabled) ─────────────────────
+        # ── Step 1.5: Quant Agent ─────────────────────
         quant_out = None
         _quant_enabled = self.configs.get(AgentRole.QUANT, AgentConfig(role=AgentRole.QUANT)).enabled
-        # Skip Quant in Tier 2 (normal signals don't need statistical deep-dive)
-        if _tier == 2 and os.getenv("AGENT_TIERED_ROUTING", "false").lower() == "true":
-            _quant_enabled = False
-            logger.info("[ROUTER] Tier 2: Quant agent skipped (tier-2 routing)")
         if _quant_enabled:
             quant_input = self._build_quant_input(snapshot_data, regime_out)
             quant_out = self._call_agent(
@@ -1199,54 +1206,35 @@ class AgentCoordinator:
                     AgentRole.CRITIC, critic_input, model_for_trigger
                 )
 
+            if not critic_out.ok:
+                # ── R13 (FULL_PIPE map, 2026-07-02): one Critic retry ──
+                # The old "mechanical critic fallback" substituted a hardcoded
+                # conf floor + counter-trend check for the missing agent — an
+                # OPINION judging the signal on exactly the path where nobody
+                # reviews it. Replaced: retry once; if still failing, mark the
+                # decision degraded and let the agents that DID run stand.
+                logger.warning("[MULTI-AGENT] Critic call failed — retrying once")
+                critic_input = self._build_critic_input(
+                    snapshot_data, regime_out, trade_out, risk_out
+                )
+                critic_out = self._call_agent(
+                    AgentRole.CRITIC, critic_input, model_for_trigger
+                )
+
             pipeline_results[AgentRole.CRITIC] = critic_out
             if not critic_out.ok:
                 critic_out = None
                 _structured_debate_result = None  # Debate result invalid without critic
-                # ── Mechanical Critic Fallback ──────────────────────
-                # Critic API failed but trade wants to proceed — apply
-                # fast mechanical checks so trades don't run unchecked.
-                # DECHOKE 6 (2026-07-02): with the Critic itself in SHADOW
-                # mode, a FAILED critic call must not enforce harder than a
-                # successful one — fallback skips/penalties are shadow-logged
-                # unless CRITIC_ENFORCE=true.
-                _critic_fb_enforce = os.getenv("CRITIC_ENFORCE", "false").lower() == "true"
-                _fb_action = trade_out.data.get("a", trade_out.data.get("action", "skip"))
-                if _fb_action in ("go", "proceed"):
-                    _fb_conf = float(trade_out.data.get("c", trade_out.data.get("confidence", 0.0)))
-                    _fb_bias = regime_out.data.get("bias", "neutral") if regime_out.ok else "neutral"
-                    _fb_side = trade_out.data.get("side", trade_out.data.get("s", "")).upper()
-                    _fb_counter_trend = (
-                        (_fb_bias == "bullish" and _fb_side == "SELL")
-                        or (_fb_bias == "bearish" and _fb_side == "BUY")
-                    )
-                    _critic_fb_min = float(os.getenv("ENSEMBLE_CONFIDENCE_FLOOR", "40")) / 100.0
-                    if _fb_conf < _critic_fb_min:
-                        if _critic_fb_enforce:
-                            logger.warning("[CRITIC-FALLBACK] Conf %.2f < %.2f without Critic — skip", _fb_conf, _critic_fb_min)
-                            trade_out = AgentOutput(role=AgentRole.TRADE, data={
-                                "a": "skip", "c": _fb_conf, "side": _fb_side,
-                                "n": f"critic_fallback: low conf ({_fb_conf:.2f}) without review",
-                            })
-                        else:
-                            logger.info("[SHADOW-CRITIC] fallback would_skip: conf %.2f < %.2f without review (shadow only)", _fb_conf, _critic_fb_min)
-                    elif _fb_counter_trend:
-                        if _critic_fb_enforce:
-                            logger.warning("[CRITIC-FALLBACK] Counter-trend %s vs %s without Critic — skip", _fb_side, _fb_bias)
-                            trade_out = AgentOutput(role=AgentRole.TRADE, data={
-                                "a": "skip", "c": _fb_conf, "side": _fb_side,
-                                "n": f"critic_fallback: counter-trend ({_fb_side} vs {_fb_bias}) without review",
-                            })
-                        else:
-                            logger.info("[SHADOW-CRITIC] fallback would_skip: counter-trend %s vs %s without review (shadow only)", _fb_side, _fb_bias)
-                    else:
-                        if _critic_fb_enforce:
-                            _penalized = max(0.0, _fb_conf - 0.10)
-                            logger.info("[CRITIC-FALLBACK] No Critic — conf %.2f -> %.2f", _fb_conf, _penalized)
-                            trade_out.data["c"] = _penalized
-                            trade_out.data["n"] = trade_out.data.get("n", "") + " | critic_fallback: -10% conf (no review)"
-                        else:
-                            logger.info("[SHADOW-CRITIC] fallback would_penalize conf %.2f -> %.2f (shadow only)", _fb_conf, max(0.0, _fb_conf - 0.10))
+                # Degraded pipeline: no mechanical judgment substitutes for the
+                # missing agent. _merge_outputs applies a 0.5x size cap — a
+                # physics-style degradation cap (reduced review capacity), not
+                # an opinion about the signal. Stamp rides into notes →
+                # decisions.jsonl + thesis record.
+                logger.warning(
+                    "[MULTI-AGENT] Critic failed after retry — degraded=true, "
+                    "size capped 0.5x (degradation cap, not judgment)"
+                )
+                scratchpad.write("critic", "call_degraded", True)
 
         # ── Consistency Check ──────────────────────────────────────
         consistency_report = check_pipeline_consistency(
@@ -1751,11 +1739,52 @@ class AgentCoordinator:
                     veto_only=True,
                 )
                 if _pre_vetoed:
-                    logger.info(
-                        f"[PRE-FILTER] VETO {_sym}/{_side} before LLM: {_pre_notes[:80]}"
-                    )
-                    # Highest-volume veto path — signals blocked here never reach
-                    # ensemble/pipeline, so this is an independent population slice.
+                    # ── R11 §2b provenance gate (FULL_PIPE map, 2026-07-02) ──
+                    # A pre-LLM hard veto may ENFORCE only when at least one
+                    # firing rule carries full §2b provenance: current-ledger
+                    # version, era stamp, n>=13, and dollar-positive
+                    # (net_pnl_saved > 0). Rules missing provenance are suspect
+                    # by construction (learned on the condemned ledger) — they
+                    # SHADOW instead: logged + counterfactual-recorded so they
+                    # can dollar-score their way back, but never block.
+                    _pf_enforce = False
+                    _pf_prov_notes = []
+                    try:
+                        from llm.graduated_rules import LEDGER_VERSION as _CUR_LEDGER
+                        _rules_by_id = {
+                            getattr(r, "rule_id", ""): r
+                            for r in getattr(_gre, "_rules", [])
+                        }
+                        for _rid in _pre_veto_ids:
+                            _r = _rules_by_id.get(_rid)
+                            if _r is None:
+                                _pf_prov_notes.append(f"{_rid}:missing")
+                                continue
+                            _r_n = max(int(getattr(_r, "times_applied", 0) or 0),
+                                       int(getattr(_r, "total_evidence", 0) or 0))
+                            _r_net = (float(getattr(_r, "pnl_saved", 0.0) or 0.0)
+                                      - float(getattr(_r, "pnl_missed", 0.0) or 0.0))
+                            _r_ok = (
+                                getattr(_r, "ledger_version", "") == _CUR_LEDGER
+                                and bool(getattr(_r, "era", ""))
+                                and _r_n >= 13
+                                and _r_net > 0
+                            )
+                            if _r_ok:
+                                _pf_enforce = True
+                            _pf_prov_notes.append(
+                                f"{_rid}:{'2b-OK' if _r_ok else 'shadow'}"
+                                f"(n={_r_n},net={_r_net:+.1f},"
+                                f"lv={getattr(_r, 'ledger_version', '') or 'none'})"
+                            )
+                    except Exception as _pve:
+                        # Unverifiable provenance = suspect = shadow (§2b).
+                        logger.debug(f"[PRE-FILTER] provenance check error: {_pve} — shadow")
+                        _pf_enforce = False
+                    _pf_prov_str = "; ".join(_pf_prov_notes)[:160]
+
+                    # Both enforce and shadow paths record the counterfactual —
+                    # it is the sole measurement channel for veto rule accuracy.
                     # Stamp veto_rule_ids so it becomes a measurable denominator.
                     try:
                         from llm.brain_wiring import record_veto_counterfactual
@@ -1773,28 +1802,42 @@ class AgentCoordinator:
                             strategy=_strat,
                             regime=str(market_context.get("regime", "")),
                             denominator_only=_pf_denom_only,
+                            metadata=(None if _pf_enforce
+                                      else {"shadow": True,
+                                            "reason": "pre_filter_no_2b_provenance"}),
                         )
                     except Exception:
                         pass
-                    _veto_decision = EntryDecision(
-                        action="skip",
-                        leverage=1.0,
-                        risk_pct=0.0,
-                        position_qty=0.0,
-                        regime="unknown",
-                        thesis="",
-                        confidence=_conf / 100.0 if _conf > 1.0 else _conf,
-                        notes=f"[PRE-FILTER VETO] {_pre_notes[:200]}",
-                    )
-                    # Store in cache as skip (same TTL as LLM skips)
-                    if _cache_key is not None:
-                        with self._cache_lock:
-                            self._entry_decision_cache[_cache_key] = {
-                                "decision": _veto_decision,
-                                "ts": time.time(),
-                                "entry_price": float(signal_context.get("entry", 0)),
-                            }
-                    return _veto_decision
+
+                    if _pf_enforce:
+                        logger.info(
+                            f"[PRE-FILTER] VETO {_sym}/{_side} before LLM: {_pre_notes[:80]} "
+                            f"| provenance: {_pf_prov_str}"
+                        )
+                        _veto_decision = EntryDecision(
+                            action="skip",
+                            leverage=1.0,
+                            risk_pct=0.0,
+                            position_qty=0.0,
+                            regime="unknown",
+                            thesis="",
+                            confidence=_conf / 100.0 if _conf > 1.0 else _conf,
+                            notes=f"[PRE-FILTER VETO] {_pre_notes[:200]}",
+                        )
+                        # Store in cache as skip (same TTL as LLM skips)
+                        if _cache_key is not None:
+                            with self._cache_lock:
+                                self._entry_decision_cache[_cache_key] = {
+                                    "decision": _veto_decision,
+                                    "ts": time.time(),
+                                    "entry_price": float(signal_context.get("entry", 0)),
+                                }
+                        return _veto_decision
+                    else:
+                        logger.info(
+                            f"[PRE-FILTER SHADOW] would_veto {_sym}/{_side} — no §2b-compliant "
+                            f"rule ({_pf_prov_str}) — signal flows to LLM"
+                        )
             except Exception as _pfe:
                 logger.debug(f"[PRE-FILTER] Error: {_pfe}")
 
@@ -2280,109 +2323,10 @@ class AgentCoordinator:
             return out.data
         return None
 
-    def _decide_pipeline_tier(
-        self,
-        snapshot_data: dict,
-        regime_out: "AgentOutput",
-    ) -> int:
-        """Decide which pipeline tier to run based on signal + regime quality.
-
-        Tier 1 (minimal — regime only, skip full pipeline):
-          - Regime is low_liquidity / unknown AND no quality signal
-          - Returns a FLAT decision immediately, saves 5-7 agent calls
-
-        Tier 2 (standard — Regime + Trade + Critic):
-          - Normal signal with no proven edge, average quality
-          - Runs Trade + Critic for main decision, skips Quant/Risk details
-
-        Tier 3 (full — all agents):
-          - Proven edge (setup_mfe CONFIRMED_EDGE) AND regime matches
-          - OR very high conviction (3+ strategies, conf >= 75)
-          - OR large position size consideration
-          - Runs full pipeline with all defense layers
-
-        Returns: 1, 2, or 3
-        """
-        try:
-            regime = regime_out.data.get("rg", "unknown") if regime_out and regime_out.ok else "unknown"
-            regime_conf = float(regime_out.data.get("conf", 0.5)) if regime_out and regime_out.ok else 0.3
-
-            # Extract signal quality from snapshot
-            signal_conf = 0.0
-            n_agree = 0
-            has_edge = False
-            edge_wr = 0
-            edge_n = 0
-
-            # Find the primary signal in market snapshot
-            markets = snapshot_data.get("m", []) or []
-            if isinstance(markets, list):
-                for mkt in markets:
-                    if not isinstance(mkt, dict):
-                        continue
-                    sigs = mkt.get("sg") or mkt.get("sigs") or []
-                    if sigs and isinstance(sigs, list):
-                        for s in sigs:
-                            if isinstance(s, dict):
-                                _c = float(s.get("confidence", s.get("c", 0)))
-                                _n = int(s.get("num_agree", s.get("na", 1)))
-                                if _c > signal_conf:
-                                    signal_conf = _c
-                                if _n > n_agree:
-                                    n_agree = _n
-
-            # Check for proven edge on this symbol+side from setup_mfe
-            g = snapshot_data.get("g", {}) or {}
-            setup_mfe = g.get("setup_mfe", {}) if isinstance(g, dict) else {}
-            for setup_key, data in (setup_mfe.items() if isinstance(setup_mfe, dict) else []):
-                if isinstance(data, dict):
-                    _wr = float(data.get("wr", 0))
-                    _n = int(data.get("n", 0))
-                    if _wr >= 55 and _n >= 20:
-                        has_edge = True
-                        if _wr > edge_wr:
-                            edge_wr = _wr
-                            edge_n = _n
-
-            # ── Tier 1: Skip conditions ──
-            # Dead market + no signal quality = log and skip, zero extra cost
-            if regime in ("low_liquidity", "unknown") and signal_conf < 60 and n_agree < 2:
-                logger.info(
-                    f"[ROUTER] Tier 1 (skip): regime={regime} conf={signal_conf:.0f} "
-                    f"n_agree={n_agree} — saving 5+ agent calls"
-                )
-                return 1
-
-            # ── Tier 3: Full pipeline conditions ──
-            # Proven edge OR very high conviction OR regime transition
-            if has_edge and regime in ("trend", "trending", "trending_bull", "trending_bear"):
-                logger.info(
-                    f"[ROUTER] Tier 3 (full): proven edge WR={edge_wr:.0f}% "
-                    f"n={edge_n} + regime={regime} match"
-                )
-                return 3
-            if n_agree >= 3 and signal_conf >= 65:
-                logger.info(
-                    f"[ROUTER] Tier 3 (full): multi-strat consensus "
-                    f"n_agree={n_agree} conf={signal_conf:.0f}"
-                )
-                return 3
-            if signal_conf >= 75:
-                logger.info(
-                    f"[ROUTER] Tier 3 (full): high conviction conf={signal_conf:.0f}"
-                )
-                return 3
-
-            # ── Tier 2: Everything else (normal signal, no proven edge) ──
-            logger.info(
-                f"[ROUTER] Tier 2 (standard): regime={regime} conf={signal_conf:.0f} "
-                f"n_agree={n_agree} edge={has_edge}"
-            )
-            return 2
-
-        except Exception as e:
-            logger.debug(f"[ROUTER] Decision error: {e} — defaulting to Tier 2")
-            return 2
+    # NOTE (R12, FULL_PIPE map, 2026-07-02): _decide_pipeline_tier was deleted.
+    # It ranked signals by regime/conf/edge heuristics to decide whether the
+    # LLM pipeline was "needed" — signal-quality routing is banned by doctrine.
+    # If call-tiering ever returns it must count calls (quota), not judge signals.
 
     def evaluate_override(
         self,
@@ -3417,12 +3361,14 @@ class AgentCoordinator:
             symbol=_agent_sym,
         )
 
-        # Dynamic calibration injection for Trade, Critic, and Regime agents
+        # Dynamic calibration injection for Trade, Critic, Regime, and Risk agents
+        # (RISK added 2026-07-02, R17: its calibration now reaches it as prompt
+        # context instead of mechanically downgrading its skip verdicts.)
         # Skip in backtest: calibration ledger tracks live-trade agent accuracy and
         # would penalise confidence based on post-backtest-window performance data.
         calibration_prefix = ""
         _bt = getattr(self, '_current_is_backtest', False)
-        if not _bt and role in (AgentRole.TRADE, AgentRole.CRITIC, AgentRole.REGIME):
+        if not _bt and role in (AgentRole.TRADE, AgentRole.CRITIC, AgentRole.REGIME, AgentRole.RISK):
             try:
                 from llm.agents.calibration_ledger import get_calibration_ledger
                 ledger = get_calibration_ledger()
@@ -3791,6 +3737,8 @@ class AgentCoordinator:
             regime_data["ext_liq"] = snapshot["ext_liq"]
         if "ext_summary" in snapshot:
             regime_data["ext_data"] = snapshot["ext_summary"]
+        if "ext_depth_summary" in snapshot:
+            regime_data["ext_depth"] = snapshot["ext_depth_summary"]
         # Enriched context from technicals, feedback, telemetry, positions
         if snapshot.get("enriched_context"):
             regime_data["enriched"] = snapshot["enriched_context"]
@@ -3894,6 +3842,7 @@ class AgentCoordinator:
         _ensure_field(trade_data, "ext_liq", snapshot)
         _ensure_field(trade_data, "ext_mr", snapshot)
         _ensure_field(trade_data, "ext_summary", snapshot)
+        _ensure_field(trade_data, "ext_depth_summary", snapshot)
 
         # Network learning: inject accumulated lessons for Trade Agent
         if "network_lessons_trade" in snapshot:
@@ -4142,6 +4091,7 @@ class AgentCoordinator:
         # External data: liq levels critical for risk sizing
         _ensure_field(risk_data, "ext_liq", snapshot)
         _ensure_field(risk_data, "ext_funding", snapshot)
+        _ensure_field(risk_data, "ext_depth_summary", snapshot)
 
         # Network learning: inject risk constraints and lessons
         if "network_lessons_risk" in snapshot:
@@ -4294,6 +4244,7 @@ class AgentCoordinator:
         # External data: compact summary for critic cross-check
         _ensure_field(critic_data, "ext_summary", snapshot)
         _ensure_field(critic_data, "ext_liq", snapshot)
+        _ensure_field(critic_data, "ext_depth_summary", snapshot)
 
         # Gap 4+5: Inject calibration data for the critic
         # Skip in backtest: calibration ledger is populated from live trade outcomes
@@ -4884,19 +4835,12 @@ class AgentCoordinator:
             risk_flags = rk.get("risks", [])
             override = rk.get("override")
 
-            # Gate Risk Agent's skip power if its accuracy is poor
-            if override == "skip":
-                try:
-                    from llm.agents.calibration_ledger import get_calibration_ledger
-                    risk_cal = get_calibration_ledger().get_calibration(
-                        "risk", regime_out.data.get("rg", "unknown") if regime_out else "unknown"
-                    )
-                    if risk_cal.get("reliable") and risk_cal["accuracy"] < 0.45:
-                        # Risk Agent is wrong >55% of the time — downgrade skip to reduce
-                        override = "reduce"
-                        notes += f" | RISK: skip→reduce (risk_vacc={risk_cal['accuracy']:.0%})"
-                except Exception:
-                    pass
+            # R17 (FULL_PIPE map, 2026-07-02): the risk_vacc<0.45 skip→reduce
+            # auto-downgrade was DELETED — a mechanical override of an LLM
+            # verdict using contaminated calibration stats (D3/M19 class). The
+            # Risk Agent now sees its own calibration in its prompt (calibration
+            # prefix in _call_agent, RISK added to the injected roles) and
+            # self-adjusts; Overseer/consistency can flag. Its verdict stands.
 
             if override == "skip":
                 action = "flat"
@@ -4947,6 +4891,22 @@ class AgentCoordinator:
         except Exception:
             pass
 
+        # ── R13 degradation cap (FULL_PIPE map, 2026-07-02) ──
+        # Critic call failed after retry: the pipeline ran with reduced review
+        # capacity. Cap size at 0.5x as a PHYSICS-style degradation cap (labeled
+        # as such, not as judgment) and stamp degraded=true into notes so it
+        # rides into decisions.jsonl + the thesis record.
+        try:
+            if scratchpad.read_by_key("call_degraded"):
+                if size_mult > 0.5:
+                    notes += (f" | DEGRADED: critic unavailable after retry — "
+                              f"sz {size_mult:.2f}→0.50 (degradation cap, not judgment)")
+                    size_mult = 0.5
+                else:
+                    notes += " | DEGRADED: critic unavailable after retry (degraded=true)"
+        except Exception:
+            pass
+
         # Critic Agent — SHADOW MODE (DECHOKE 6, 2026-07-02, owner-approved).
         # GM_AGENT_SKILL_24K: the Critic's apparent veto value is a week-1
         # crash artifact — in the mid era its ordering was INVERTED (vetoed
@@ -4964,11 +4924,6 @@ class AgentCoordinator:
         # old enforcement path below.
         counter_thesis = ""
         _critic_enforce = os.getenv("CRITIC_ENFORCE", "false").lower() == "true"
-        _critic_vacc = 0.5  # default assumption
-        if snapshot_data:
-            _sp = snapshot_data.get("self_perf", {})
-            if isinstance(_sp, dict):
-                _critic_vacc = _sp.get("vacc", 0.5)
 
         if critic_out and critic_out.ok:
             cd = critic_out.data
@@ -4989,22 +4944,15 @@ class AgentCoordinator:
                     self._maybe_recommend_critic_restore()
                 except Exception:
                     pass
-            # If Critic veto accuracy < 0.45, block full vetoes — only allow
-            # confidence adjustment. Bad vetoes lose more money than bad trades.
-            elif verdict != "approve" and _critic_vacc < 0.45:
-                adj_conf = cd.get("adjusted_confidence")
-                if adj_conf is not None:
-                    old_conf = confidence
-                    confidence = max(confidence * 0.85, float(adj_conf))
-                    confidence = max(0.0, min(1.0, confidence))
-                    notes += (f" | CRITIC: challenge blocked (vacc={_critic_vacc:.2f}<0.45), "
-                              f"conf {old_conf:.2f}→{confidence:.2f}")
-                else:
-                    notes += f" | CRITIC: challenge blocked (vacc={_critic_vacc:.2f}<0.45)"
-                logger.info(
-                    f"[COORDINATOR] Critic veto blocked: vacc={_critic_vacc:.2f} < 0.45 "
-                    f"— vetoes are losing money, allowing trade with adjusted confidence"
-                )
+            # R18 (FULL_PIPE map, 2026-07-02): the vacc<0.45 "challenge blocked"
+            # auto-approve channel was DELETED. It mechanically suppressed the
+            # Critic's veto using a calibration stat computed from poisoned data
+            # (M19) — silently turning the adversarial agent into a rubber stamp.
+            # The Critic's accuracy now reaches it as prompt context (calibration
+            # prefix in _call_agent) and is graded against price; its verdict
+            # stands within the pipeline. veto_is_structured below is kept as a
+            # schema check (a veto must carry a counter-thesis) — protocol, not
+            # opinion.
             elif verdict != "approve":
                 # NEW: Check for structured counter-thesis before allowing veto as action block
                 # Vetoes without structure are downgraded to confidence reduction only
