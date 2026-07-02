@@ -1,0 +1,4610 @@
+[
+ {
+  "pos_key": "HYPE|LONG|73.8765",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-02T05:28:34.620580+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 100.75949367088657,
+  "actual_exit_px": 73.3235,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -314.27,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -314.27,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -314.27,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-02T05:28:34.620580+00:00"
+  },
+  "DISABLED": {
+   "delta": -314.27,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|71.257",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-02T10:18:16.603904+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 23.940298507463133,
+  "actual_exit_px": 71.592,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -22.31,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -22.31,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -22.31,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-02T10:18:16.603904+00:00"
+  },
+  "DISABLED": {
+   "delta": -22.31,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1971.85",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-02T10:18:38.343738+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 9.174999999999942,
+  "actual_exit_px": 1979.05,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 1163.94,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 1163.94,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 1163.94,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-02T10:18:38.343738+00:00"
+  },
+  "DISABLED": {
+   "delta": 1163.94,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|LONG|73.178",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-02T14:44:07.339230+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 66.44557823129321,
+  "actual_exit_px": 72.59,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-02T14:44:07.339230+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -210.17,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-02T14:44:07.339230+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-02T14:44:07.339230+00:00"
+  },
+  "DISABLED": {
+   "delta": -210.17,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|70.528",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-03T00:15:43.908627+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 177.77777777782717,
+  "actual_exit_px": 70.5505,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -479.29,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -479.29,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-03T00:15:43.908627+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-03T00:15:43.908627+00:00"
+  },
+  "DISABLED": {
+   "delta": -479.29,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1865.55",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-03T06:25:47.938934+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 5.992424242424118,
+  "actual_exit_px": 1872.15,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 448.83,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 448.83,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 448.83,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-03T06:25:47.938934+00:00"
+  },
+  "DISABLED": {
+   "delta": 448.83,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|LONG|72.6205",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-03T10:57:37.449179+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 155.23809523808936,
+  "actual_exit_px": 72.5785,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -364.9,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -364.9,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-03T10:57:37.449179+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-03T10:57:37.449179+00:00"
+  },
+  "DISABLED": {
+   "delta": -364.9,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|63405.5",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-04T03:07:28.234828+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.14012658227848102,
+  "actual_exit_px": 63721.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -111.02,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -111.02,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -111.02,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-04T03:07:28.234828+00:00"
+  },
+  "DISABLED": {
+   "delta": -111.02,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1783.55",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-04T03:08:04.074430+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 8.774999999998004,
+  "actual_exit_px": 1783.95,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 606.35,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 606.35,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 606.35,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-04T03:08:04.074430+00:00"
+  },
+  "DISABLED": {
+   "delta": 606.35,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1796.15",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-04T03:52:55.531524+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 4.130081300813023,
+  "actual_exit_px": 1808.45,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 330.82,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 330.82,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 330.82,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-04T03:52:55.531524+00:00"
+  },
+  "DISABLED": {
+   "delta": 330.82,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|63956.5",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-04T03:53:27.989792+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.10034188034188034,
+  "actual_exit_px": 64307.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 164.06,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 164.06,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 164.06,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-04T03:53:27.989792+00:00"
+  },
+  "DISABLED": {
+   "delta": 164.06,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|61368.4",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-06T01:15:22.895161+00:00",
+  "n_calls": 1,
+  "applied": false,
+  "qty": 0.008310158678226723,
+  "actual_exit_px": 59534.5,
+  "actual_exit_type": "TP2",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": -14.48,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-06T01:15:22.895161+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|59.7365",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-06T07:40:37.440563+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 4.071038251366124,
+  "actual_exit_px": 60.1025,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-06T07:40:37.440563+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-06T07:40:37.440563+00:00"
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-06T07:40:37.440563+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-06T07:40:37.440563+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.96,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|59.9975",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-06T08:24:39.889383+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 8.795180722891734,
+  "actual_exit_px": 60.1635,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 3.92,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 3.92,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 3.92,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-06T08:24:39.889383+00:00"
+  },
+  "DISABLED": {
+   "delta": 3.92,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|62.932",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-06T08:57:33.401278+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 2.442002442002434,
+  "actual_exit_px": 63.3415,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -3.6,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -3.6,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -3.6,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-06T08:57:33.401278+00:00"
+  },
+  "DISABLED": {
+   "delta": -3.6,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1548.75",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-06T13:13:06.564526+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.1738095238095238,
+  "actual_exit_px": 1569.75,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-06T13:13:06.564526+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -6.94,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-06T13:13:06.564526+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-06T13:13:06.564526+00:00"
+  },
+  "DISABLED": {
+   "delta": -6.94,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1552.05",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-06T22:00:09.381940+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 5.284057971014423,
+  "actual_exit_px": 1558.95,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-06T22:00:09.381940+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -80.32,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-06T22:00:09.381940+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-06T22:00:09.381940+00:00"
+  },
+  "DISABLED": {
+   "delta": -80.32,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|61.611",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-06T22:01:39.853361+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 1.4746543778801606,
+  "actual_exit_px": 61.9365,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -2.67,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -2.67,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -2.67,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-06T22:01:39.853361+00:00"
+  },
+  "DISABLED": {
+   "delta": -2.67,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|LONG|64.234",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-07T13:33:49.763311+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 35.00000000008157,
+  "actual_exit_px": 64.23,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 78.75,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 78.75,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 78.75,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-07T13:33:49.763311+00:00"
+  },
+  "DISABLED": {
+   "delta": 78.75,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|61778.5",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-07T14:27:36.087897+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.012536023054755043,
+  "actual_exit_px": 62125.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -9.21,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -9.21,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -9.21,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-07T14:27:36.087897+00:00"
+  },
+  "DISABLED": {
+   "delta": -9.21,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|64.216",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-07T20:52:35.399408+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 7.931382441977689,
+  "actual_exit_px": 64.7115,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -9.26,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -9.26,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -9.26,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-07T20:52:35.399408+00:00"
+  },
+  "DISABLED": {
+   "delta": -9.26,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1623.15",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-07T21:26:45.017802+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.39574468085107917,
+  "actual_exit_px": 1627.85,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -11.56,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -11.56,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -11.56,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-07T21:26:45.017802+00:00"
+  },
+  "DISABLED": {
+   "delta": -11.56,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|64.56",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-07T22:17:24.203313+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 73.70226895406802,
+  "actual_exit_px": 65.4635,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -4.2,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -4.2,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -4.2,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-07T22:17:24.203313+00:00"
+  },
+  "DISABLED": {
+   "delta": -4.2,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|LONG|66.491",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-08T06:33:17.796465+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 39.4653087205602,
+  "actual_exit_px": 65.7055,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 59.87,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 59.87,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 59.87,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-08T06:33:17.796465+00:00"
+  },
+  "DISABLED": {
+   "delta": 59.87,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|LONG|62.9575",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-08T07:41:41.524484+00:00",
+  "n_calls": 2,
+  "applied": true,
+  "qty": 342.4423963133623,
+  "actual_exit_px": 62.3065,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 161.63,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 161.63,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 278.58,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-08T07:41:41.524484+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 278.58,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-08T07:41:41.524484+00:00"
+  },
+  "DISABLED": {
+   "delta": 161.63,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|LONG|63406.5",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-08T12:26:49.454039+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.011314655172413793,
+  "actual_exit_px": 62942.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-08T12:26:49.454039+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -5.01,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-08T12:26:49.454039+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-08T12:26:49.454039+00:00"
+  },
+  "DISABLED": {
+   "delta": -5.01,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|63691.5",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-08T22:09:46.893351+00:00",
+  "n_calls": 2,
+  "applied": false,
+  "qty": 0.007121285923039454,
+  "actual_exit_px": 61638.5,
+  "actual_exit_type": "TRAILING_STOP",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": -11.56,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-08T22:09:46.893351+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1665.85",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-09T11:58:18.718855+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.24333333333333332,
+  "actual_exit_px": 1668.85,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-09T11:58:18.718855+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 12.65,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-09T11:58:18.718855+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-09T11:58:18.718855+00:00"
+  },
+  "DISABLED": {
+   "delta": 12.65,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|63.884",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-09T18:16:06.352508+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 6.258823529411765,
+  "actual_exit_px": 64.9465,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -2.28,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -2.28,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -2.28,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-09T18:16:06.352508+00:00"
+  },
+  "DISABLED": {
+   "delta": -2.28,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|61736.5",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-09T21:50:43.847267+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.20567567567567568,
+  "actual_exit_px": 61773.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -219.85,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -219.85,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-09T21:50:43.847267+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-09T21:50:43.847267+00:00"
+  },
+  "DISABLED": {
+   "delta": -219.85,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|65.125",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-10T07:09:02.258304+00:00",
+  "n_calls": 1,
+  "applied": false,
+  "qty": 4.488891351321401,
+  "actual_exit_px": 74.1495,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 43.96,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-10T07:09:02.258304+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 43.96,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-10T07:09:02.258304+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1631.25",
+  "era": "E1_jun01-10",
+  "first_ts": "2026-06-10T08:15:32.168675+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 2.684931506849332,
+  "actual_exit_px": 1638.55,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-10T08:15:32.168675+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -70.86,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-10T08:15:32.168675+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-10T08:15:32.168675+00:00"
+  },
+  "DISABLED": {
+   "delta": -70.86,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|LONG|1793.55",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-16T21:32:21.436751+00:00",
+  "n_calls": 4,
+  "applied": true,
+  "qty": null,
+  "actual_exit_px": 1793.15,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-16T23:51:50.978245+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-16T22:07:09.782617+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-16T21:32:21.436751+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|LONG|1797.75",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-17T02:50:43.800971+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 3.149999999999955,
+  "actual_exit_px": 1794.55,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -49.52,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -49.52,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -49.52,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-17T02:50:43.800971+00:00"
+  },
+  "DISABLED": {
+   "delta": -49.52,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|64873.5",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-17T10:25:59.348843+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.08707317073170731,
+  "actual_exit_px": 64914.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -51.77,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -51.77,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -51.77,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-17T10:25:59.348843+00:00"
+  },
+  "DISABLED": {
+   "delta": -51.77,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|71.85",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-17T12:29:51.134645+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 2.4561403508768955,
+  "actual_exit_px": 71.9355,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -3.22,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -3.22,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -3.22,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-17T12:29:51.134645+00:00"
+  },
+  "DISABLED": {
+   "delta": -3.22,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|65436.5",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-17T15:54:20.353093+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.002105263157894737,
+  "actual_exit_px": 65474.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -0.92,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -0.92,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -0.92,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-17T15:54:20.353093+00:00"
+  },
+  "DISABLED": {
+   "delta": -0.92,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|LONG|74.5715",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-17T18:07:18.150229+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 12.80146163215594,
+  "actual_exit_px": 72.9295,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -36.63,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -36.63,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -36.63,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-17T18:07:18.150229+00:00"
+  },
+  "DISABLED": {
+   "delta": -36.63,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|LONG|74.2045",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-17T18:58:52.020238+00:00",
+  "n_calls": 2,
+  "applied": true,
+  "qty": 104.5908998163644,
+  "actual_exit_px": 71.754,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-17T19:33:51.294370+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-17T19:33:51.294370+00:00"
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-17T19:33:51.294370+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 202.07,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-17T18:58:52.020238+00:00"
+  },
+  "DISABLED": {
+   "delta": -128.29,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1731.05",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-18T06:07:00.415954+00:00",
+  "n_calls": 2,
+  "applied": true,
+  "qty": 0.18974358974358532,
+  "actual_exit_px": 1734.95,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-18T07:12:01.370178+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 7.23,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-18T07:12:01.370178+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 1.36,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-18T06:07:00.415954+00:00"
+  },
+  "DISABLED": {
+   "delta": 7.23,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|63943.5",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-18T07:12:48.543291+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.0038842975206611566,
+  "actual_exit_px": 64064.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 5.13,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 5.13,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 5.13,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-18T07:12:48.543291+00:00"
+  },
+  "DISABLED": {
+   "delta": 5.13,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|64430.5",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-18T08:23:26.380088+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.0013333333333333333,
+  "actual_exit_px": 64610.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 2.54,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 2.54,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 2.54,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-18T08:23:26.380088+00:00"
+  },
+  "DISABLED": {
+   "delta": 2.54,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|62816.5",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-18T23:14:19.493907+00:00",
+  "n_calls": 2,
+  "applied": true,
+  "qty": 0.002235294117647059,
+  "actual_exit_px": 62901.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -1.29,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -1.29,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.39,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-18T23:14:19.493907+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.39,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-18T23:14:19.493907+00:00"
+  },
+  "DISABLED": {
+   "delta": -1.29,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|62750.5",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-19T13:56:42.826198+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.0011636363636363637,
+  "actual_exit_px": 63025.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.13,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.13,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.13,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-19T13:56:42.826198+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.13,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|LONG|68.3425",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-19T16:42:05.013601+00:00",
+  "n_calls": 15,
+  "applied": false,
+  "qty": 3.8392857142857313,
+  "actual_exit_px": 68.6785,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 5.59,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-19T16:42:05.013601+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 5.59,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-19T16:42:05.013601+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|LONG|1725.15",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-20T07:15:42.464527+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": null,
+  "actual_exit_px": 1724.65,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-20T07:15:42.464527+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-20T07:15:42.464527+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|LONG|1727.75",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-20T09:50:06.134310+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": null,
+  "actual_exit_px": 1727.75,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-20T09:50:06.134310+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|LONG|63525.5",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-20T10:48:15.435833+00:00",
+  "n_calls": 8,
+  "applied": true,
+  "qty": 0.005365853658536586,
+  "actual_exit_px": 63443.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-20T13:50:18.128076+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 3.93,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 1.11,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-20T10:48:15.435833+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 1.11,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-20T10:48:15.435833+00:00"
+  },
+  "DISABLED": {
+   "delta": 3.93,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|LONG|71.806",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-20T17:34:49.465281+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 10.585175552665726,
+  "actual_exit_px": 71.4215,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 29.35,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 29.35,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 29.35,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-20T17:34:49.465281+00:00"
+  },
+  "DISABLED": {
+   "delta": 29.35,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|LONG|1732.45",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-20T17:59:25.378426+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.7491525423728698,
+  "actual_exit_px": 1726.55,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.22,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.22,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.22,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-20T17:59:25.378426+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.22,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|69.9145",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-20T19:11:26.899540+00:00",
+  "n_calls": 1,
+  "applied": false,
+  "qty": 24.44444444444352,
+  "actual_exit_px": 69.9055,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -0.55,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-20T19:11:26.899540+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -0.55,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-20T19:11:26.899540+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -0.55,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-20T19:11:26.899540+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|LONG|64100.5",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-20T20:17:43.091614+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.02121019108280255,
+  "actual_exit_px": 63943.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-20T20:17:43.091614+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 4.28,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-20T20:17:43.091614+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-20T20:17:43.091614+00:00"
+  },
+  "DISABLED": {
+   "delta": 4.28,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|69.5235",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-20T23:04:59.106666+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 6.709112614405079,
+  "actual_exit_px": 70.78,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 26.44,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 26.44,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 26.44,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-20T23:04:59.106666+00:00"
+  },
+  "DISABLED": {
+   "delta": 26.44,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|70.3765",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-21T03:20:50.842666+00:00",
+  "n_calls": 31,
+  "applied": false,
+  "qty": 8.875961718896637,
+  "actual_exit_px": 67.712,
+  "actual_exit_type": "TRAILING_STOP",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -20.43,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-21T03:20:50.842666+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -20.43,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-21T03:20:50.842666+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1733.65",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-21T13:36:05.311086+00:00",
+  "n_calls": 5,
+  "applied": false,
+  "qty": 1.3999999999998807,
+  "actual_exit_px": 1732.05,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 14.49,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-21T13:36:05.311086+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 14.49,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-21T13:36:05.311086+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|63798.5",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-21T23:25:41.209650+00:00",
+  "n_calls": 2,
+  "applied": true,
+  "qty": 0.01921875,
+  "actual_exit_px": 63926.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 2.98,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 2.98,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 6.18,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-21T23:25:41.209650+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 6.18,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-21T23:25:41.209650+00:00"
+  },
+  "DISABLED": {
+   "delta": 2.98,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|73.233",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-21T23:26:48.987614+00:00",
+  "n_calls": 3,
+  "applied": true,
+  "qty": 8.14249363867683,
+  "actual_exit_px": 73.4295,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-22T01:22:35.946515+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -2.65,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 4.63,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-21T23:26:48.987614+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 4.63,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-21T23:26:48.987614+00:00"
+  },
+  "DISABLED": {
+   "delta": -2.65,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1710.65",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-21T23:27:16.428484+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": null,
+  "actual_exit_px": 1711.05,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-21T23:27:16.428484+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|67.1045",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-22T05:26:43.664228+00:00",
+  "n_calls": 6,
+  "applied": true,
+  "qty": 4.399999999999937,
+  "actual_exit_px": 67.3045,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.5,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-22T07:25:45.092643+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 16.42,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 2.01,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-22T07:02:53.365005+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 4.22,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-22T05:26:43.664228+00:00"
+  },
+  "DISABLED": {
+   "delta": 16.42,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|63958.5",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-22T06:32:20.940994+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.01787878787878788,
+  "actual_exit_px": 64189.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -14.01,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -14.01,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -14.01,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-22T06:32:20.940994+00:00"
+  },
+  "DISABLED": {
+   "delta": -14.01,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|LONG|64557.5",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-22T16:20:20.885843+00:00",
+  "n_calls": 4,
+  "applied": true,
+  "qty": 0.022,
+  "actual_exit_px": 64517.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -0.21,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-22T17:28:10.485495+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -18.16,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 4.06,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-22T16:56:12.376486+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 3.35,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-22T16:20:20.885843+00:00"
+  },
+  "DISABLED": {
+   "delta": -18.16,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|LONG|64348.5",
+  "era": "E2_jun16-22",
+  "first_ts": "2026-06-22T21:57:19.541254+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.01472,
+  "actual_exit_px": 64223.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -11.76,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": -11.76,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -11.76,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-22T21:57:19.541254+00:00"
+  },
+  "DISABLED": {
+   "delta": -11.76,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|66.2175",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-23T00:33:57.650879+00:00",
+  "n_calls": 2,
+  "applied": true,
+  "qty": 0.9876543209877902,
+  "actual_exit_px": 66.258,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 3.38,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 3.38,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 3.38,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": -0.31,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-23T00:33:57.650879+00:00"
+  },
+  "DISABLED": {
+   "delta": 3.38,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|64321.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-23T00:53:40.149207+00:00",
+  "n_calls": 7,
+  "applied": false,
+  "qty": null,
+  "actual_exit_px": null,
+  "actual_exit_type": null,
+  "ledger_matched": false,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-23T05:23:17.013327+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-23T00:53:40.149207+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|71.941",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-23T02:04:30.389870+00:00",
+  "n_calls": 7,
+  "applied": true,
+  "qty": null,
+  "actual_exit_px": 71.9695,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-23T02:04:30.389870+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-23T02:04:30.389870+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1721.55",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-23T02:47:12.282224+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.4032608695652154,
+  "actual_exit_px": 1730.75,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-23T02:47:12.282224+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 27.91,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-23T02:47:12.282224+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-23T02:47:12.282224+00:00"
+  },
+  "DISABLED": {
+   "delta": 27.91,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1692.05",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-23T08:35:24.702279+00:00",
+  "n_calls": 1,
+  "applied": false,
+  "qty": 0.6874233128834375,
+  "actual_exit_px": 1659.45,
+  "actual_exit_type": "TRAILING_STOP",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 7.8,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-23T08:35:24.702279+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|63205.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-23T08:57:06.398390+00:00",
+  "n_calls": 8,
+  "applied": false,
+  "qty": null,
+  "actual_exit_px": null,
+  "actual_exit_type": null,
+  "ledger_matched": false,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-23T11:41:53.753956+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-23T08:57:06.398390+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|63.6165",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-23T10:18:48.935648+00:00",
+  "n_calls": 8,
+  "applied": true,
+  "qty": null,
+  "actual_exit_px": 63.6325,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-23T10:18:48.935648+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-23T10:18:48.935648+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|62218.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-23T21:38:55.433948+00:00",
+  "n_calls": 5,
+  "applied": false,
+  "qty": 0.017777777777777778,
+  "actual_exit_px": 62839.5,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 4.26,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-23T21:38:55.433948+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 4.97,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-23T22:55:53.984768+00:00"
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 4.26,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-23T21:38:55.433948+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 4.26,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-23T21:38:55.433948+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|62.7055",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-23T23:37:44.463180+00:00",
+  "n_calls": 24,
+  "applied": false,
+  "qty": 3.9583333333331834,
+  "actual_exit_px": 62.6575,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -0.9,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-24T00:42:38.770190+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -0.9,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-24T00:42:38.770190+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 3.42,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-23T23:37:44.463180+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|LONG|69.419",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-24T02:04:27.924290+00:00",
+  "n_calls": 3,
+  "applied": false,
+  "qty": 10.837438423645164,
+  "actual_exit_px": 69.5205,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 3.89,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-24T02:04:27.924290+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1665.65",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-24T04:57:44.685325+00:00",
+  "n_calls": 17,
+  "applied": false,
+  "qty": 0.6936170212765939,
+  "actual_exit_px": 1632.75,
+  "actual_exit_type": "TRAILING_STOP",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -24.8,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-24T04:57:44.685325+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -24.8,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-24T04:57:44.685325+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -24.8,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-24T04:57:44.685325+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|62598.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-24T05:39:30.160531+00:00",
+  "n_calls": 12,
+  "applied": false,
+  "qty": 0.017649572649572648,
+  "actual_exit_px": 63066.5,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 2.92,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-24T05:39:30.160531+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 2.92,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-24T05:39:30.160531+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 2.92,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-24T05:39:30.160531+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|69.285",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-24T06:58:56.815066+00:00",
+  "n_calls": 17,
+  "applied": false,
+  "qty": 6.7809842464798535,
+  "actual_exit_px": 65.6985,
+  "actual_exit_type": "TRAILING_STOP",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -24.93,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-24T08:15:06.430496+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -24.93,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-24T08:15:06.430496+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -27.07,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-24T06:58:56.815066+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|66.027",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-24T22:08:03.511170+00:00",
+  "n_calls": 3,
+  "applied": false,
+  "qty": null,
+  "actual_exit_px": null,
+  "actual_exit_type": null,
+  "ledger_matched": false,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-24T22:52:46.301135+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-24T22:52:46.301135+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-24T22:08:03.511170+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1619.35",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-24T22:53:39.607161+00:00",
+  "n_calls": 2,
+  "applied": false,
+  "qty": null,
+  "actual_exit_px": null,
+  "actual_exit_type": null,
+  "ledger_matched": false,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-24T22:53:39.607161+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-24T22:53:39.607161+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|LONG|63.7825",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T02:14:16.080342+00:00",
+  "n_calls": 9,
+  "applied": false,
+  "qty": null,
+  "actual_exit_px": null,
+  "actual_exit_type": null,
+  "ledger_matched": false,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T02:42:46.361313+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T02:42:46.361313+00:00"
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T02:42:46.361313+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T02:14:16.080342+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|LONG|67.769",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T03:10:12.841873+00:00",
+  "n_calls": 6,
+  "applied": false,
+  "qty": null,
+  "actual_exit_px": null,
+  "actual_exit_type": null,
+  "ledger_matched": false,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T06:10:31.919233+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T03:10:12.841873+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1619.95",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T04:47:50.227251+00:00",
+  "n_calls": 2,
+  "applied": false,
+  "qty": 0.05963636363636363,
+  "actual_exit_px": 1647.45,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.8,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T04:47:50.227251+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|60842.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T04:48:54.051689+00:00",
+  "n_calls": 1,
+  "applied": false,
+  "qty": 0.011914357682619649,
+  "actual_exit_px": 61636.5,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 3.57,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T04:48:54.051689+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 3.57,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T04:48:54.051689+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 3.57,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T04:48:54.051689+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|LONG|1652.25",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T09:20:31.764091+00:00",
+  "n_calls": 10,
+  "applied": false,
+  "qty": 0.22806255430060834,
+  "actual_exit_px": 1537.15,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 25.14,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T09:20:31.764091+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 25.14,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T09:20:31.764091+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 25.14,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T09:20:31.764091+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|LONG|61696.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T09:54:01.257026+00:00",
+  "n_calls": 9,
+  "applied": false,
+  "qty": 0.008089489779494608,
+  "actual_exit_px": 58590.0,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 22.16,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T11:02:36.017737+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 25.18,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T09:54:01.257026+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 25.18,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T09:54:01.257026+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|LONG|63.4965",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T11:31:42.785790+00:00",
+  "n_calls": 6,
+  "applied": false,
+  "qty": 3.269480051850786,
+  "actual_exit_px": 60.025,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 8.36,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T12:23:09.418829+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 8.36,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T12:23:09.418829+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 8.9,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T11:31:42.785790+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|68.837",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T11:55:58.037412+00:00",
+  "n_calls": 1,
+  "applied": false,
+  "qty": 5.295202952029505,
+  "actual_exit_px": 65.585,
+  "actual_exit_type": "TRAILING_STOP",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -13.46,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T11:55:58.037412+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -13.46,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T11:55:58.037412+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|60.2105",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T15:38:55.166006+00:00",
+  "n_calls": 5,
+  "applied": false,
+  "qty": null,
+  "actual_exit_px": null,
+  "actual_exit_type": null,
+  "ledger_matched": false,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T16:02:30.454841+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T16:02:30.454841+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T15:38:55.166006+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1563.75",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T15:41:28.005121+00:00",
+  "n_calls": 3,
+  "applied": false,
+  "qty": null,
+  "actual_exit_px": null,
+  "actual_exit_type": null,
+  "ledger_matched": false,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T15:41:28.005121+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T15:41:28.005121+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|58955.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T16:30:26.598079+00:00",
+  "n_calls": 2,
+  "applied": false,
+  "qty": null,
+  "actual_exit_px": null,
+  "actual_exit_type": null,
+  "ledger_matched": false,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T16:30:26.598079+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T16:30:26.598079+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-06-25T16:30:26.598079+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|66.244",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T20:37:47.740517+00:00",
+  "n_calls": 20,
+  "applied": false,
+  "qty": 1.5223533322253626,
+  "actual_exit_px": 69.2525,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 3.75,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T21:18:03.241273+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 3.75,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T21:18:03.241273+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 4.32,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T20:37:47.740517+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|62.8795",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T20:38:28.960265+00:00",
+  "n_calls": 24,
+  "applied": false,
+  "qty": 1.7999999999999743,
+  "actual_exit_px": 62.7795,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -1.18,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T20:38:28.960265+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -1.69,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-26T00:26:54.624791+00:00"
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -1.18,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T20:38:28.960265+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -1.18,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T20:38:28.960265+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1572.55",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T21:16:53.665463+00:00",
+  "n_calls": 1,
+  "applied": false,
+  "qty": 0.02,
+  "actual_exit_px": 1573.05,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.12,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T21:16:53.665463+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|59224.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T22:26:01.499591+00:00",
+  "n_calls": 22,
+  "applied": false,
+  "qty": 0.0051005484460694694,
+  "actual_exit_px": 60865.5,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 4.87,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T23:01:27.566642+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 3.67,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-26T09:07:03.298892+00:00"
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 4.87,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T23:01:27.566642+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 5.64,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T22:26:01.499591+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "XRP|SHORT|1.038",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-25T23:47:59.593788+00:00",
+  "n_calls": 4,
+  "applied": false,
+  "qty": 277.77777777773986,
+  "actual_exit_px": 1.0371,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -2.03,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-26T00:03:39.787146+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -2.03,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-26T00:03:39.787146+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -1.47,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-25T23:47:59.593788+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1579.45",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-26T00:57:44.184816+00:00",
+  "n_calls": 4,
+  "applied": false,
+  "qty": 0.31666666666665466,
+  "actual_exit_px": 1578.25,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 17.4,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-26T02:51:38.299690+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 4.54,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-26T00:57:44.184816+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "XRP|LONG|1.0475",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-29T06:03:22.103093+00:00",
+  "n_calls": 2,
+  "applied": false,
+  "qty": 530.4347826087029,
+  "actual_exit_px": 1.04865,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 1.88,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-29T06:03:22.103093+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "XRP|LONG|1.0528",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-29T14:19:04.630344+00:00",
+  "n_calls": 9,
+  "applied": false,
+  "qty": 92.68292682927348,
+  "actual_exit_px": 1.05075,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": -0.58,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-29T14:19:04.630344+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": -0.58,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-29T14:19:04.630344+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -0.58,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-29T14:19:04.630344+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|LONG|1623.55",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-29T22:22:56.947319+00:00",
+  "n_calls": 7,
+  "applied": false,
+  "qty": 0.23483483483483517,
+  "actual_exit_px": 1590.25,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 1.89,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T01:23:19.095167+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 1.89,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T01:23:19.095167+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 6.35,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-29T22:22:56.947319+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|LONG|60402.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-30T01:23:47.309711+00:00",
+  "n_calls": 11,
+  "applied": true,
+  "qty": 0.0064670658682634725,
+  "actual_exit_px": 59233.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 5.02,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T01:23:47.309711+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 2.3,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T03:54:32.947047+00:00"
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 5.02,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T01:23:47.309711+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 5.02,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T01:23:47.309711+00:00"
+  },
+  "DISABLED": {
+   "delta": -0.29,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|LONG|75.124",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-30T02:42:31.655023+00:00",
+  "n_calls": 9,
+  "applied": true,
+  "qty": 3.3445136559655184,
+  "actual_exit_px": 74.0805,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 1.62,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T02:42:31.655023+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 1.62,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T02:42:31.655023+00:00"
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 1.62,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T02:42:31.655023+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 1.62,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T02:42:31.655023+00:00"
+  },
+  "DISABLED": {
+   "delta": -1.39,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|LONG|65.9995",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-30T04:30:28.580559+00:00",
+  "n_calls": 5,
+  "applied": true,
+  "qty": 2.2222222222222054,
+  "actual_exit_px": 65.5315,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.46,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T06:12:02.980048+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -3.28,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.46,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T06:12:02.980048+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 1.9,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T04:30:28.580559+00:00"
+  },
+  "DISABLED": {
+   "delta": -3.28,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "XRP|SHORT|1.0482",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-30T05:12:36.594755+00:00",
+  "n_calls": 20,
+  "applied": false,
+  "qty": 799.9999999997328,
+  "actual_exit_px": 1.04795,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 1.24,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T05:12:36.594755+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 1.24,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T05:12:36.594755+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|SHORT|1593.15",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-30T09:27:34.512295+00:00",
+  "n_calls": 9,
+  "applied": false,
+  "qty": 0.03157894736841954,
+  "actual_exit_px": 1591.25,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.27,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T09:27:34.512295+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.27,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T09:27:34.512295+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|64.7965",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-30T15:32:45.235434+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 2.430939226519181,
+  "actual_exit_px": 64.887,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-30T15:32:45.235434+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 1.29,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-30T15:32:45.235434+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-30T15:32:45.235434+00:00"
+  },
+  "DISABLED": {
+   "delta": 1.29,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|SHORT|73.345",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-30T17:17:13.530104+00:00",
+  "n_calls": 4,
+  "applied": true,
+  "qty": 0.15533980582523826,
+  "actual_exit_px": 73.6025,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-30T18:59:55.133623+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -0.15,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-30T18:59:55.133623+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.03,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T17:17:13.530104+00:00"
+  },
+  "DISABLED": {
+   "delta": -0.15,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|LONG|73.753",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-06-30T21:46:52.936097+00:00",
+  "n_calls": 5,
+  "applied": true,
+  "qty": 6.8100358422939955,
+  "actual_exit_px": 73.6135,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-30T23:34:19.610011+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -4.64,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-06-30T23:34:19.610011+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -0.93,
+   "method": "ledger_realized",
+   "pol_ts": "2026-06-30T21:46:52.936097+00:00"
+  },
+  "DISABLED": {
+   "delta": -4.64,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|58601.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-01T00:01:31.291246+00:00",
+  "n_calls": 5,
+  "applied": true,
+  "qty": 0.006363636363636363,
+  "actual_exit_px": 58788.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-01T01:47:38.311038+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -5.75,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-01T01:47:38.311038+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 1.05,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-01T00:01:31.291246+00:00"
+  },
+  "DISABLED": {
+   "delta": -5.75,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "XRP|LONG|1.05",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-01T08:30:10.334629+00:00",
+  "n_calls": 3,
+  "applied": true,
+  "qty": 477.4193548387053,
+  "actual_exit_px": 1.04535,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-01T09:27:44.470099+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -3.01,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-01T09:27:44.470099+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -1.6,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-01T08:30:10.334629+00:00"
+  },
+  "DISABLED": {
+   "delta": -3.01,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|LONG|74.682",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-01T08:30:55.397488+00:00",
+  "n_calls": 5,
+  "applied": true,
+  "qty": null,
+  "actual_exit_px": 74.3535,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-07-01T12:13:24.932645+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-07-01T12:13:24.932645+00:00"
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-07-01T08:30:55.397488+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-07-01T08:30:55.397488+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|58756.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-01T09:07:00.669399+00:00",
+  "n_calls": 3,
+  "applied": true,
+  "qty": 0.005714285714285714,
+  "actual_exit_px": 58868.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-01T09:52:13.579202+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -4.86,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-01T09:52:13.579202+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -0.39,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-01T09:07:00.669399+00:00"
+  },
+  "DISABLED": {
+   "delta": -4.86,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|63.7368",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-01T11:50:38.487407+00:00",
+  "n_calls": 4,
+  "applied": false,
+  "qty": 0.6263048016701658,
+  "actual_exit_px": 63.8805,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.79,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-01T11:50:38.487407+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.79,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-01T11:50:38.487407+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|SHORT|58739.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-01T13:01:56.037411+00:00",
+  "n_calls": 2,
+  "applied": false,
+  "qty": 0.005350877192982456,
+  "actual_exit_px": 58853.5,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 1.1,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-01T13:01:56.037411+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 1.1,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-01T13:01:56.037411+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|LONG|59420.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-01T15:57:06.109537+00:00",
+  "n_calls": 2,
+  "applied": false,
+  "qty": null,
+  "actual_exit_px": null,
+  "actual_exit_type": null,
+  "ledger_matched": false,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-07-01T15:57:06.109537+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-07-01T15:57:06.109537+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|64.1525",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-01T17:16:41.921772+00:00",
+  "n_calls": 3,
+  "applied": true,
+  "qty": 4.752066115702531,
+  "actual_exit_px": 64.6365,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 1.79,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-01T17:16:41.921772+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -6.66,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 1.79,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-01T17:16:41.921772+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 1.79,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-01T17:16:41.921772+00:00"
+  },
+  "DISABLED": {
+   "delta": -6.66,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "XRP|LONG|1.062",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-01T17:49:58.976204+00:00",
+  "n_calls": 2,
+  "applied": true,
+  "qty": 18.181818181816514,
+  "actual_exit_px": 1.06145,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-01T18:22:40.668476+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -0.31,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-01T18:22:40.668476+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -0.0,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-01T17:49:58.976204+00:00"
+  },
+  "DISABLED": {
+   "delta": -0.31,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|LONG|1616.25",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-01T18:23:39.988453+00:00",
+  "n_calls": 4,
+  "applied": true,
+  "qty": 0.18620689655171832,
+  "actual_exit_px": 1613.35,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-01T20:09:59.442066+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 15.77,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-01T20:09:59.442066+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.66,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-01T18:23:39.988453+00:00"
+  },
+  "DISABLED": {
+   "delta": 15.77,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|LONG|64.3455",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-01T20:53:58.246635+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 2.959621993127144,
+  "actual_exit_px": 62.0175,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-01T20:53:58.246635+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -1.41,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-01T20:53:58.246635+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-01T20:53:58.246635+00:00"
+  },
+  "DISABLED": {
+   "delta": -1.41,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|LONG|77.193",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-01T22:02:59.262900+00:00",
+  "n_calls": 1,
+  "applied": false,
+  "qty": null,
+  "actual_exit_px": null,
+  "actual_exit_type": null,
+  "ledger_matched": false,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-07-01T22:02:59.262900+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-07-01T22:02:59.262900+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|LONG|78.264",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-02T02:19:41.393035+00:00",
+  "n_calls": 6,
+  "applied": true,
+  "qty": 4.326375711575061,
+  "actual_exit_px": 78.0005,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.22,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-02T05:15:25.829609+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 11.43,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 1.95,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-02T03:00:11.294864+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.79,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-02T02:19:41.393035+00:00"
+  },
+  "DISABLED": {
+   "delta": 11.43,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|LONG|60286.5",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-02T02:22:18.895950+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.0006862745098039216,
+  "actual_exit_px": 60184.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T02:22:18.895950+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.88,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T02:22:18.895950+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T02:22:18.895950+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.88,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|LONG|1609.41",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-02T02:23:52.653341+00:00",
+  "n_calls": 1,
+  "applied": false,
+  "qty": 0.019184652278177648,
+  "actual_exit_px": 1617.75,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.01,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-02T02:23:52.653341+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|62.9965",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-02T03:01:09.467690+00:00",
+  "n_calls": 3,
+  "applied": true,
+  "qty": 0.8880308880308868,
+  "actual_exit_px": 63.7735,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.65,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-02T03:01:09.467690+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -2.31,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.65,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-02T03:01:09.467690+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.65,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-02T03:01:09.467690+00:00"
+  },
+  "DISABLED": {
+   "delta": -2.31,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "XRP|LONG|1.0622",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-02T07:31:30.266929+00:00",
+  "n_calls": 2,
+  "applied": true,
+  "qty": 2685.3333333332316,
+  "actual_exit_px": 1.05845,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T07:49:58.697331+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 70.36,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T07:49:58.697331+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -0.13,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-02T07:31:30.266929+00:00"
+  },
+  "DISABLED": {
+   "delta": 70.36,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|LONG|60764.6",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-02T07:50:58.572229+00:00",
+  "n_calls": 2,
+  "applied": true,
+  "qty": 0.0009341075485988421,
+  "actual_exit_px": 60368.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T08:20:12.888881+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 1.05,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T08:20:12.888881+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": -0.2,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-02T07:50:58.572229+00:00"
+  },
+  "DISABLED": {
+   "delta": 1.05,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "HYPE|SHORT|63.3442",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-02T08:50:53.085714+00:00",
+  "n_calls": 5,
+  "applied": false,
+  "qty": 0.9811372901264434,
+  "actual_exit_px": 64.7915,
+  "actual_exit_type": "SL",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 1.22,
+   "method": "ledger_realized",
+   "pol_ts": "2026-07-02T08:50:53.085714+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "ETH|LONG|1646.11",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-02T15:00:06.340246+00:00",
+  "n_calls": 2,
+  "applied": false,
+  "qty": null,
+  "actual_exit_px": null,
+  "actual_exit_type": null,
+  "ledger_matched": false,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-07-02T15:00:06.340246+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "BTC|LONG|61897.7",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-02T16:39:21.289660+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.0011299435028248638,
+  "actual_exit_px": 61260.5,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T16:39:21.289660+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.06,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T16:39:21.289660+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T16:39:21.289660+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.06,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "XRP|LONG|1.088",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-02T18:59:01.794806+00:00",
+  "n_calls": 3,
+  "applied": true,
+  "qty": null,
+  "actual_exit_px": 1.08505,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T19:48:06.168994+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T19:48:06.168994+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": "2026-07-02T18:59:01.794806+00:00"
+  },
+  "DISABLED": {
+   "delta": 0.0,
+   "method": "unscored",
+   "pol_ts": null
+  }
+ },
+ {
+  "pos_key": "SOL|LONG|81.051",
+  "era": "E3_jun23-jul02",
+  "first_ts": "2026-07-02T19:23:05.248626+00:00",
+  "n_calls": 1,
+  "applied": true,
+  "qty": 0.20202020202016538,
+  "actual_exit_px": 81.0015,
+  "actual_exit_type": "LLM_EXIT_AGENT",
+  "ledger_matched": true,
+  "CURRENT_RULE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T19:23:05.248626+00:00"
+  },
+  "DEAD_CONF80": {
+   "delta": -0.05,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  },
+  "DEAD_ANY_SIDE": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T19:23:05.248626+00:00"
+  },
+  "ALL_CONF60": {
+   "delta": 0.0,
+   "method": "same",
+   "pol_ts": "2026-07-02T19:23:05.248626+00:00"
+  },
+  "DISABLED": {
+   "delta": -0.05,
+   "method": "sim24h_removed",
+   "pol_ts": null
+  }
+ }
+]
