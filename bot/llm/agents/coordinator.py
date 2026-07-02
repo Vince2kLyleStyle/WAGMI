@@ -561,10 +561,15 @@ class AgentCoordinator:
             except Exception as e:
                 logger.debug("[MULTI-AGENT] 4h technicals enrichment failed: %s", e)
 
-        # Mechanical regime overlay (RQ10, env-gated): compute the validated
-        # ATR-ptile/ADX hybrid nowcast and stash it for the Regime agent's
-        # INPUT (labeled context, additive — the agent still decides).
-        if os.getenv("MECH_REGIME_OVERLAY", "").lower() in ("true", "1", "yes"):
+        # Mechanical regime overlay (RQ10): compute the ATR-ptile/ADX hybrid
+        # nowcast. Two consumers:
+        #   - MECH_REGIME_OVERLAY (input-injection variant, UNVALIDATED by
+        #     RQ10 — kept env-gated OFF as the A/B arm)
+        #   - REGIME_OVERLAY_ENFORCE (post-label overlay, the VALIDATED
+        #     variant: .600 -> .652 accuracy, era-stable — default ON,
+        #     applied after the Regime agent runs, below)
+        if (os.getenv("MECH_REGIME_OVERLAY", "").lower() in ("true", "1", "yes")
+                or os.getenv("REGIME_OVERLAY_ENFORCE", "true").lower() in ("true", "1", "yes")):
             try:
                 from llm.agents.mech_regime import compute_mech_regime
                 _mech_ohlcv = None
@@ -999,6 +1004,45 @@ class AgentCoordinator:
                     logger.info(f"[MULTI-AGENT] Regime fallback: unknown → {_fb_regime}")
             except Exception as e:
                 logger.debug(f"[MULTI-AGENT] Regime fallback error: {e}")
+
+        # RQ10 VALIDATED post-label overlay (coordination/RQ10_REGIME_ACCURACY.md
+        # Finding 7, n=3,414 label-hours): hybrid = (a) hard-override to
+        # high_volatility when ATR%-ptile >= 0.90 (agent misses 90% of realized
+        # high-vol: recall .10 vs mech .67), (b) demote agent "trend*" to range
+        # when ADX(14) < 20 (agent trending precision .127 — BELOW the .160
+        # base rate). Accuracy .600 -> .652, era-stable (.568->.607, .630->.694).
+        # Only the unvalidated INPUT-injection variant had shipped (c88b0a5).
+        # Original agent label preserved in rg_agent. Idempotent (safe on
+        # cached regime_out). Revert: REGIME_OVERLAY_ENFORCE=false.
+        if os.getenv("REGIME_OVERLAY_ENFORCE", "true").lower() in ("true", "1", "yes"):
+            try:
+                _mech_ov = snapshot_data.get("mech_regime") or {}
+                _rg_now = str(regime_out.data.get("rg", "unknown"))
+                _ov_ptile = _mech_ov.get("atr_ptile")
+                _ov_adx = _mech_ov.get("adx")
+                if (_ov_ptile is not None and _ov_ptile >= 0.90
+                        and _rg_now not in ("high_volatility", "panic")):
+                    regime_out.data.setdefault("rg_agent", _rg_now)
+                    regime_out.data["rg"] = "high_volatility"
+                    regime_out.data["overlay"] = (
+                        f"rq10_high_vol_override(atr_ptile={_ov_ptile:.2f}; "
+                        f"agent said {_rg_now})")
+                    logger.info(
+                        "[MULTI-AGENT] RQ10 overlay: %s -> high_volatility "
+                        "(ATR ptile %.2f >= 0.90)", _rg_now, _ov_ptile)
+                elif (_ov_adx is not None and _ov_adx < 20.0
+                        and _rg_now in ("trend", "trending", "trending_bull",
+                                        "trending_bear")):
+                    regime_out.data.setdefault("rg_agent", _rg_now)
+                    regime_out.data["rg"] = "range"
+                    regime_out.data["overlay"] = (
+                        f"rq10_adx_demote(adx={_ov_adx:.1f}<20; "
+                        f"agent said {_rg_now})")
+                    logger.info(
+                        "[MULTI-AGENT] RQ10 overlay: %s -> range "
+                        "(ADX %.1f < 20)", _rg_now, _ov_adx)
+            except Exception as e:
+                logger.debug(f"[MULTI-AGENT] RQ10 overlay error: {e}")
 
         # Write regime output to scratchpad for downstream agents
         scratchpad.write("regime", "regime", regime_out.data.get("rg", "unknown"))
@@ -1802,9 +1846,14 @@ class AgentCoordinator:
                             strategy=_strat,
                             regime=str(market_context.get("regime", "")),
                             denominator_only=_pf_denom_only,
-                            metadata=(None if _pf_enforce
+                            # BT_VETO_RESCORE DO-NOW #5: strategies_agree/num_agree stamp
+                            metadata=({"strategies_agree": signal_context.get("strategies_agree", []),
+                                       "num_agree": signal_context.get("num_agree", 0)}
+                                      if _pf_enforce
                                       else {"shadow": True,
-                                            "reason": "pre_filter_no_2b_provenance"}),
+                                            "reason": "pre_filter_no_2b_provenance",
+                                            "strategies_agree": signal_context.get("strategies_agree", []),
+                                            "num_agree": signal_context.get("num_agree", 0)}),
                         )
                     except Exception:
                         pass
@@ -1998,7 +2047,12 @@ class AgentCoordinator:
                             skip_reason=f"CRITIC_SHADOW_VETO: {_sv_verdict} {_sv_reason}",
                             strategy=str(signal_context.get("strategy", "") or ""),
                             regime=str(decision.regime or ""),
-                            metadata={"final_action": action},
+                            metadata={
+                                "final_action": action,
+                                # BT_VETO_RESCORE DO-NOW #5 stamp
+                                "strategies_agree": signal_context.get("strategies_agree", []),
+                                "num_agree": signal_context.get("num_agree", 0),
+                            },
                         )
         except Exception as _sve:
             logger.debug(f"[SHADOW-CRITIC] counterfactual record error: {_sve}")
@@ -3743,9 +3797,13 @@ class AgentCoordinator:
         if snapshot.get("enriched_context"):
             regime_data["enriched"] = snapshot["enriched_context"]
 
-        # Mechanical regime overlay (RQ10, env-gated upstream): labeled
-        # additive context — NOT an override; the agent still decides.
-        if snapshot.get("mech_regime"):
+        # Mechanical regime INPUT injection (RQ10) — the UNVALIDATED variant
+        # (RQ10 validated the post-label overlay, not this). Env-gated OFF by
+        # default and explicitly re-checked here because mech_regime is now
+        # also computed for the validated REGIME_OVERLAY_ENFORCE path — the
+        # two A/B arms must not conflate.
+        if snapshot.get("mech_regime") and os.getenv(
+                "MECH_REGIME_OVERLAY", "").lower() in ("true", "1", "yes"):
             try:
                 from llm.agents.mech_regime import format_mech_regime
                 regime_data["mechanical_classifier"] = format_mech_regime(
@@ -5111,6 +5169,9 @@ class AgentCoordinator:
                             veto_rule_ids=_m_veto_ids,
                             strategy=_strat, regime=str(regime or ""),
                             denominator_only=_m_denom_only,
+                            # BT_VETO_RESCORE DO-NOW #5 stamp (strategies list
+                            # not carried in the compacted snapshot; num_agree is)
+                            metadata={"num_agree": _n_agree},
                         )
                     except Exception:
                         pass
