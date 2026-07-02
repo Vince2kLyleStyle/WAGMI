@@ -17,6 +17,7 @@ Usage:
 
 import copy
 import logging
+import os
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any, List
@@ -336,29 +337,49 @@ class RiskFilterChain:
         if ev is not None:
             meta["ev_per_dollar"] = ev
 
-        # Gate 1e: Slippage rejection (hard reject on high slippage, not just warning)
-        # High slippage can turn winners into losers and should be avoided preemptively.
-        # Calculate expected slippage impact as % of stop width.
+        # Gate 1e: Slippage — ADVISORY (DECHOKE 3, 2026-07-02, owner-approved).
+        # FALLACY_AUDIT D9 / THE_STANDARD §2b: this gate's own backtest measured
+        # 44.6% accuracy (worse than coinflip — it blocked winners more than
+        # losers), yet it kept hard-rejecting pre-LLM. A rule shown wrong must
+        # drop to shadow. The slippage ARITHMETIC stays and is handed to the
+        # LLM as labeled advisory context with its measured accuracy attached;
+        # a [SHADOW-GATE] line logs every would-reject for fresh dollar
+        # re-scoring. Kill-switch: SLIPPAGE_GATE_ENFORCE=true restores the
+        # hard reject (only after a fresh dollar re-score per §2b).
         if stop_pct > 0:
             # Base slippage + regime-specific adjustment
             _slippage_impact_pct = (slippage_bps + _extra_slip) / 10000.0
             _slippage_pct_of_stop = _slippage_impact_pct / stop_pct if stop_pct > 0 else 0
             meta["slippage_pct_of_stop"] = round(_slippage_pct_of_stop * 100, 1)
 
-            # Reject if slippage + fees consume >50% of stop width (leaves 50% for actual risk)
-            # Loosened from 40%: backtest shows 44.6% gate accuracy — blocking too many winners
             max_slippage_pct_of_stop = 0.50
             if _slippage_pct_of_stop > max_slippage_pct_of_stop:
+                _slip_enforce = os.getenv(
+                    "SLIPPAGE_GATE_ENFORCE", "false").lower() == "true"
                 _reason = (f"Slippage impact {_slippage_pct_of_stop:.0%} of stop width > "
                           f"{max_slippage_pct_of_stop:.0%} (regime={_sig_regime}, stop={stop_pct:.4f})")
-                if _pt: _pt.record_gate(signal.symbol, "slippage", False, _slippage_pct_of_stop, max_slippage_pct_of_stop, _reason)
-                _log_rejection(signal, "slippage", _reason)
-                self._log_signal_filtered(signal, "slippage", _reason)
-                return FilterResult(
-                    approved=False, signal=signal,
-                    rejection_reason=_reason,
-                    metadata=meta,
+                if _slip_enforce:
+                    if _pt: _pt.record_gate(signal.symbol, "slippage", False, _slippage_pct_of_stop, max_slippage_pct_of_stop, _reason)
+                    _log_rejection(signal, "slippage", _reason)
+                    self._log_signal_filtered(signal, "slippage", _reason)
+                    return FilterResult(
+                        approved=False, signal=signal,
+                        rejection_reason=_reason,
+                        metadata=meta,
+                    )
+                logger.info(
+                    f"[SHADOW-GATE] slippage would_reject {signal.symbol} "
+                    f"{_slippage_pct_of_stop:.0%} of stop > 50% "
+                    f"(advisory only — gate measured 44.6% accurate; "
+                    f"SLIPPAGE_GATE_ENFORCE=true re-enables)"
                 )
+                if _pt: _pt.record_gate(signal.symbol, "slippage_advisory", True, _slippage_pct_of_stop, max_slippage_pct_of_stop, "advisory_not_rejected")
+                if hasattr(signal, 'metadata') and isinstance(signal.metadata, dict):
+                    signal.metadata.setdefault("advisory_warnings", []).append(
+                        f"slippage est. {_slippage_pct_of_stop:.0%} of stop width "
+                        f"(>50% guideline; NOTE: this gate's measured accuracy was "
+                        f"44.6% on backtest, n from 2026-06 — weigh accordingly)"
+                    )
 
         # Gate 1f: Minimum win probability (post-deflation from ensemble)
         # Trades 2&3 on 2026-03-25 had 42%/40% win_prob — below coin flip.
