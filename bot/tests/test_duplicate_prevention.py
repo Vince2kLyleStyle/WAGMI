@@ -296,6 +296,10 @@ class TestPipelineDuplicateGate:
         )
 
         chain = RiskFilterChain(risk_mgr, leverage_mgr, config)
+        # MagicMock config makes llm_first_mode truthy — Gate 0 (wave2b L5
+        # LLM-first stand-down) would reject before the duplicate gate under
+        # test. Use the documented offline-harness opt-out.
+        chain.llm_first_standdown_enabled = False
         return chain
 
     def test_signal_blocked_when_position_exists(self):

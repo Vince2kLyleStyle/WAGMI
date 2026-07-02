@@ -315,38 +315,58 @@ def test_reconciliation():
 # ── PHASE C: Final Integration ──────────────────────────────────────
 
 def test_time_sizing():
-    """Test data-driven time-of-day and day-of-week multipliers."""
+    """Time-of-day/day-of-week multipliers — NEUTRALIZED by default (D11).
+
+    wave2b L5 / FALLACY_AUDIT D11: the hour/day edges came from one April-2026
+    week and were never re-scored, so the default is 1.0x (shadow). The raw
+    would-have arithmetic is preserved behind TIME_SIZING_ENFORCE=true.
+    """
+    import os
     from execution.time_sizing import get_time_multiplier, get_time_sizing_info, is_weekend
 
-    # Monday 12pm UTC -> 1.15 (Mon) * 1.0 (GOOD hour) = 1.15
+    # ── Default (shadow): every hour/day returns 1.0 ──
     mon = datetime(2025, 1, 6, 12, 0, tzinfo=timezone.utc)
-    assert abs(get_time_multiplier(mon) - 1.15) < 0.001
-
-    # Monday 15pm UTC -> 1.15 (Mon) * 1.2 (PRIME hour) = 1.38
     mon_3pm = datetime(2025, 1, 6, 15, 0, tzinfo=timezone.utc)
-    assert abs(get_time_multiplier(mon_3pm) - 1.38) < 0.001
-
-    # Saturday 3am UTC -> 0.8 (Sat) * 0.7 (QUIET hour) = 0.56
-    sat = datetime(2025, 1, 4, 3, 0, tzinfo=timezone.utc)
-    m = get_time_multiplier(sat)
-    assert abs(m - 0.56) < 0.001
-
-    # Sunday 15pm UTC -> 0.8 (Sun) * 1.2 (PRIME hour) = 0.96
-    sun = datetime(2025, 1, 5, 15, 0, tzinfo=timezone.utc)
-    assert abs(get_time_multiplier(sun) - 0.96) < 0.001
-
-    # Tuesday 0am UTC -> 1.0 (Tue) * 1.0 (GOOD hour) = 1.0
-    tue_midnight = datetime(2025, 1, 7, 0, 0, tzinfo=timezone.utc)
-    assert abs(get_time_multiplier(tue_midnight) - 1.0) < 0.001
-
-    # Tuesday 5am UTC -> 1.0 (Tue) * 0.7 (QUIET hour) = 0.7
-    tue_dead = datetime(2025, 1, 7, 5, 0, tzinfo=timezone.utc)
-    assert abs(get_time_multiplier(tue_dead) - 0.7) < 0.001
-
-    # Thursday 10am UTC -> 0.85 (Thu) * 0.5 (DEAD hour) = 0.425
     thu_dead = datetime(2025, 1, 9, 10, 0, tzinfo=timezone.utc)
-    assert abs(get_time_multiplier(thu_dead) - 0.425) < 0.001
+    assert get_time_multiplier(mon) == 1.0
+    assert get_time_multiplier(mon_3pm) == 1.0
+    assert get_time_multiplier(thu_dead) == 1.0
 
+    # ── Enforced (kill-switch): the pre-D11 arithmetic is intact ──
+    _old = os.environ.get("TIME_SIZING_ENFORCE")
+    os.environ["TIME_SIZING_ENFORCE"] = "true"
+    try:
+        # Monday 12pm UTC -> 1.15 (Mon) * 1.0 (GOOD hour) = 1.15
+        assert abs(get_time_multiplier(mon) - 1.15) < 0.001
+
+        # Monday 15pm UTC -> 1.15 (Mon) * 1.2 (PRIME hour) = 1.38
+        assert abs(get_time_multiplier(mon_3pm) - 1.38) < 0.001
+
+        # Saturday 3am UTC -> 0.8 (Sat) * 0.7 (QUIET hour) = 0.56
+        sat = datetime(2025, 1, 4, 3, 0, tzinfo=timezone.utc)
+        assert abs(get_time_multiplier(sat) - 0.56) < 0.001
+
+        # Sunday 15pm UTC -> 0.8 (Sun) * 1.2 (PRIME hour) = 0.96
+        sun = datetime(2025, 1, 5, 15, 0, tzinfo=timezone.utc)
+        assert abs(get_time_multiplier(sun) - 0.96) < 0.001
+
+        # Tuesday 0am UTC -> 1.0 (Tue) * 1.0 (GOOD hour) = 1.0
+        tue_midnight = datetime(2025, 1, 7, 0, 0, tzinfo=timezone.utc)
+        assert abs(get_time_multiplier(tue_midnight) - 1.0) < 0.001
+
+        # Tuesday 5am UTC -> 1.0 (Tue) * 0.7 (QUIET hour) = 0.7
+        tue_dead = datetime(2025, 1, 7, 5, 0, tzinfo=timezone.utc)
+        assert abs(get_time_multiplier(tue_dead) - 0.7) < 0.001
+
+        # Thursday 10am UTC -> 0.85 (Thu) * 0.5 (DEAD hour) = 0.425
+        assert abs(get_time_multiplier(thu_dead) - 0.425) < 0.001
+    finally:
+        if _old is None:
+            os.environ.pop("TIME_SIZING_ENFORCE", None)
+        else:
+            os.environ["TIME_SIZING_ENFORCE"] = _old
+
+    # ── Bias labels remain raw context regardless of enforcement ──
     # Directional bias: 18:00 UTC = neutral (no longer in _HOUR_BIAS)
     info_18 = get_time_sizing_info(datetime(2025, 1, 6, 18, 0, tzinfo=timezone.utc))
     assert info_18["bias"] == "neutral"
@@ -359,7 +379,7 @@ def test_time_sizing():
     info_12 = get_time_sizing_info(datetime(2025, 1, 6, 12, 0, tzinfo=timezone.utc))
     assert info_12["bias"] == "neutral"
 
-    print("  [PASS] Time sizing")
+    print("  [PASS] Time sizing (neutralized default + enforced arithmetic)")
 
 
 def test_uplift_analytics():

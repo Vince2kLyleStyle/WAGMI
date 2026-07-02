@@ -89,16 +89,25 @@ def apply_quant_rules(
     num_strategies_agree: int = 1,
     now: datetime = None,
 ) -> dict:
-    """Apply proven quant rules to boost signal confidence and risk multiplier.
+    """Compute the WOULD-HAVE quant-rule boosts — SHADOW by default (M1).
 
-    These are statistically validated edges hardcoded into the pipeline.
-    Applied BEFORE the risk filter chain so confidence boosts feed into
-    all downstream sizing/leverage decisions.
+    FALLACY_AUDIT_2026-07-02 M1 / wave2b L5: these "proven statistical edges"
+    were hardcoded from unversioned dirty-era WRs (no n/era/ledger anywhere),
+    could stack to 1.44x confidence — enough to manufacture conf>=92 and clear
+    the circuit-breaker override — and were never re-scored on the clean
+    ledger. Per THE_STANDARD §2b they are SHADOW: this function still computes
+    the would-have boosts (so the shadow log and a future clean-ledger
+    re-validation have exact numbers), but the RiskFilterChain applies 1.0x
+    unless QUANT_RULES_ENFORCE=true (owner-gated, only after n>=13
+    dollar-positive re-validation).
+
+    Rule 2 (BTC SHORT ×1.15 on EVERY BTC SELL — pure directional opinion,
+    no condition) is DELETED outright per the audit verdict.
 
     Returns a dict with:
-      - "confidence_boost": float multiplier applied to signal.confidence
-      - "risk_mult_boost": float multiplier applied to risk_multiplier
-      - "rules_applied": list of rule names that fired
+      - "confidence_boost": float would-have multiplier for signal.confidence
+      - "risk_mult_boost": float would-have multiplier for risk_multiplier
+      - "rules_applied": list of rule names that fired (shadow)
       - "meta": dict of metadata for logging
     """
     if now is None:
@@ -132,13 +141,11 @@ def apply_quant_rules(
     # Log the bucket for all signals so downstream calibration + IC re-studies have it.
     meta["hour_bucket_4"] = now.hour // 6  # 0, 1, 2, 3
 
-    # ── Rule 2: BTC SHORT Edge (67% WR, strongest setup) ──
-    if getattr(config, "quant_btc_short_edge_enabled", True):
-        if base_symbol == "BTC" and signal.side == "SELL":
-            boost = getattr(config, "quant_btc_short_edge_boost", 1.15)
-            confidence_boost *= boost
-            rules_applied.append("btc_short_edge")
-            meta["btc_short_boost"] = boost
+    # ── Rule 2 (BTC SHORT Edge ×1.15) DELETED (wave2b L5, FALLACY_AUDIT M1) ──
+    # It boosted EVERY BTC SELL unconditionally — a permanent pro-BTC-short
+    # directional opinion sourced from a pre-fee-fix-era "67% WR" with no
+    # n/era/ledger. The underlying stat may re-enter as labeled LLM context
+    # per §2b; it does not re-enter as a mechanical multiplier.
 
     # ── Rule 3: HYPE BUY in High Vol (strongest edge at P50-P75 ATR) ──
     if getattr(config, "quant_hype_highvol_enabled", True):
@@ -162,7 +169,8 @@ def apply_quant_rules(
 
     if rules_applied:
         logger.info(
-            f"[{signal.symbol}] QUANT RULES: {', '.join(rules_applied)} "
+            f"[{signal.symbol}] QUANT RULES (would-have, M1 shadow): "
+            f"{', '.join(rules_applied)} "
             f"conf_boost={confidence_boost:.2f}x risk_boost={risk_mult_boost:.2f}x"
         )
 
@@ -186,6 +194,10 @@ class RiskFilterChain:
         self.leverage_mgr = leverage_mgr
         self.config = config
         self._missed_trade_tracker = None  # Optional: set via set_missed_trade_tracker()
+        # Gate 0 (wave2b L5): live LLM-first degradation stand-down. Offline
+        # harnesses that legitimately run the mechanical pipe (backtest engine
+        # mechanical A/B) set this False after construction.
+        self.llm_first_standdown_enabled = True
 
     def set_missed_trade_tracker(self, tracker):
         """Inject MissedTradeTracker for rejection tracking."""
@@ -248,24 +260,94 @@ class RiskFilterChain:
         except Exception:
             _pt = None
 
-        # ── Quant Rules: apply proven statistical edges ──
-        # Boost confidence and risk_mult BEFORE the filter chain so all
-        # downstream gates (leverage, sizing, EV) benefit from the edge.
+        # ── Gate 0: LLM-first degradation STAND-DOWN (wave2b L5, MAP §L5) ──
+        # When the bot is configured LLM-first, a signal reaching this
+        # mechanical chain means the LLM pipeline errored/timed out or
+        # diverted it. Doctrine: the fallback is a SAFE STAND-DOWN — an
+        # honest, labeled no-trade (stage=pipeline_error, counterfactual
+        # price-tracked) — NEVER a mechanical-opinion trade. Sibling of the
+        # exploration block on "pipeline failure" skips in
+        # multi_strategy_main (audit #7): malfunctions don't trade.
+        # Owner dial: ALLOW_MECHANICAL_FALLBACK=true restores mechanical
+        # trading while LLM-first is degraded. Offline harnesses (backtest
+        # engine A/B) opt out via self.llm_first_standdown_enabled = False.
+        if (getattr(self, "llm_first_standdown_enabled", True)
+                and getattr(self.config, "llm_first_mode", False)
+                and os.getenv("ALLOW_MECHANICAL_FALLBACK", "false").lower()
+                not in ("1", "true", "yes")):
+            _reason = (
+                "MECHANICAL STAND-DOWN (stage=pipeline_error): LLM-first is "
+                "configured but this signal reached the mechanical fallback "
+                "chain (LLM pipeline error/divert). No mechanical-opinion "
+                "trade without ALLOW_MECHANICAL_FALLBACK=true."
+            )
+            logger.error(
+                f"[{signal.symbol}] [PIPELINE-ERROR-STANDDOWN] {_reason}"
+            )
+            if _pt: _pt.record_gate(signal.symbol, "llm_first_standdown", False, 0, 0, _reason)
+            _log_rejection(signal, "llm_first_standdown", _reason)
+            self._log_signal_filtered(signal, "llm_first_standdown", _reason)
+            self._track_pipeline_rejection(signal, _reason)
+            # Counterfactual: price-track the trade we did NOT take so the
+            # stand-down policy itself is dollar-scored (THE_STANDARD §2b).
+            try:
+                from llm.brain_wiring import record_veto_counterfactual
+                record_veto_counterfactual(
+                    symbol=signal.symbol,
+                    side=signal.side if isinstance(signal.side, str) else signal.side.value,
+                    entry_price=getattr(signal, "entry", 0.0),
+                    sl=getattr(signal, "sl", 0.0),
+                    tp1=getattr(signal, "tp1", 0.0),
+                    tp2=getattr(signal, "tp2", 0.0),
+                    confidence=signal.confidence,
+                    veto_rule_ids=["mechanical_standdown_pipeline_error"],
+                    strategy=getattr(signal, "strategy", "") or "",
+                    regime=(signal.metadata or {}).get("regime", ""),
+                    metadata={"stage": "pipeline_error"},
+                )
+            except Exception:
+                pass
+            return FilterResult(
+                approved=False, signal=signal,
+                rejection_reason=_reason, metadata=meta,
+            )
+
+        # ── Quant Rules — SHADOW (wave2b L5, FALLACY_AUDIT M1) ──
+        # Would-have boosts are computed + logged; 1.0x applied. This also
+        # closes the R25 leak: boosted confidence can no longer manufacture
+        # conf>=92 to clear the circuit-breaker override downstream.
+        # Kill-switch: QUANT_RULES_ENFORCE=true restores enforcement
+        # (owner-gated, only after clean-ledger n>=13 re-validation).
         quant = apply_quant_rules(
             signal=signal,
             config=self.config,
             num_strategies_agree=num_strategies_agree,
             now=None,  # use current time
         )
+        _quant_enforce = os.getenv(
+            "QUANT_RULES_ENFORCE", "false").lower() in ("1", "true", "yes")
         if quant["rules_applied"]:
-            # Apply confidence boost (deep copy to avoid mutating original)
-            signal = copy.copy(signal)
-            boosted_conf = signal.confidence * quant["confidence_boost"]
-            max_conf = getattr(self.config, "max_ensemble_confidence", 95.0)
-            signal.confidence = min(boosted_conf, max_conf)
-            meta["quant_rules"] = quant["rules_applied"]
-            meta["quant_confidence_boost"] = quant["confidence_boost"]
-            meta.update(quant["meta"])
+            if _quant_enforce:
+                # Apply confidence boost (deep copy to avoid mutating original)
+                signal = copy.copy(signal)
+                boosted_conf = signal.confidence * quant["confidence_boost"]
+                max_conf = getattr(self.config, "max_ensemble_confidence", 95.0)
+                signal.confidence = min(boosted_conf, max_conf)
+                meta["quant_rules"] = quant["rules_applied"]
+                meta["quant_confidence_boost"] = quant["confidence_boost"]
+            else:
+                logger.info(
+                    f"[{signal.symbol}] [SHADOW-QUANT-RULES] would boost "
+                    f"conf x{quant['confidence_boost']:.2f} "
+                    f"risk x{quant['risk_mult_boost']:.2f} "
+                    f"({', '.join(quant['rules_applied'])}) — 1.0x applied "
+                    f"(M1 shadow; QUANT_RULES_ENFORCE=true restores)"
+                )
+                meta["quant_rules_shadow"] = quant["rules_applied"]
+                meta["quant_confidence_boost_would_be"] = quant["confidence_boost"]
+                meta["quant_risk_mult_boost_would_be"] = quant["risk_mult_boost"]
+        # hour_bucket_4 + rule metadata flow regardless (calibration/IC re-studies)
+        meta.update(quant["meta"])
 
         # Gate 1: Signal validity (R:R, stop width, side)
         if not signal.is_valid:
@@ -381,63 +463,15 @@ class RiskFilterChain:
                         f"44.6% on backtest, n from 2026-06 — weigh accordingly)"
                     )
 
-        # Gate 1f: Minimum win probability (post-deflation from ensemble)
-        # Trades 2&3 on 2026-03-25 had 42%/40% win_prob — below coin flip.
-        # Sub-48% WP = negative EV after fees. Block these regardless of setup.
-        # Floor is regime-adaptive: bad regimes (illiquid=28% WR) require higher
-        # predicted win_prob since SL hits are noisy by default.
-        _win_prob = meta.get("win_prob") if meta else None
-        if _win_prob is not None and isinstance(_win_prob, (int, float)):
-            _min_wp = getattr(self.config, "min_signal_win_prob", 0.43)
-            # Regime-adaptive adjustment: raise floor for losing regimes
-            try:
-                from llm.dynamic_thresholds import get_dynamic_thresholds
-                _regime_key = (meta.get("regime") or "") if meta else ""
-                if _regime_key:
-                    _rstats = get_dynamic_thresholds().get_regime_stats(_regime_key)
-                    if _rstats and _rstats["n"] >= 10:
-                        _rwr = _rstats["wr"]
-                        _blend = min(1.0, (_rstats["n"] - 10) / 30)
-                        # Poor regime → raise floor; strong regime → slight reduction
-                        if _rwr < 0.30:
-                            _dyn_wp = _min_wp + 0.08 * _blend   # up to +8%
-                        elif _rwr < 0.38:
-                            _dyn_wp = _min_wp + 0.04 * _blend   # up to +4%
-                        elif _rwr >= 0.48:
-                            _dyn_wp = _min_wp - 0.03 * _blend   # slight relaxation
-                        else:
-                            _dyn_wp = _min_wp
-                        _min_wp = max(0.35, _dyn_wp)  # absolute floor
-            except Exception:
-                pass
-            # 2026-06-08: win_prob floor → ADVISORY in LLM_FIRST mode. The
-            # old code hard-rejected; now we tag the signal so the LLM sees
-            # "this is below historical edge floor — investigate before
-            # approving." Hard reject only if win_prob is critically low
-            # (<0.30, the structural noise floor).
-            try:
-                from trading_config import TradingConfig as _TC2
-                _llm_mode = getattr(_TC2(), "llm_mode", 5)
-            except Exception:
-                _llm_mode = 5  # default to LLM_FIRST
-            _critical_wp_floor = 0.30
-            if _win_prob < _critical_wp_floor:
-                _reason = f"Win probability {_win_prob:.1%} < critical {_critical_wp_floor:.1%} (true noise floor)"
-                if _pt: _pt.record_gate(signal.symbol, "win_prob_critical", False, _win_prob, _critical_wp_floor, _reason)
-                _log_rejection(signal, "win_prob_critical", _reason)
-                self._log_signal_filtered(signal, "win_prob_critical", _reason)
-                return FilterResult(
-                    approved=False, signal=signal,
-                    rejection_reason=_reason,
-                    metadata=meta,
-                )
-            elif _win_prob < _min_wp:
-                # Below edge floor but above noise floor — advisory to LLM.
-                if hasattr(signal, 'metadata') and isinstance(signal.metadata, dict):
-                    signal.metadata.setdefault("advisory_warnings", []).append(
-                        f"win_prob {_win_prob:.1%} below edge floor {_min_wp:.1%} (regime-adjusted)"
-                    )
-                if _pt: _pt.record_gate(signal.symbol, "win_prob_advisory", True, _win_prob, _min_wp, "advisory_not_rejected")
+        # Gate 1f (win-prob floor) DELETED (wave2b L5, FALLACY_AUDIT M22):
+        # a doubly-dead instrument — it read meta["win_prob"] which this
+        # chain never writes (the writer puts win_prob in signal.metadata),
+        # and its regime key was likewise absent from local meta, so the
+        # claimed "true noise floor" protection never fired once. Deleted
+        # rather than wired: its input would be the ensemble win_prob shown
+        # anti-predictive/IC≈0 (FALLACY_AUDIT D4) — never gate on it.
+        # win_prob still reaches the LLM as labeled context with provenance
+        # (ensemble.py D4 source labels + signal.metadata).
 
         # Gate 1g: Graduated rules — validated hypotheses become executable rules.
         # Rules can VETO (block), BOOST (add confidence), or PENALIZE (subtract).
@@ -853,61 +887,80 @@ class RiskFilterChain:
             except Exception as e:
                 logger.debug(f"[CALIBRATION] Error: {e}")
 
-        # ── Time-of-day sizing ──
-        # Apply session/day-of-week multiplier from time_sizing.py.
-        # DEAD hours (03-06, 09-10, 17) get 0.5x, QUIET get 0.7x, etc.
-        # This runs in both live and backtest paths via RiskFilterChain.
+        # ── Time-of-day sizing — SHADOW (wave2b L5, FALLACY_AUDIT D11) ──
+        # time_sizing.py multipliers are neutralized at source (one-April-week
+        # era, never re-scored, contradicted the Morning Edge boost). The
+        # would-have multiplier + session label still flow into meta as honest
+        # context; TIME_SIZING_ENFORCE=true (in time_sizing.py) restores.
         try:
             from execution.time_sizing import get_full_time_multiplier
             _time_info = get_full_time_multiplier(side=signal.side)
             _time_mult = _time_info["multiplier"]
+            _time_shadow = _time_info.get("shadow_multiplier", _time_mult)
             if _time_mult != 1.0:
                 risk_mult *= _time_mult
                 meta["time_sizing_mult"] = round(_time_mult, 3)
+                if _pt: _pt.record_multiplier(signal.symbol, "time_sizing", _time_mult, _time_info.get("session", ""))
+            elif _time_shadow != 1.0:
+                meta["time_sizing_mult_would_be"] = round(_time_shadow, 3)
+            if _time_mult != 1.0 or _time_shadow != 1.0:
                 meta["time_sizing_session"] = _time_info["session"]
                 meta["time_sizing_reasons"] = _time_info["reasons"]
-                if _pt: _pt.record_multiplier(signal.symbol, "time_sizing", _time_mult, _time_info.get("session", ""))
         except Exception as e:
             logger.debug(f"[TIME_SIZING] Error: {e}")
 
-        # Confidence-based sizing: bet bigger on high-conviction signals.
-        # Data: 80-89% confidence = PF 7.89 (60% WR, +$2,202).
-        # 70-79% = PF 0.70 (losing). Below 70% = PF 0.0.
+        # Confidence-tier sizing — SHADOW (wave2b L5, FALLACY_AUDIT M13).
+        # The ×1.5/×1.2/×1.1 tiers were justified by fossil stats from a
+        # 10x-equity era ("PF 7.89 / +$2,202" vs "PF 9.77" — the same bucket,
+        # two contradicting numbers). No multiplier without a clean-ledger
+        # n>=13 recompute: the would-have tier is computed + logged, 1.0x
+        # applied. Kill-switch: CONF_TIER_SIZING_ENFORCE=true restores.
+        # The old exhaustion advisory claimed "LLM sees this in metadata" —
+        # that was dead wiring (nothing read FilterResult meta). It is now
+        # actually wired via signal.metadata advisory_warnings.
         _conf = signal.confidence
         _regime = signal.metadata.get("regime", "unknown")
-        # Confidence-based sizing with regime awareness.
-        # Data: 80-89% = PF 9.77. 90%+ = 0% WR across all regimes except consolidation.
-        # Extended exhaustion protection to ALL non-consolidation regimes (was trending-only).
-        # Lowered from 0.5x to 0.4x: 90-100% confidence has -$1,792 total PnL.
-        # Confidence sizing: leverage tiers already scale by confidence, so this
-        # layer only applies conviction BOOSTS, not penalties. Previous version
-        # double-penalized low confidence (leverage rm=0.3 × conf sizing 0.5 = 0.15).
-        # 2026-06-08: 90% exhaustion penalty REMOVED at base. Risk Agent (LLM)
-        # decides if exhaustion penalty applies based on regime + momentum +
-        # alpha-ops context. Old code hardcoded 0.7x for ALL 90%+ signals in
-        # non-consolidation regimes — that penalized genuine high-conviction
-        # bull-run signals. Now surfaced as advisory only.
+        _tier_enforce = os.getenv(
+            "CONF_TIER_SIZING_ENFORCE", "false").lower() in ("1", "true", "yes")
         if _conf >= 90 and _regime not in ("consolidation",):
-            # Advisory only — no mechanical penalty. LLM sees this in metadata.
-            meta["exhaustion_signal_advisory"] = "conf>=90 in non-consolidation — historically 22% WR. LLM should weigh."
-            meta["confidence_sizing"] = "exhaustion_advisory_no_penalty"
+            _tier_label, _tier_mult = "exhaustion_advisory_no_penalty", 1.0
+            meta["exhaustion_signal_advisory"] = (
+                "conf>=90 in non-consolidation — historical exhaustion pattern. "
+                "(era-unstamped '22% WR', dirty ledger — weigh accordingly)"
+            )
+            if hasattr(signal, 'metadata') and isinstance(signal.metadata, dict):
+                signal.metadata.setdefault("advisory_warnings", []).append(
+                    "conf>=90 in non-consolidation — historical exhaustion "
+                    "pattern (era-unstamped 22% WR, dirty ledger — weigh accordingly)"
+                )
         elif _conf >= 85:
-            risk_mult *= 1.5  # High conviction — 85%+ is PF=17-22 sweet spot
-            meta["confidence_sizing"] = "high_conviction_1.5x"
+            _tier_label, _tier_mult = "high_conviction_1.5x", 1.5
         elif _conf >= 80:
-            risk_mult *= 1.2  # Strong conviction boost
-            meta["confidence_sizing"] = "strong_1.2x"
+            _tier_label, _tier_mult = "strong_1.2x", 1.2
         elif _conf >= 75:
-            risk_mult *= 1.1  # Slight boost
-            meta["confidence_sizing"] = "good_1.1x"
+            _tier_label, _tier_mult = "good_1.1x", 1.1
         else:
-            pass  # Below 75%: no penalty. Leverage tier already handles this.
-            meta["confidence_sizing"] = "neutral_1.0x"
+            _tier_label, _tier_mult = "neutral_1.0x", 1.0
 
-        if _pt and meta.get("confidence_sizing"): _pt.record_multiplier(signal.symbol, "confidence_sizing", {"exhaustion_0.7x": 0.7, "high_conviction_1.5x": 1.5, "strong_1.2x": 1.2, "good_1.1x": 1.1, "neutral_1.0x": 1.0}.get(meta["confidence_sizing"], 1.0), meta["confidence_sizing"])
+        if _tier_mult != 1.0 and _tier_enforce:
+            risk_mult *= _tier_mult
+            meta["confidence_sizing"] = _tier_label
+        elif _tier_mult != 1.0:
+            meta["confidence_sizing"] = f"{_tier_label}_shadow"
+            meta["confidence_sizing_would_be"] = _tier_mult
+            logger.info(
+                f"[{signal.symbol}] [SHADOW-CONF-TIER] would size "
+                f"x{_tier_mult:.2f} ({_tier_label}) — 1.0x applied "
+                f"(M13 shadow; CONF_TIER_SIZING_ENFORCE=true restores)"
+            )
+        else:
+            meta["confidence_sizing"] = _tier_label
 
-        # Apply quant conviction risk multiplier (Rule 4: size up on proven setups)
-        if quant["risk_mult_boost"] != 1.0:
+        if _pt and meta.get("confidence_sizing"): _pt.record_multiplier(signal.symbol, "confidence_sizing", _tier_mult if _tier_enforce else 1.0, meta["confidence_sizing"])
+
+        # Quant conviction risk multiplier (Rule 4) — SHADOW (M1, see Gate 0.5
+        # block above): would-have recorded there; applied only when enforced.
+        if quant["risk_mult_boost"] != 1.0 and _quant_enforce:
             risk_mult *= quant["risk_mult_boost"]
             meta["quant_risk_mult_boost"] = quant["risk_mult_boost"]
             if _pt: _pt.record_multiplier(signal.symbol, "quant_conviction", quant["risk_mult_boost"], "proven_setup")
@@ -1004,21 +1057,31 @@ class RiskFilterChain:
         annotations: List[FilterAnnotation] = []
         meta: Dict[str, Any] = {}
 
-        # ── Quant Rules: apply proven statistical edges (annotated path) ──
+        # ── Quant Rules — SHADOW (annotated path; wave2b L5, FALLACY_AUDIT M1) ──
+        # Mirrors evaluate(): would-have boosts recorded, 1.0x applied unless
+        # QUANT_RULES_ENFORCE=true. Keeps this diagnostics path from telling a
+        # different sizing story than the live path (§5 drifted-duplicate).
         quant = apply_quant_rules(
             signal=signal,
             config=self.config,
             num_strategies_agree=num_strategies_agree,
             now=None,
         )
+        _quant_enforce = os.getenv(
+            "QUANT_RULES_ENFORCE", "false").lower() in ("1", "true", "yes")
         if quant["rules_applied"]:
-            signal = copy.copy(signal)
-            boosted_conf = signal.confidence * quant["confidence_boost"]
-            max_conf = getattr(self.config, "max_ensemble_confidence", 95.0)
-            signal.confidence = min(boosted_conf, max_conf)
-            meta["quant_rules"] = quant["rules_applied"]
-            meta["quant_confidence_boost"] = quant["confidence_boost"]
-            meta.update(quant["meta"])
+            if _quant_enforce:
+                signal = copy.copy(signal)
+                boosted_conf = signal.confidence * quant["confidence_boost"]
+                max_conf = getattr(self.config, "max_ensemble_confidence", 95.0)
+                signal.confidence = min(boosted_conf, max_conf)
+                meta["quant_rules"] = quant["rules_applied"]
+                meta["quant_confidence_boost"] = quant["confidence_boost"]
+            else:
+                meta["quant_rules_shadow"] = quant["rules_applied"]
+                meta["quant_confidence_boost_would_be"] = quant["confidence_boost"]
+                meta["quant_risk_mult_boost_would_be"] = quant["risk_mult_boost"]
+        meta.update(quant["meta"])
 
         # ── Setup exit metadata (for position manager trailing logic) ──
         # Fixed % TPs don't work — BTC moves 0.3%/h, a 1.5% TP is a coinflip.
@@ -1330,44 +1393,60 @@ class RiskFilterChain:
             except Exception as e:
                 logger.debug(f"[CALIBRATION] Error: {e}")
 
-        # ── Time-of-day sizing (annotated path) ──
+        # ── Time-of-day sizing (annotated path) — SHADOW (D11, see evaluate()) ──
         try:
             from execution.time_sizing import get_full_time_multiplier
             _time_info = get_full_time_multiplier(side=signal.side)
             _time_mult = _time_info["multiplier"]
+            _time_shadow = _time_info.get("shadow_multiplier", _time_mult)
             if _time_mult != 1.0:
                 risk_mult *= _time_mult
                 meta["time_sizing_mult"] = round(_time_mult, 3)
+            elif _time_shadow != 1.0:
+                meta["time_sizing_mult_would_be"] = round(_time_shadow, 3)
+            if _time_mult != 1.0 or _time_shadow != 1.0:
                 meta["time_sizing_session"] = _time_info["session"]
                 meta["time_sizing_reasons"] = _time_info["reasons"]
         except Exception as e:
             logger.debug(f"[TIME_SIZING] Error: {e}")
 
-        # Confidence-based sizing: bet bigger on high-conviction signals (annotated path).
-        # Data: 80-89% confidence = PF 7.89 (60% WR, +$2,202).
-        # 70-79% = PF 0.70 (losing). Below 70% = PF 0.0.
+        # Confidence-tier sizing (annotated path) — SHADOW + UNIFIED (wave2b
+        # L5, FALLACY_AUDIT M13). This duplicate had drifted from evaluate():
+        # it still enforced the REMOVED 0.4x exhaustion and 0.7x/0.5x low-conf
+        # penalties (plus a 1.15x that evaluate() had as 1.2x), corrupting the
+        # filter-accuracy telemetry this path exists to produce. It now
+        # mirrors evaluate(): same tier table, would-have recorded, 1.0x
+        # applied unless CONF_TIER_SIZING_ENFORCE=true.
         _conf = signal.confidence
         _regime = signal.metadata.get("regime", "unknown")
+        _tier_enforce = os.getenv(
+            "CONF_TIER_SIZING_ENFORCE", "false").lower() in ("1", "true", "yes")
         if _conf >= 90 and _regime not in ("consolidation",):
-            risk_mult *= 0.4  # Exhaustion protection: 90%+ confidence = overconfident signal
-            meta["confidence_sizing"] = "exhaustion_reduced_0.4x"
+            _tier_label, _tier_mult = "exhaustion_advisory_no_penalty", 1.0
+            meta["exhaustion_signal_advisory"] = (
+                "conf>=90 in non-consolidation — historical exhaustion pattern. "
+                "(era-unstamped '22% WR', dirty ledger — weigh accordingly)"
+            )
         elif _conf >= 85:
-            risk_mult *= 1.5  # High conviction — 85%+ is PF=17-22 sweet spot.
-            meta["confidence_sizing"] = "high_conviction_1.5x"
+            _tier_label, _tier_mult = "high_conviction_1.5x", 1.5
         elif _conf >= 80:
-            risk_mult *= 1.15  # Strong conviction.
-            meta["confidence_sizing"] = "strong_1.15x"
+            _tier_label, _tier_mult = "strong_1.2x", 1.2
         elif _conf >= 75:
-            pass  # 75-79% stays at 1.0x (neutral zone)
-        elif _conf >= 70:
-            risk_mult *= 0.7  # 70-74%: marginal — reduce size 30%
-            meta["confidence_sizing"] = "marginal_0.7x"
+            _tier_label, _tier_mult = "good_1.1x", 1.1
         else:
-            risk_mult *= 0.5  # Below 70% — reduce size 50%
-            meta["confidence_sizing"] = "low_conviction_0.5x"
+            _tier_label, _tier_mult = "neutral_1.0x", 1.0
 
-        # Apply quant conviction risk multiplier (annotated path)
-        if quant["risk_mult_boost"] != 1.0:
+        if _tier_mult != 1.0 and _tier_enforce:
+            risk_mult *= _tier_mult
+            meta["confidence_sizing"] = _tier_label
+        elif _tier_mult != 1.0:
+            meta["confidence_sizing"] = f"{_tier_label}_shadow"
+            meta["confidence_sizing_would_be"] = _tier_mult
+        else:
+            meta["confidence_sizing"] = _tier_label
+
+        # Quant conviction risk multiplier (annotated path) — SHADOW (M1)
+        if quant["risk_mult_boost"] != 1.0 and _quant_enforce:
             risk_mult *= quant["risk_mult_boost"]
             meta["quant_risk_mult_boost"] = quant["risk_mult_boost"]
 

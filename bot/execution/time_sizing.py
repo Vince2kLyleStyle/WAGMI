@@ -1,5 +1,18 @@
 """
-Time-aware position sizing multipliers.
+Time-aware position sizing multipliers — NEUTRALIZED (shadow) by default.
+
+D11 (FALLACY_AUDIT_2026-07-02, wave2b L5): every multiplier below derives from
+ONE April-2026 week (5m composite study, N=336/hour) and was never re-scored
+on the clean ledger. It also contradicted the Morning Edge boost (hours 6/7/10
+simultaneously DEAD 0.5x and boosted 1.2x) — net size was an accident of
+multiplication. Per THE_STANDARD §2b these hour/day/direction edges are now
+SHADOW: the would-have multiplier is computed and logged ([SHADOW-TIME-SIZE]),
+but 1.0x is applied. Kill-switch: TIME_SIZING_ENFORCE=true restores
+enforcement (owner-gated; only after a clean-ledger hour study, one hour
+policy).
+
+The session/bias LABELS remain available as raw, honest context (get_*_info),
+because describing the hour is data; sizing on a stale opinion of it is not.
 
 Data-driven session sizing from 2000-candle / 7-day 5m analysis (updated 2026-04-03):
 Cross-asset composite scoring (BTC/ETH/SOL/HYPE) using range * directional consistency.
@@ -108,19 +121,16 @@ _HOUR_BIAS = {
 _LOW_LIQ_HOURS = {3, 4, 5, 6, 7, 9, 10, 11, 18, 19, 20, 21, 23}
 
 
-def get_time_multiplier(now: datetime = None) -> float:
-    """Return the combined time-based sizing multiplier.
+def _enforce() -> bool:
+    """D11 kill-switch: stale hour/day edges apply only when explicitly re-armed."""
+    return os.getenv("TIME_SIZING_ENFORCE", "false").lower() in ("1", "true", "yes")
 
-    Combines session (hour) and day-of-week multipliers.
 
-    Returns a float in (0.0, 2.0] that should be multiplied into
-    the position quantity before opening.
+def _raw_time_multiplier(now: datetime = None):
+    """Compute the WOULD-HAVE session*day multiplier (shadow arithmetic).
 
-    Args:
-        now: Override for testing. Defaults to current UTC time.
-
-    Returns:
-        Combined multiplier (day-of-week * session).
+    Returns (multiplier, reasons). This is the pre-D11 math, kept so the
+    shadow log and any future clean-ledger re-score have the exact number.
     """
     if now is None:
         now = datetime.now(timezone.utc)
@@ -138,15 +148,55 @@ def get_time_multiplier(now: datetime = None) -> float:
     if session_mult != 1.0:
         reasons.append(f"session_h{now.hour}({session_mult:.2f}x)")
 
-    multiplier = day_mult * session_mult
+    return round(day_mult * session_mult, 4), reasons
 
-    if reasons:
+
+def get_time_multiplier(now: datetime = None) -> float:
+    """Return the combined time-based sizing multiplier.
+
+    D11 SHADOW (default): returns 1.0 and logs the would-have multiplier.
+    TIME_SIZING_ENFORCE=true restores the session*day enforcement.
+
+    Args:
+        now: Override for testing. Defaults to current UTC time.
+
+    Returns:
+        Combined multiplier (1.0 unless enforced).
+    """
+    multiplier, reasons = _raw_time_multiplier(now)
+
+    if _enforce():
+        if reasons:
+            logger.info(
+                f"[TIME-SIZE] Applying time multiplier: {multiplier:.3f}x "
+                f"({', '.join(reasons)})"
+            )
+        return multiplier
+
+    if multiplier != 1.0:
         logger.info(
-            f"[TIME-SIZE] Applying time multiplier: {multiplier:.3f}x "
-            f"({', '.join(reasons)})"
+            f"[SHADOW-TIME-SIZE] would apply {multiplier:.3f}x "
+            f"({', '.join(reasons)}) — neutralized to 1.0x "
+            f"(FALLACY_AUDIT D11: one-April-week era, never re-scored; "
+            f"TIME_SIZING_ENFORCE=true restores)"
         )
+    return 1.0
 
-    return round(multiplier, 4)
+
+def _raw_directional_multiplier(side: str, now: datetime = None,
+                                boost: float = 1.15, penalty: float = 0.85):
+    """Compute the WOULD-HAVE directional multiplier (shadow arithmetic)."""
+    if now is None:
+        now = datetime.now(timezone.utc)
+
+    bias = _HOUR_BIAS.get(now.hour, "neutral")
+    if bias == "neutral":
+        return 1.0, bias, "neutral"
+
+    trade_dir = "long" if side.upper() == "BUY" else "short"
+    if trade_dir == bias:
+        return boost, bias, "aligned"
+    return penalty, bias, "opposed"
 
 
 def get_directional_multiplier(
@@ -157,9 +207,8 @@ def get_directional_multiplier(
 ) -> float:
     """Return a directional bias multiplier based on hour-of-day edge.
 
-    If the trade direction matches the proven bias for this hour,
-    boost the sizing. If it opposes, apply a penalty. Neutral hours
-    return 1.0.
+    D11 SHADOW (default): returns 1.0 and logs the would-have multiplier.
+    TIME_SIZING_ENFORCE=true restores enforcement.
 
     Args:
         side: "BUY" or "SELL" — the trade direction.
@@ -168,29 +217,28 @@ def get_directional_multiplier(
         penalty: Multiplier when direction opposes bias (default 0.85).
 
     Returns:
-        Directional multiplier (boost, penalty, or 1.0).
+        Directional multiplier (1.0 unless enforced).
     """
-    if now is None:
-        now = datetime.now(timezone.utc)
+    mult, bias, alignment = _raw_directional_multiplier(
+        side, now=now, boost=boost, penalty=penalty)
 
-    bias = _HOUR_BIAS.get(now.hour, "neutral")
-    if bias == "neutral":
-        return 1.0
+    if _enforce():
+        if mult != 1.0:
+            _now = now or datetime.now(timezone.utc)
+            logger.info(
+                f"[TIME-SIZE] Directional {alignment}: {side} vs h{_now.hour} "
+                f"{bias} bias → {mult:.2f}x"
+            )
+        return mult
 
-    trade_dir = "long" if side.upper() == "BUY" else "short"
-
-    if trade_dir == bias:
+    if mult != 1.0:
+        _now = now or datetime.now(timezone.utc)
         logger.info(
-            f"[TIME-SIZE] Directional boost: {side} matches h{now.hour} "
-            f"{bias} bias → {boost:.2f}x"
+            f"[SHADOW-TIME-SIZE] directional would apply {mult:.2f}x "
+            f"({side} {alignment} h{_now.hour} {bias} bias) — neutralized to "
+            f"1.0x (FALLACY_AUDIT D11)"
         )
-        return boost
-    else:
-        logger.info(
-            f"[TIME-SIZE] Directional penalty: {side} opposes h{now.hour} "
-            f"{bias} bias → {penalty:.2f}x"
-        )
-        return penalty
+    return 1.0
 
 
 def get_full_time_multiplier(
@@ -221,9 +269,10 @@ def get_full_time_multiplier(
 
     Returns:
         {
-            "multiplier": float,  # Combined multiplier
-            "base_multiplier": float,  # Hour * day multiplier (no directional)
-            "directional_multiplier": float,  # Directional bias component
+            "multiplier": float,  # Combined multiplier (1.0 unless TIME_SIZING_ENFORCE)
+            "shadow_multiplier": float,  # Would-have combined multiplier (D11 shadow)
+            "base_multiplier": float,  # Would-have hour * day multiplier (no directional)
+            "directional_multiplier": float,  # Would-have directional bias component
             "bias": "long"|"short"|"neutral",
             "session": "PRIME"|"GOOD"|"QUIET"|"DEAD",
             "reasons": [str],  # Human-readable reasons
@@ -234,8 +283,9 @@ def get_full_time_multiplier(
 
     reasons = []
 
-    # Base time multiplier (hour * day)
-    base_mult = get_time_multiplier(now)
+    # Base time multiplier (hour * day) — raw would-have value (D11 shadow)
+    base_mult, _base_reasons = _raw_time_multiplier(now)
+    reasons.extend(_base_reasons)
 
     # Classify session for metadata
     session_mult = _SESSION_MULTIPLIERS.get(now.hour, 1.0)
@@ -250,19 +300,17 @@ def get_full_time_multiplier(
 
     bias = _HOUR_BIAS.get(now.hour, "neutral")
 
-    # Directional bias
+    # Directional bias — raw would-have value (D11 shadow)
     dir_mult = 1.0
     if side is not None:
-        dir_mult = get_directional_multiplier(
+        dir_mult, _bias, _alignment = _raw_directional_multiplier(
             side=side,
             now=now,
             boost=directional_boost,
             penalty=directional_penalty,
         )
         if dir_mult != 1.0:
-            trade_dir = "long" if side.upper() == "BUY" else "short"
-            action = "aligned" if trade_dir == bias else "opposed"
-            reasons.append(f"dir_{action}({dir_mult:.2f}x)")
+            reasons.append(f"dir_{_alignment}({dir_mult:.2f}x)")
 
     combined = base_mult * dir_mult
 
@@ -281,8 +329,22 @@ def get_full_time_multiplier(
     if base_mult != 1.0:
         reasons.insert(0, f"base({base_mult:.3f}x)")
 
+    # D11 SHADOW (default): report the would-have number, apply 1.0x.
+    if _enforce():
+        applied = combined
+    else:
+        applied = 1.0
+        if combined != 1.0:
+            reasons.append(f"neutralized_D11(would={combined:.3f}x)")
+            logger.info(
+                f"[SHADOW-TIME-SIZE] full time mult would apply {combined:.3f}x "
+                f"(session={session}, bias={bias}) — neutralized to 1.0x "
+                f"(FALLACY_AUDIT D11; TIME_SIZING_ENFORCE=true restores)"
+            )
+
     return {
-        "multiplier": combined,
+        "multiplier": applied,
+        "shadow_multiplier": combined,
         "base_multiplier": base_mult,
         "directional_multiplier": dir_mult,
         "bias": bias,

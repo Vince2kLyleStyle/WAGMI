@@ -1901,6 +1901,10 @@ class BacktestEngine:
             # Includes: R:R check, EV filter, circuit breaker, max positions,
             # correlation guard, leverage decision, liquidation safety, position sizing.
             chain = RiskFilterChain(self.risk_mgr, self.leverage_mgr, self.config)
+            # Offline harness: the mechanical pipe IS the experiment here, so
+            # the live LLM-first degradation stand-down (Gate 0, wave2b L5)
+            # does not apply — .env LLM_FIRST_MODE must not zero the backtest.
+            chain.llm_first_standdown_enabled = False
             result = chain.evaluate(
                 signal=signal,
                 equity=self.risk_mgr.equity,

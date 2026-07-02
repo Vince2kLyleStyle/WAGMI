@@ -29,6 +29,17 @@ from execution.time_sizing import (
 )
 
 
+# ── D11 (wave2b L5): time sizing is SHADOW by default ───────────────
+# The multipliers below are neutralized to 1.0x in production (FALLACY_AUDIT
+# D11 — April-2026 single-week study, never re-scored on the clean ledger).
+# These tests pin the enforcement ARITHMETIC, so re-arm via the kill-switch.
+# TestShadowDefaultD11 pins the actual production default (1.0x).
+
+@pytest.fixture(autouse=True)
+def _enforce_time_sizing(monkeypatch):
+    monkeypatch.setenv("TIME_SIZING_ENFORCE", "true")
+
+
 # ── Helpers ──────────────────────────────────────────────────────────
 
 def _utc(year=2025, month=1, day=6, hour=12):
@@ -419,8 +430,8 @@ class TestEdgeCases:
         """get_full_time_multiplier returns all expected keys."""
         info = get_full_time_multiplier(side="BUY", now=_utc(hour=14))
         expected_keys = {
-            "multiplier", "base_multiplier", "directional_multiplier",
-            "bias", "session", "reasons",
+            "multiplier", "shadow_multiplier", "base_multiplier",
+            "directional_multiplier", "bias", "session", "reasons",
         }
         assert set(info.keys()) == expected_keys
 
@@ -437,6 +448,36 @@ class TestEdgeCases:
                         f"day={day} h={hour} side={side} "
                         f"mult={info['multiplier']} > 1.0 in reduce-only mode"
                     )
+
+
+# ── D11 Shadow Default Tests ─────────────────────────────────────────
+
+class TestShadowDefaultD11:
+    """Production default: multipliers computed + logged but 1.0x applied."""
+
+    @pytest.fixture(autouse=True)
+    def _no_enforce(self, monkeypatch):
+        monkeypatch.delenv("TIME_SIZING_ENFORCE", raising=False)
+
+    def test_time_multiplier_neutralized(self):
+        # Monday 15:00 UTC would be 1.38x — shadow default applies 1.0x
+        assert get_time_multiplier(_utc(day=MON, hour=15)) == 1.0
+
+    def test_directional_neutralized(self):
+        # 17:00 short bias would boost SELL 1.15x — shadow default 1.0x
+        assert get_directional_multiplier("SELL", _utc(day=TUE, hour=17)) == 1.0
+        assert get_directional_multiplier("BUY", _utc(day=TUE, hour=17)) == 1.0
+
+    def test_full_multiplier_neutralized_but_shadow_reported(self):
+        info = get_full_time_multiplier(side="BUY", now=_utc(day=MON, hour=14))
+        assert info["multiplier"] == 1.0
+        # Would-have number preserved for the shadow ledger
+        assert abs(info["shadow_multiplier"] - 1.4) < 0.001  # capped at 1.4
+        assert any("neutralized_D11" in r for r in info["reasons"])
+
+    def test_dead_hour_not_reduced(self):
+        # Saturday DEAD hour would be 0.4x — shadow default keeps 1.0x
+        assert get_time_multiplier(_utc(day=SAT, hour=4)) == 1.0
 
 
 # ── Config Integration Test ──────────────────────────────────────────

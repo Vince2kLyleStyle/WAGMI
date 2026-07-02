@@ -879,23 +879,105 @@ class TestRegimeSymbolRisk:
 class TestConfidenceSizing:
     """Confidence level affects position sizing through the pipeline."""
 
-    def test_exhaustion_reduced_at_90_plus_in_trend(self):
-        """90%+ confidence in non-consolidation regime should be reduced (0.4x)."""
+    def test_exhaustion_advisory_at_90_plus_in_trend(self):
+        """90%+ confidence in non-consolidation regime: advisory only, no penalty
+        (2026-06-08 de-penalized; wave2b L5 M13 keeps it advisory)."""
         chain, rm, lm, cfg = _make_filter_chain()
         signal = _make_signal(confidence=92.0, regime="trending_bull")
         result = chain.evaluate(signal, equity=10000.0, num_strategies_agree=3, total_strategies=4)
         if result.approved:
-            # risk_mult should be reduced but non-zero (exhaustion reduction, not block)
             assert result.risk_multiplier > 0
-            assert result.metadata.get("confidence_sizing") == "exhaustion_0.7x"
+            assert result.metadata.get("confidence_sizing") == "exhaustion_advisory_no_penalty"
 
-    def test_85_confidence_gets_boost(self):
-        """85-89% confidence should get 1.5x size boost."""
+    def test_85_confidence_boost_is_shadow(self):
+        """85-89% confidence tier is SHADOW (wave2b L5, FALLACY_AUDIT M13):
+        would-have 1.5x recorded, 1.0x applied (fossil-stat tiers need a
+        clean-ledger n>=13 recompute before enforcement)."""
         chain, rm, lm, cfg = _make_filter_chain()
         signal = _make_signal(confidence=87.0, regime="consolidation")
         result = chain.evaluate(signal, equity=10000.0, num_strategies_agree=2, total_strategies=4)
         if result.approved:
-            assert result.metadata.get("confidence_sizing") == "high_conviction_1.5x"
+            assert result.metadata.get("confidence_sizing") == "high_conviction_1.5x_shadow"
+            assert result.metadata.get("confidence_sizing_would_be") == 1.5
+
+
+# ═══════════════════════════════════════════════════════════════════════
+# SECTION I2: wave2b L5 — fallback-pipe hygiene (Gate 0 stand-down, M1/M13
+# shadows, M22 deletion)
+# ═══════════════════════════════════════════════════════════════════════
+
+
+class TestLLMFirstStanddown:
+    """Gate 0: when LLM-first is configured, the mechanical fallback chain
+    must be a SAFE STAND-DOWN (honest labeled no-trade), never a
+    mechanical-opinion trade (FULL_PIPE_BUILD_MAP §L5)."""
+
+    def test_standdown_when_llm_first_configured(self):
+        chain, rm, lm, cfg = _make_filter_chain(llm_first_mode=True)
+        os.environ.pop("ALLOW_MECHANICAL_FALLBACK", None)
+        signal = _make_signal(confidence=82.0)
+        result = chain.evaluate(signal, equity=10000.0, num_strategies_agree=2, total_strategies=4)
+        assert result.approved is False
+        assert "STAND-DOWN" in result.rejection_reason
+        assert "pipeline_error" in result.rejection_reason
+
+    def test_owner_dial_restores_mechanical_trading(self):
+        chain, rm, lm, cfg = _make_filter_chain(llm_first_mode=True)
+        old = os.environ.get("ALLOW_MECHANICAL_FALLBACK")
+        os.environ["ALLOW_MECHANICAL_FALLBACK"] = "true"
+        try:
+            signal = _make_signal(confidence=82.0)
+            result = chain.evaluate(signal, equity=10000.0, num_strategies_agree=2, total_strategies=4)
+            # Must NOT stand down — whatever the other gates decide
+            assert "STAND-DOWN" not in result.rejection_reason
+        finally:
+            if old is None:
+                os.environ.pop("ALLOW_MECHANICAL_FALLBACK", None)
+            else:
+                os.environ["ALLOW_MECHANICAL_FALLBACK"] = old
+
+    def test_offline_harness_opt_out(self):
+        """Backtest engine sets llm_first_standdown_enabled=False — the
+        mechanical A/B keeps trading even with LLM_FIRST_MODE in .env."""
+        chain, rm, lm, cfg = _make_filter_chain(llm_first_mode=True)
+        chain.llm_first_standdown_enabled = False
+        signal = _make_signal(confidence=82.0)
+        result = chain.evaluate(signal, equity=10000.0, num_strategies_agree=2, total_strategies=4)
+        assert "STAND-DOWN" not in result.rejection_reason
+
+    def test_mechanical_mode_unaffected(self):
+        """llm_first_mode=False (owner runs mechanical): no stand-down."""
+        chain, rm, lm, cfg = _make_filter_chain(llm_first_mode=False)
+        signal = _make_signal(confidence=82.0)
+        result = chain.evaluate(signal, equity=10000.0, num_strategies_agree=2, total_strategies=4)
+        assert "STAND-DOWN" not in result.rejection_reason
+
+
+class TestQuantRulesShadow:
+    """M1: quant-rule boosts are shadow — would-have recorded, 1.0x applied."""
+
+    def test_conviction_boost_is_shadow(self):
+        os.environ.pop("QUANT_RULES_ENFORCE", None)
+        chain, rm, lm, cfg = _make_filter_chain()
+        # conf>=80 + 2 agree fires Rule 4 (conviction ×1.3) — shadow only
+        signal = _make_signal(confidence=87.0, regime="consolidation")
+        result = chain.evaluate(signal, equity=10000.0, num_strategies_agree=2, total_strategies=4)
+        if result.approved:
+            assert "quant_risk_mult_boost" not in result.metadata
+            assert result.metadata.get("quant_risk_mult_boost_would_be") == pytest.approx(1.3)
+            # Confidence must NOT have been boosted
+            assert result.signal.confidence == pytest.approx(87.0)
+
+
+class TestWinProbGateDeleted:
+    """M22: the win-prob floor gate was doubly-dead instrumentation — deleted.
+    A rock-bottom win_prob must not produce a win_prob rejection."""
+
+    def test_low_win_prob_not_rejected_for_win_prob(self):
+        chain, rm, lm, cfg = _make_filter_chain()
+        signal = _make_signal(confidence=82.0, metadata_extra={"win_prob": 0.05})
+        result = chain.evaluate(signal, equity=10000.0, num_strategies_agree=2, total_strategies=4)
+        assert "Win probability" not in result.rejection_reason
 
 
 # ═══════════════════════════════════════════════════════════════════════

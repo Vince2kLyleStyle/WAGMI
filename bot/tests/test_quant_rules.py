@@ -1,12 +1,15 @@
 """
-Tests for hardcoded quant rules in the signal pipeline.
+Tests for quant rules in the signal pipeline — SHADOW since wave2b L5 (M1).
 
-Validates 5 proven statistical edges:
-1. Morning Edge (06-12 UTC) — 1.2x confidence boost
-2. BTC SHORT Edge — 1.15x confidence boost
+apply_quant_rules() computes WOULD-HAVE boosts only; the RiskFilterChain
+applies 1.0x unless QUANT_RULES_ENFORCE=true (FALLACY_AUDIT_2026-07-02 M1).
+
+Rules under test (would-have arithmetic):
+1. Morning Edge (06-12 UTC) — 1.2x confidence (shadow)
+2. BTC SHORT Edge — DELETED outright (pure directional opinion, M1)
 3. 12h Time Stop — optimal hold duration
-4. HYPE BUY in High Vol — 1.2x confidence boost
-5. Conviction Multiplier — 1.3x risk mult on high-conf multi-agree
+4. HYPE BUY in High Vol — 1.2x confidence (shadow)
+5. Conviction Multiplier — 1.3x risk mult (shadow)
 """
 
 import copy
@@ -92,48 +95,27 @@ class TestMorningEdge:
         assert result["confidence_boost"] == pytest.approx(1.5)
 
 
-# ── Rule 2: BTC SHORT Edge Tests ─────────────────────────────────────
+# ── Rule 2: BTC SHORT Edge — DELETED (wave2b L5, FALLACY_AUDIT M1) ───
 
-class TestBtcShortEdge:
-    """BTC SELL signals should get 1.15x confidence boost."""
+class TestBtcShortEdgeDeleted:
+    """Rule 2 was a pure directional opinion (×1.15 on EVERY BTC SELL from an
+    unversioned dirty-era '67% WR'). It must never fire — even when the
+    config flag says enabled."""
 
-    def test_btc_short_boosted(self):
-        """BTC SELL gets 1.15x boost."""
+    def test_btc_short_never_fires(self):
+        """BTC SELL gets NO btc_short_edge boost (rule deleted)."""
         signal = MockSignal(symbol="BTC", side="SELL")
-        config = MockConfig()
+        config = MockConfig()  # quant_btc_short_edge_enabled=True — irrelevant
         now = datetime(2026, 3, 30, 15, 0, tzinfo=timezone.utc)  # outside morning window
         result = apply_quant_rules(signal, config, now=now)
-        assert "btc_short_edge" in result["rules_applied"]
-        assert result["confidence_boost"] == pytest.approx(1.15)
-
-    def test_btc_buy_not_boosted(self):
-        """BTC BUY should NOT get short edge boost."""
-        signal = MockSignal(symbol="BTC", side="BUY")
-        config = MockConfig()
-        now = datetime(2026, 3, 30, 15, 0, tzinfo=timezone.utc)
-        result = apply_quant_rules(signal, config, now=now)
         assert "btc_short_edge" not in result["rules_applied"]
+        assert result["confidence_boost"] == pytest.approx(1.0)
+        assert "btc_short_boost" not in result["meta"]
 
-    def test_sol_short_not_boosted(self):
-        """Non-BTC shorts should NOT get BTC short edge boost."""
-        signal = MockSignal(symbol="SOL", side="SELL")
-        config = MockConfig()
-        now = datetime(2026, 3, 30, 15, 0, tzinfo=timezone.utc)
-        result = apply_quant_rules(signal, config, now=now)
-        assert "btc_short_edge" not in result["rules_applied"]
-
-    def test_btc_short_with_suffix(self):
-        """BTC with exchange suffix gets boosted."""
+    def test_btc_short_with_suffix_never_fires(self):
+        """Suffixed BTC SELL also gets nothing."""
         signal = MockSignal(symbol="BTC/USDC:USDC", side="SELL")
         config = MockConfig()
-        now = datetime(2026, 3, 30, 15, 0, tzinfo=timezone.utc)
-        result = apply_quant_rules(signal, config, now=now)
-        assert "btc_short_edge" in result["rules_applied"]
-
-    def test_btc_short_disabled(self):
-        """When disabled, no BTC SHORT boost."""
-        signal = MockSignal(symbol="BTC", side="SELL")
-        config = MockConfig(quant_btc_short_edge_enabled=False)
         now = datetime(2026, 3, 30, 15, 0, tzinfo=timezone.utc)
         result = apply_quant_rules(signal, config, now=now)
         assert "btc_short_edge" not in result["rules_applied"]
@@ -279,15 +261,15 @@ class TestConvictionMultiplier:
 class TestQuantRulesStacking:
     """Multiple rules can fire simultaneously and compound."""
 
-    def test_morning_edge_plus_btc_short(self):
-        """BTC SHORT at 08:00 UTC should get both boosts (1.2 * 1.15 = 1.38)."""
+    def test_morning_edge_only_for_btc_short(self):
+        """BTC SHORT at 08:00 UTC gets ONLY morning edge (Rule 2 deleted)."""
         signal = MockSignal(symbol="BTC", side="SELL")
         config = MockConfig()
         now = datetime(2026, 3, 30, 8, 0, tzinfo=timezone.utc)
         result = apply_quant_rules(signal, config, now=now)
         assert "morning_edge" in result["rules_applied"]
-        assert "btc_short_edge" in result["rules_applied"]
-        assert result["confidence_boost"] == pytest.approx(1.2 * 1.15)
+        assert "btc_short_edge" not in result["rules_applied"]
+        assert result["confidence_boost"] == pytest.approx(1.2)
 
     def test_morning_edge_plus_hype_highvol(self):
         """HYPE BUY in high vol at 10:00 UTC should get both boosts."""
@@ -332,18 +314,18 @@ class TestQuantRulesStacking:
         config = MockConfig()
         now = datetime(2026, 3, 30, 8, 0, tzinfo=timezone.utc)  # morning
         result = apply_quant_rules(signal, config, num_strategies_agree=2, now=now)
-        # Morning edge (1.2x conf) + BTC short (1.15x conf) + conviction (1.3x risk)
-        assert result["confidence_boost"] == pytest.approx(1.2 * 1.15)
+        # Morning edge (1.2x conf) + conviction (1.3x risk); Rule 2 deleted
+        assert result["confidence_boost"] == pytest.approx(1.2)
         assert result["risk_mult_boost"] == pytest.approx(1.3)
-        assert len(result["rules_applied"]) == 3
+        assert len(result["rules_applied"]) == 2
 
     def test_metadata_returned_for_all_rules(self):
-        """All fired rules should have metadata entries."""
+        """All fired rules should have metadata entries (Rule 2 deleted)."""
         signal = MockSignal(symbol="BTC", side="SELL", confidence=85.0)
         config = MockConfig()
         now = datetime(2026, 3, 30, 8, 0, tzinfo=timezone.utc)
         result = apply_quant_rules(signal, config, num_strategies_agree=2, now=now)
         meta = result["meta"]
         assert "morning_edge_hour" in meta
-        assert "btc_short_boost" in meta
+        assert "btc_short_boost" not in meta
         assert "conviction_risk_mult" in meta
