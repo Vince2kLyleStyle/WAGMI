@@ -1010,3 +1010,6 @@ WHAT THE FIRST POST-DECHOKE SCANS SHOULD SHOW: more signals reaching the LLM coo
 
 === 2026-07-02 ~23:00 UTC — SPEED DIRECTIVE 2: decouple the A/B from C6 ===
 Owner wants max speed. Sequencing unlock: the A/B does NOT need to wait for the C6 baseline — C1-C5 baselines are complete. DIRECTIVE for the wave-2b lander + engine cron: launch C1'-C5' (new-pipe) IMMEDIATELY after the coordinated restart + invariants pass, 3 windows parallel, 6s sleeps; C6' runs when the C6 baseline lands. Saves ~2h of serialization.
+
+=== 2026-07-02 ~23:15 UTC — STANDING MODE ratified: autonomous opportunity research ===
+Owner: autonomous exploration/auditing/backtesting for opportunities = standing mode. ENGINE DIRECTIVE: when LEFT_ON_THE_TABLE.md lands, its SHIP-NOW rows enter the burn queue automatically (v1.4); PILOT rows get their auto-tests scheduled per Lane B's protocol; the agenda (Q29 scenarios, Q30 concordance) continues the mode indefinitely. The loop: hunt -> rank -> ship/pilot -> grade -> hunt again.
