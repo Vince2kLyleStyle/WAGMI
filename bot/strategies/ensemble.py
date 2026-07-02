@@ -260,6 +260,21 @@ class EnsembleStrategy:
         """Temporarily disable specific strategies (e.g., for regime filtering)."""
         self._disabled_strategies = set(names)
 
+    def set_fit_avoid_annotations(self, annotations: Dict[str, str]):
+        """WAVE2A L3 (FULL_PIPE_BUILD_MAP R21c/R21d companion, 2026-07-02).
+
+        STRATEGY_REGIME_FIT 'avoid' verdicts no longer disable strategies —
+        they ride along as labeled metadata on the votes so the LLM sees the
+        fitness table's opinion as context (THE_STANDARD §3b v1.3). Keyed by
+        strategy name; value is a human-readable verdict label, e.g.
+        "avoid (static theory, no n)". Called by the dispatch layer instead
+        of set_disabled_strategies for FIT verdicts.
+
+        Kill-switch: ENSEMBLE_SUPPRESS_FIT_AVOID=true makes evaluate_raw
+        suppress these strategies again (legacy behavior, shadow-logged).
+        """
+        self._fit_avoid_annotations = dict(annotations or {})
+
     def get_last_signal(self, symbol: str, strategy_name: str) -> Optional[Signal]:
         """Get the last signal from a specific strategy for a symbol."""
         return self._last_signals.get(symbol, {}).get(strategy_name)
@@ -701,17 +716,35 @@ class EnsembleStrategy:
                     f"{effective_floor:.0f}% but R:R={_rr:.1f} on {_vol_prof}-vol asset — "
                     f"allowing at 65% size"
                 )
-            # HYPE BUY override: 40K counterfactual records show HYPE BUY at 88.6% WR
-            # across ALL confidence levels. HYPE SELL is 2.3% WR.
+            # WAVE2A L3 (FULL_PIPE_BUILD_MAP M5, 2026-07-02): HYPE BUY
+            # floor-bypass demoted to SHADOW. The "88.6% WR / 40K
+            # counterfactuals" claim was contradicted by 35 live trades
+            # (23% WR, -$77.26 — F8 audit 2026-05-04). The bypass no longer
+            # fires; the would-have-bypassed case is logged + counterfactual-
+            # recorded so the opinion gets graded against price.
+            # Kill-switch: HYPE_BUY_BYPASS_ENFORCE=true restores the bypass.
             elif (symbol.replace("/USDC:USDC", "").replace("/USDT:USDT", "") == "HYPE"
                   and result.side == "BUY"
                   and result.confidence >= 55.0):
-                result.metadata["hype_buy_bypass"] = True
-                result.metadata["risk_mult_override"] = 0.70  # 70% size — HYPE BUY has 88.6% WR
-                logger.info(
-                    f"[{symbol}] HYPE BUY bypass: conf {result.confidence:.0f}% < floor "
-                    f"{effective_floor:.0f}% but HYPE BUY has 88.6% WR in counterfactual data"
-                )
+                import os as _os
+                if _os.environ.get("HYPE_BUY_BYPASS_ENFORCE", "false").lower() == "true":
+                    result.metadata["hype_buy_bypass"] = True
+                    result.metadata["risk_mult_override"] = 0.70
+                    logger.info(
+                        f"[{symbol}] HYPE BUY bypass ENFORCED (kill-switch): conf "
+                        f"{result.confidence:.0f}% < floor {effective_floor:.0f}%"
+                    )
+                else:
+                    logger.info(
+                        f"[{symbol}] [SHADOW-GATE] hype_buy_bypass would_pass conf="
+                        f"{result.confidence:.0f}% < floor {effective_floor:.0f}% — M5 "
+                        f"shadow (88.6% WR claim refuted live: 23% WR n=35; "
+                        f"HYPE_BUY_BYPASS_ENFORCE=true restores)"
+                    )
+                    self._record_counterfactual(
+                        result, f"confidence_floor_{effective_floor:.0f}"
+                    )
+                    return None
             else:
                 logger.info(
                     f"[{symbol}] Signal rejected: confidence {result.confidence:.0f}% "
@@ -842,6 +875,30 @@ class EnsembleStrategy:
         except Exception:
             symbol_active = None
 
+        # ── WAVE2A L3 VOTER EMANCIPATION (FULL_PIPE_BUILD_MAP R21a/R21b/R21c,
+        # 2026-07-02) ──
+        # The regime allowlist, per-symbol strategy profile, and FIT-avoid
+        # table are OPINIONS (static tables, era-unstamped WRs, no per-cell n).
+        # Per doctrine they no longer suppress votes in the LLM-first raw
+        # path: every strategy votes, and each filter's verdict rides along
+        # as LABELED METADATA so the LLM judges with full information
+        # (THE_STANDARD §3b v1.3). Kill-switches restore legacy suppression
+        # (suppressed votes are then shadow-logged, never silently dropped):
+        #   ENSEMBLE_SUPPRESS_REGIME_ALLOWLIST=true
+        #   ENSEMBLE_SUPPRESS_SYMBOL_PROFILE=true
+        #   ENSEMBLE_SUPPRESS_FIT_AVOID=true
+        import os as _os
+        _suppress_regime = _os.environ.get(
+            "ENSEMBLE_SUPPRESS_REGIME_ALLOWLIST", "false").lower() == "true"
+        _suppress_profile = _os.environ.get(
+            "ENSEMBLE_SUPPRESS_SYMBOL_PROFILE", "false").lower() == "true"
+        _suppress_fit = _os.environ.get(
+            "ENSEMBLE_SUPPRESS_FIT_AVOID", "false").lower() == "true"
+        _regime_now = self._current_regime.get(symbol, "unknown")
+        _fit_notes = getattr(self, "_fit_avoid_annotations", None) or {}
+        _allowlist_flagged: List[str] = []  # voted; allowlist would have suppressed
+        _profile_flagged: List[str] = []    # voted; symbol profile would have suppressed
+
         signals: List[Signal] = []
         shadow_signals: List[Signal] = []
         self._last_raw_signals: Dict[str, List[Signal]] = getattr(self, '_last_raw_signals', {})
@@ -849,11 +906,34 @@ class EnsembleStrategy:
         error_count = 0
 
         for strategy in self.strategies:
-            if strategy.name in self._disabled_strategies:
+            # Config-disabled strategies (owner intent via apply_config_disables)
+            # still shadow-record only. FIT-avoid no longer routes through
+            # _disabled_strategies (see set_fit_avoid_annotations), but if the
+            # dispatch layer still sends it here, this path preserves the
+            # shadow record.
+            _flag_regime = (regime_allowed is not None
+                            and strategy.name not in regime_allowed)
+            _flag_profile = (symbol_active is not None
+                             and strategy.name not in symbol_active)
+            _kill_switch_suppressed = (
+                (_flag_regime and _suppress_regime)
+                or (_flag_profile and _suppress_profile)
+                or (_suppress_fit and strategy.name in _fit_notes)
+            )
+            if strategy.name in self._disabled_strategies or _kill_switch_suppressed:
                 try:
                     sig = strategy.evaluate(symbol, data)
                     if sig is not None:
                         shadow_signals.append(deepcopy(sig))
+                        if _kill_switch_suppressed:
+                            _src = ("regime_allowlist" if (_flag_regime and _suppress_regime)
+                                    else "symbol_profile" if (_flag_profile and _suppress_profile)
+                                    else "fit_avoid")
+                            logger.info(
+                                f"[{symbol}] [SUPPRESS-SHADOW] {strategy.name} {sig.side} "
+                                f"conf={sig.confidence:.0f}% vote suppressed by {_src} "
+                                f"kill-switch (regime={_regime_now})"
+                            )
                         if self._shadow_ledger:
                             try:
                                 self._shadow_ledger.record_shadow_signal(
@@ -869,17 +949,30 @@ class EnsembleStrategy:
                     pass
                 continue
 
-            if regime_allowed is not None and strategy.name not in regime_allowed:
-                continue
-            # Per-symbol strategy profile: skip strategies with no empirical edge
-            # on this symbol (e.g., regime_trend on SOL = 0% WR). Data lives in
-            # bot/data/symbol_strategy_profile.py.
-            if symbol_active is not None and strategy.name not in symbol_active:
-                continue
+            if _flag_regime:
+                _allowlist_flagged.append(strategy.name)
+            if _flag_profile:
+                _profile_flagged.append(strategy.name)
             active_count += 1
             try:
                 sig = strategy.evaluate(symbol, data)
                 if sig is not None:
+                    # The vote flows; the filter's opinion rides along (v1.3).
+                    if _flag_regime:
+                        sig.metadata["regime_allowlist_would_suppress"] = (
+                            f"mechanically disallowed in regime '{_regime_now}' "
+                            "(static allowlist, no per-cell n) — vote flowed"
+                        )
+                    if _flag_profile:
+                        sig.metadata["symbol_profile_would_suppress"] = (
+                            "per-symbol profile claims no empirical edge "
+                            "(era-unstamped WR) — vote flowed"
+                        )
+                    if strategy.name in _fit_notes:
+                        sig.metadata["fit_avoid_would_suppress"] = (
+                            f"fitness table: {_fit_notes[strategy.name]} "
+                            "(static theory, no n) — vote flowed"
+                        )
                     signals.append(sig)
             except Exception as e:
                 error_count += 1
@@ -900,7 +993,9 @@ class EnsembleStrategy:
         # Per-strategy signal map
         _fired = [s.strategy for s in signals]
         _strat_names = [s.name for s in self.strategies if s.name not in self._disabled_strategies]
-        _silent = [n for n in _strat_names if n not in _fired and (regime_allowed is None or n in regime_allowed)]
+        # WAVE2A L3: allowlist no longer suppresses voters, so every active
+        # strategy that didn't fire is genuinely silent.
+        _silent = [n for n in _strat_names if n not in _fired]
         if signals:
             logger.info(f"[{symbol}] RAW strategy map: fired={_fired} silent={_silent} ({len(signals)}/{active_count})")
 
@@ -947,6 +1042,28 @@ class EnsembleStrategy:
 
         # ── Attach metadata WITHOUT filtering ──
         # These are context for the LLM, not gates.
+
+        # WAVE2A L3 (R21a/R21b/R21c): labeled voter-suppression opinion —
+        # which of the agreeing voters the mechanical filters would have
+        # suppressed. Context for the LLM, never enforcement.
+        _agreeing_now = (result.metadata or {}).get("strategies_agree") or [result.strategy]
+        _fit_flagged_agreeing = {
+            k: v for k, v in _fit_notes.items() if k in _agreeing_now
+        }
+        if _allowlist_flagged or _profile_flagged or _fit_flagged_agreeing:
+            result.metadata["voter_suppression_opinion"] = {
+                "regime": _regime_now,
+                "regime_allowlist_would_suppress": list(_allowlist_flagged),
+                "symbol_profile_would_suppress": list(_profile_flagged),
+                "fit_avoid": _fit_flagged_agreeing,
+                "note": ("mechanical filter opinions (static tables, no per-cell n) — "
+                         "votes flowed per doctrine; informational only"),
+            }
+            logger.info(
+                f"[{symbol}] [VOTER-EMANCIPATED] allowlist_flagged={_allowlist_flagged} "
+                f"profile_flagged={_profile_flagged} fit_flagged={list(_fit_flagged_agreeing)} "
+                f"regime={_regime_now} (votes flowed, opinion labeled)"
+            )
 
         # Chop score (smoothed)
         raw_chop = result.metadata.get("chop_score", 0)
@@ -1654,6 +1771,20 @@ class EnsembleStrategy:
         if merged is None:
             return None
 
+        # WAVE2A L3 (R22): full vote map incl. opposing votes (metadata only).
+        merged.metadata["vote_map"] = {
+            "chosen_side_votes": [
+                {"strategy": s.strategy, "side": s.side,
+                 "confidence": round(s.confidence, 1)}
+                for s in chosen
+            ],
+            "opposing_side_votes": [
+                {"strategy": s.strategy, "side": s.side,
+                 "confidence": round(s.confidence, 1)}
+                for s in opposition
+            ],
+        }
+
         # Confidence penalty for opposition, weighted by opposer's confidence.
         # Previously flat 10pts per opposer regardless of their conviction.
         if opposition:
@@ -1930,6 +2061,25 @@ class EnsembleStrategy:
         merged = self._merge_signals(symbol, chosen, llm_first_raw=llm_first_raw)
         if merged is None:
             return None
+
+        # WAVE2A L3 (FULL_PIPE_BUILD_MAP R22, 2026-07-02): full-information
+        # symmetry — expose the complete vote map INCLUDING the losing side so
+        # the LLM sees genuine disagreement instead of a pre-resolved winner.
+        # Consensus math unchanged; this is metadata only.
+        merged.metadata["vote_map"] = {
+            "chosen_side_votes": [
+                {"strategy": s.strategy, "side": s.side,
+                 "confidence": round(s.confidence, 1)}
+                for s in chosen
+            ],
+            "opposing_side_votes": [
+                {"strategy": s.strategy, "side": s.side,
+                 "confidence": round(s.confidence, 1)}
+                for s in opposition
+            ],
+            "chosen_strength_weighted": round(chosen_strength, 2),
+            "opposing_strength_weighted": round(oppose_strength, 2),
+        }
 
         # Symbol+side directional bias OBSERVATION (from counterfactual analysis, 20,664 records).
         # HYPE SELL: 2.3% WR — systemically unprofitable. BTC BUY: 15% WR.
@@ -2398,7 +2548,8 @@ class EnsembleStrategy:
         # Clamp non-trending regimes to 0.50 neutral prior until win_prob_v2 ships.
         # Trending keeps original (has real signal per regime-conditional model zoo).
         _raw_win_prob_v1 = win_prob  # preserve original for shadow logging
-        if _regime_ev not in ("trending", "trend", "trending_bull", "trending_bear"):
+        _wp_clamped = _regime_ev not in ("trending", "trend", "trending_bull", "trending_bear")
+        if _wp_clamped:
             win_prob = 0.50
         try:
             from trading_config import TradingConfig as _TConf
@@ -2660,6 +2811,23 @@ class EnsembleStrategy:
                 "mode": self.mode,
                 "ev_per_dollar": ev_per_dollar,
                 "win_prob": round(win_prob, 4),
+                # WAVE2A L3 (FULL_PIPE_BUILD_MAP D4, 2026-07-02): provenance
+                # labels at source. win_prob derives from ensemble confidence,
+                # which the 2026-04-19 IC study measured at IC=-0.003
+                # (p=0.976) vs outcomes — noise-grade. Downstream consumers
+                # (prompts, EV math) must carry these labels, not certainty.
+                "win_prob_v1_preclamp": round(_raw_win_prob_v1, 4),
+                "win_prob_provenance": (
+                    f"conf/100 x deflation {_deflation:.2f} (n_indep={_indep_key}); "
+                    "IC=-0.003 p=0.976 vs outcomes (2026-04-19 study) — noise-grade; "
+                    + (f"clamped to 0.50 neutral prior (regime={_regime_ev} "
+                       "non-trending, AUC 0.388)" if _wp_clamped
+                       else f"regime={_regime_ev} trending: v1 value kept (AUC 0.60)")
+                ),
+                "ev_provenance": (
+                    "EV = win_prob x fee/slippage payoff model — inherits win_prob's "
+                    "noise-grade caveat; treat as rough context, not a verdict"
+                ),
                 "rr_tp1": round(rr_tp1, 3),
                 "rr_tp2": round(rr_tp2, 3),
                 "fee_drag_pct": round(fee_drag * 100, 1) if stop_width > 0 else 0.0,

@@ -5182,8 +5182,18 @@ class MultiStrategyBot(AnalyticsMixin, LLMIntegrationMixin, PositionWiringMixin)
             if not hasattr(self, '_llm_eval_cooldowns'):
                 self._llm_eval_cooldowns = {}
             _last_eval = self._llm_eval_cooldowns.get(_llm_eval_key, 0)
-            if time.time() - _last_eval < 600:  # 10 minute cooldown to conserve credits
-                return  # Already evaluated this setup recently
+            _cd_elapsed = time.time() - _last_eval
+            if _cd_elapsed < 600:  # 10 minute cooldown to conserve credits (quota physics)
+                # WAVE2A L3 (FULL_PIPE_BUILD_MAP R9 defect a, 2026-07-02):
+                # the cooldown stays (quota physics) but the drop must never
+                # be silent — every suppressed signal leaves a trace.
+                logger.info(
+                    f"[{trace_id}][{symbol}] [COOLDOWN-DROP] {_llm_eval_key} "
+                    f"conf={_sig_conf:.0f}% dropped by 10-min LLM eval cooldown "
+                    f"({_cd_elapsed:.0f}s since last eval, "
+                    f"{600 - _cd_elapsed:.0f}s remaining)"
+                )
+                return  # Already evaluated this setup recently (drop logged above)
             self._llm_eval_cooldowns[_llm_eval_key] = time.time()
 
             try:
