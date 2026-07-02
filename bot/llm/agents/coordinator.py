@@ -1206,6 +1206,11 @@ class AgentCoordinator:
                 # ── Mechanical Critic Fallback ──────────────────────
                 # Critic API failed but trade wants to proceed — apply
                 # fast mechanical checks so trades don't run unchecked.
+                # DECHOKE 6 (2026-07-02): with the Critic itself in SHADOW
+                # mode, a FAILED critic call must not enforce harder than a
+                # successful one — fallback skips/penalties are shadow-logged
+                # unless CRITIC_ENFORCE=true.
+                _critic_fb_enforce = os.getenv("CRITIC_ENFORCE", "false").lower() == "true"
                 _fb_action = trade_out.data.get("a", trade_out.data.get("action", "skip"))
                 if _fb_action in ("go", "proceed"):
                     _fb_conf = float(trade_out.data.get("c", trade_out.data.get("confidence", 0.0)))
@@ -1217,22 +1222,31 @@ class AgentCoordinator:
                     )
                     _critic_fb_min = float(os.getenv("ENSEMBLE_CONFIDENCE_FLOOR", "40")) / 100.0
                     if _fb_conf < _critic_fb_min:
-                        logger.warning("[CRITIC-FALLBACK] Conf %.2f < %.2f without Critic — skip", _fb_conf, _critic_fb_min)
-                        trade_out = AgentOutput(role=AgentRole.TRADE, data={
-                            "a": "skip", "c": _fb_conf, "side": _fb_side,
-                            "n": f"critic_fallback: low conf ({_fb_conf:.2f}) without review",
-                        })
+                        if _critic_fb_enforce:
+                            logger.warning("[CRITIC-FALLBACK] Conf %.2f < %.2f without Critic — skip", _fb_conf, _critic_fb_min)
+                            trade_out = AgentOutput(role=AgentRole.TRADE, data={
+                                "a": "skip", "c": _fb_conf, "side": _fb_side,
+                                "n": f"critic_fallback: low conf ({_fb_conf:.2f}) without review",
+                            })
+                        else:
+                            logger.info("[SHADOW-CRITIC] fallback would_skip: conf %.2f < %.2f without review (shadow only)", _fb_conf, _critic_fb_min)
                     elif _fb_counter_trend:
-                        logger.warning("[CRITIC-FALLBACK] Counter-trend %s vs %s without Critic — skip", _fb_side, _fb_bias)
-                        trade_out = AgentOutput(role=AgentRole.TRADE, data={
-                            "a": "skip", "c": _fb_conf, "side": _fb_side,
-                            "n": f"critic_fallback: counter-trend ({_fb_side} vs {_fb_bias}) without review",
-                        })
+                        if _critic_fb_enforce:
+                            logger.warning("[CRITIC-FALLBACK] Counter-trend %s vs %s without Critic — skip", _fb_side, _fb_bias)
+                            trade_out = AgentOutput(role=AgentRole.TRADE, data={
+                                "a": "skip", "c": _fb_conf, "side": _fb_side,
+                                "n": f"critic_fallback: counter-trend ({_fb_side} vs {_fb_bias}) without review",
+                            })
+                        else:
+                            logger.info("[SHADOW-CRITIC] fallback would_skip: counter-trend %s vs %s without review (shadow only)", _fb_side, _fb_bias)
                     else:
-                        _penalized = max(0.0, _fb_conf - 0.10)
-                        logger.info("[CRITIC-FALLBACK] No Critic — conf %.2f -> %.2f", _fb_conf, _penalized)
-                        trade_out.data["c"] = _penalized
-                        trade_out.data["n"] = trade_out.data.get("n", "") + " | critic_fallback: -10% conf (no review)"
+                        if _critic_fb_enforce:
+                            _penalized = max(0.0, _fb_conf - 0.10)
+                            logger.info("[CRITIC-FALLBACK] No Critic — conf %.2f -> %.2f", _fb_conf, _penalized)
+                            trade_out.data["c"] = _penalized
+                            trade_out.data["n"] = trade_out.data.get("n", "") + " | critic_fallback: -10% conf (no review)"
+                        else:
+                            logger.info("[SHADOW-CRITIC] fallback would_penalize conf %.2f -> %.2f (shadow only)", _fb_conf, max(0.0, _fb_conf - 0.10))
 
         # ── Consistency Check ──────────────────────────────────────
         consistency_report = check_pipeline_consistency(
@@ -1912,6 +1926,39 @@ class AgentCoordinator:
             action = "go"
         elif decision.action == "flip":
             action = "go"  # flip handled at caller level
+
+        # ── DECHOKE 6: dollar-score the Critic's shadow would-vetoes ──
+        # With the Critic in shadow mode, its would-vetoes no longer block.
+        # Record each one as a counterfactual so the setup it wanted to veto
+        # gets priced by the market: if these resolve net-negative (n>=13),
+        # _maybe_recommend_critic_restore() journals a restore recommendation.
+        try:
+            if (critic_out and critic_out.ok
+                    and os.getenv("CRITIC_ENFORCE", "false").lower() != "true"):
+                _sv_verdict = str(critic_out.data.get(
+                    "verdict", critic_out.data.get("v", "approve")) or "approve").lower().strip()
+                if _sv_verdict not in ("approve", "ok", ""):
+                    _sv_entry = float(signal_context.get("entry", 0) or 0)
+                    _sv_sl = float(signal_context.get("sl", 0) or 0)
+                    _sv_tp1 = float(signal_context.get("tp1", 0) or 0)
+                    if _sv_entry > 0 and _sv_sl > 0 and _sv_tp1 > 0:
+                        from llm.brain_wiring import record_skipped_trade
+                        _sv_reason = str(critic_out.data.get("reason", ""))[:100]
+                        record_skipped_trade(
+                            symbol=str(signal_context.get("symbol", "")),
+                            side=str(signal_context.get("side", "")),
+                            entry_price=_sv_entry,
+                            sl=_sv_sl,
+                            tp1=_sv_tp1,
+                            tp2=float(signal_context.get("tp2", 0) or 0),
+                            confidence=float(signal_context.get("confidence", 0) or 0),
+                            skip_reason=f"CRITIC_SHADOW_VETO: {_sv_verdict} {_sv_reason}",
+                            strategy=str(signal_context.get("strategy", "") or ""),
+                            regime=str(decision.regime or ""),
+                            metadata={"final_action": action},
+                        )
+        except Exception as _sve:
+            logger.debug(f"[SHADOW-CRITIC] counterfactual record error: {_sve}")
 
         # ── Capture per-agent STATED confidence for the calibration ledger ──
         # These are the numbers each agent actually emitted (NOT the blended
@@ -4682,6 +4729,82 @@ class AgentCoordinator:
             pass
         return json.dumps(relevant, separators=(",", ":"), default=str)
 
+    # ── Critic shadow auto-restore hook (DECHOKE 6) ─────────────
+
+    def _maybe_recommend_critic_restore(self) -> None:
+        """Score the Critic's shadow would-vetoes in dollars; journal a
+        restore recommendation once they prove out.
+
+        THE_STANDARD §2b restore criterion: n>=13 resolved shadow vetoes AND
+        net dollar-positive (the setups it would have vetoed lost money, i.e.
+        sum(hypothetical_pnl_pct) < 0 → the vetoes would have saved money).
+        Recommendation only — actual re-enforcement (CRITIC_ENFORCE=true)
+        stays an owner/meta-audit decision.
+        OWNER NOTE (2026-07-02): if shadow shows nothing by the next weekly
+        meta-audit, the standing proposal is to DELETE the Critic call
+        entirely to save Sonnet tokens.
+        Throttled to one scan per 6h (file scan of resolved counterfactuals).
+        """
+        import json as _json
+        from datetime import datetime as _dt, timezone as _tz
+        from pathlib import Path as _Path
+        now = time.time()
+        if now - getattr(self, "_critic_restore_last_check", 0.0) < 6 * 3600:
+            return
+        self._critic_restore_last_check = now
+        resolved_path = _Path("data/llm/counterfactual_resolved.jsonl")
+        if not resolved_path.exists():
+            return
+        n = 0
+        net_pnl_pct = 0.0
+        try:
+            with open(resolved_path, "r", encoding="utf-8", errors="replace") as f:
+                for line in f:
+                    if "CRITIC_SHADOW_VETO" not in line:
+                        continue
+                    try:
+                        rec = _json.loads(line)
+                    except Exception:
+                        continue
+                    if not str(rec.get("skip_reason", "")).startswith("CRITIC_SHADOW_VETO"):
+                        continue
+                    pnl = rec.get("hypothetical_pnl_pct")
+                    if pnl is None:
+                        continue
+                    n += 1
+                    net_pnl_pct += float(pnl)
+        except Exception as e:
+            logger.debug(f"[SHADOW-CRITIC-RESTORE] scan error: {e}")
+            return
+        state = {
+            "checked_at": _dt.now(_tz.utc).isoformat(),
+            "n_resolved": n,
+            "net_hypothetical_pnl_pct": round(net_pnl_pct, 3),
+            "dollar_positive": bool(n >= 13 and net_pnl_pct < 0),
+        }
+        if n >= 13 and net_pnl_pct < 0:
+            state["recommendation"] = (
+                "RESTORE CANDIDATE: Critic shadow would-vetoes are net "
+                "dollar-positive at n>=13 — journal for owner/meta-audit; "
+                "set CRITIC_ENFORCE=true only after adversarial re-check."
+            )
+            logger.warning(
+                f"[SHADOW-CRITIC-RESTORE] restore recommendation: n={n} "
+                f"net_would_veto_pnl={net_pnl_pct:+.2f}% (vetoed setups lost "
+                f"→ vetoes would have saved). Journaled to "
+                f"data/llm/critic_shadow_state.json for the weekly meta-audit."
+            )
+        else:
+            logger.info(
+                f"[SHADOW-CRITIC-RESTORE] no restore case yet: n={n} "
+                f"net_would_veto_pnl={net_pnl_pct:+.2f}% (need n>=13 and net<0)"
+            )
+        try:
+            with open("data/llm/critic_shadow_state.json", "w", encoding="utf-8") as f:
+                _json.dump(state, f, indent=2)
+        except Exception:
+            pass
+
     # ── Output merger ───────────────────────────────────────────
 
     def _merge_outputs(
@@ -4824,10 +4947,23 @@ class AgentCoordinator:
         except Exception:
             pass
 
-        # Critic Agent: can adjust or override
-        # Treat any non-"approve" verdict as a challenge (defensive normalization)
-        # PROFITABILITY GATE: if Critic's veto accuracy is poor, limit its power
+        # Critic Agent — SHADOW MODE (DECHOKE 6, 2026-07-02, owner-approved).
+        # GM_AGENT_SKILL_24K: the Critic's apparent veto value is a week-1
+        # crash artifact — in the mid era its ordering was INVERTED (vetoed
+        # −79bps vs approved −196bps @24h, n=63/41): it vetoed the less-bad
+        # and approved the worse. It keeps evaluating and its would-vetoes
+        # are logged ([SHADOW-CRITIC]) + counterfactual-recorded for dollar
+        # scoring, but it no longer blocks or mutates the decision.
+        # AUTO-RESTORE HOOK: _maybe_recommend_critic_restore() journals a
+        # restore recommendation once shadow scoring reaches n>=13 resolved
+        # would-vetoes that are net dollar-positive (the vetoed setups lost).
+        # OWNER NOTE (2026-07-02): owner considers the Critic near-worthless
+        # ("so misguided and strained") — if shadow shows nothing by the next
+        # weekly meta-audit, propose DELETING the Critic call entirely to
+        # save Sonnet tokens. Kill-switch: CRITIC_ENFORCE=true restores the
+        # old enforcement path below.
         counter_thesis = ""
+        _critic_enforce = os.getenv("CRITIC_ENFORCE", "false").lower() == "true"
         _critic_vacc = 0.5  # default assumption
         if snapshot_data:
             _sp = snapshot_data.get("self_perf", {})
@@ -4839,9 +4975,23 @@ class AgentCoordinator:
             verdict = cd.get("verdict", "approve").lower().strip()
             counter_thesis = cd.get("counter_thesis", "")
 
+            if verdict != "approve" and not _critic_enforce:
+                _sc_reason = str(cd.get("reason", ""))[:120]
+                logger.info(
+                    f"[SHADOW-CRITIC] would_veto verdict={verdict} "
+                    f"reason={_sc_reason} counter={str(counter_thesis)[:80]} "
+                    f"(shadow only; CRITIC_ENFORCE=true re-enables)"
+                )
+                notes += f" | CRITIC-SHADOW: would_{verdict} ({_sc_reason[:60]})"
+                if counter_thesis:
+                    notes += f" | COUNTER(shadow): {str(counter_thesis)[:80]}"
+                try:
+                    self._maybe_recommend_critic_restore()
+                except Exception:
+                    pass
             # If Critic veto accuracy < 0.45, block full vetoes — only allow
             # confidence adjustment. Bad vetoes lose more money than bad trades.
-            if verdict != "approve" and _critic_vacc < 0.45:
+            elif verdict != "approve" and _critic_vacc < 0.45:
                 adj_conf = cd.get("adjusted_confidence")
                 if adj_conf is not None:
                     old_conf = confidence

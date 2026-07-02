@@ -521,35 +521,32 @@ class TestLLMPipelineE2E:
     @patch("llm.agents.coordinator._PHASE_4_AGENTS_AVAILABLE", False)
     @patch("llm.agents.coordinator._PHASE_4A_AGENTS_AVAILABLE", False)
     @patch("llm.agents.coordinator.call_llm")
-    def test_critic_veto_prevents_trade(self, mock_llm):
-        """Critic verdict=challenge should reduce confidence or override action."""
+    def test_critic_veto_shadow_logged_not_enforced(self, mock_llm):
+        """DECHOKE 6 (2026-07-02): Critic is SHADOW by default — its challenge
+        is recorded in notes as a would-veto but does NOT block the trade or
+        mutate confidence. (CRITIC_ENFORCE=true restores enforcement.)"""
+        import os
         mock_llm.side_effect = _make_mock_call_llm(
             critic_response=MOCK_CRITIC_CHALLENGE_RESPONSE
         )
         coord = _build_coordinator()
         snapshot = _build_snapshot()
 
+        os.environ.pop("CRITIC_ENFORCE", None)
         decision = coord.get_trading_decision(
             snapshot_data=snapshot,
             trigger_reason="PRE_TRADE",
         )
 
         assert decision is not None
-        # The critic challenges with adjusted_action=flat and adjusted_confidence=0.35
-        # Depending on vacc gating, it should either:
-        # a) Override to flat, OR
-        # b) Reduce confidence significantly
-        # Either way, the decision should reflect the critic's pushback
-        assert (
-            decision.action == "flat"
-            or decision.confidence < 0.72  # lower than Trade Agent's 0.72
-        ), (
-            f"Critic challenge should reduce confidence or change action. "
-            f"Got action={decision.action}, conf={decision.confidence}"
+        # Shadow: the critic's adjusted_action=flat must NOT be applied
+        assert decision.action != "flat" or "consistency_override" in decision.notes, (
+            f"Critic shadow must not block the trade. "
+            f"Got action={decision.action}, notes={decision.notes}"
         )
-        # Notes should mention CRITIC
-        assert "CRITIC" in decision.notes or "critic" in decision.notes.lower() or "COUNTER" in decision.notes, (
-            f"Decision notes should reference critic intervention: {decision.notes}"
+        # The would-veto must be visible in notes for downstream scoring
+        assert "CRITIC-SHADOW" in decision.notes, (
+            f"Decision notes should carry the shadow would-veto: {decision.notes}"
         )
 
     # ------------------------------------------------------------------

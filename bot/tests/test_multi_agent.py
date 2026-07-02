@@ -198,7 +198,10 @@ class TestCoordinatorMerging:
         assert decision.action == "flat"
         assert "RISK" in decision.notes
 
-    def test_merge_with_critic_challenge(self):
+    def test_merge_with_critic_challenge_shadow_default(self):
+        """DECHOKE 6 (2026-07-02): Critic is SHADOW by default — a challenge
+        is logged as would_veto in notes but does NOT block or mutate."""
+        import os
         from llm.agents.base import AgentRole
         coord = self._make_coordinator()
 
@@ -213,7 +216,37 @@ class TestCoordinatorMerging:
             "calibration_note": "tend to be overconfident in range"
         })
 
+        os.environ.pop("CRITIC_ENFORCE", None)
         decision = coord._merge_outputs(regime_out, trade_out, None, critic_out)
+        assert decision.action == "proceed"  # shadow: no block
+        assert "CRITIC-SHADOW" in decision.notes
+        assert "would_challenge" in decision.notes
+
+    def test_merge_with_critic_challenge_enforce_env(self):
+        """CRITIC_ENFORCE=true restores the old enforcement path."""
+        import os
+        from llm.agents.base import AgentRole
+        coord = self._make_coordinator()
+
+        regime_out = self._make_output(AgentRole.REGIME, {"rg": "range", "conf": 0.6,
+                                                           "bias": "neutral", "transition": "stable"})
+        trade_out = self._make_output(AgentRole.TRADE, {"a": "go", "c": 0.85, "n": "looks good"})
+        critic_out = self._make_output(AgentRole.CRITIC, {
+            "verdict": "challenge",
+            "adjusted_confidence": 0.55,
+            "adjusted_action": "skip",
+            "reason": "overconfident in range regime",
+            "counter_thesis": "range top rejection",
+            "counter_thesis_timeframe": "4h",
+            "counter_thesis_falsifiable": "breaks above 105",
+            "calibration_note": "tend to be overconfident in range"
+        })
+
+        os.environ["CRITIC_ENFORCE"] = "true"
+        try:
+            decision = coord._merge_outputs(regime_out, trade_out, None, critic_out)
+        finally:
+            os.environ.pop("CRITIC_ENFORCE", None)
         assert decision.action == "flat"  # Critic overrode to skip
         assert decision.confidence == 0.55
         assert "CRITIC" in decision.notes
