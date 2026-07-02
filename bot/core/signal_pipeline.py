@@ -303,7 +303,12 @@ class RiskFilterChain:
                     veto_rule_ids=["mechanical_standdown_pipeline_error"],
                     strategy=getattr(signal, "strategy", "") or "",
                     regime=(signal.metadata or {}).get("regime", ""),
-                    metadata={"stage": "pipeline_error"},
+                    metadata={
+                        "stage": "pipeline_error",
+                        # BT_VETO_RESCORE DO-NOW #5 stamp
+                        "strategies_agree": (signal.metadata or {}).get("strategies_agree", []),
+                        "num_agree": num_strategies_agree,
+                    },
                 )
             except Exception:
                 pass
@@ -507,6 +512,11 @@ class RiskFilterChain:
                         veto_rule_ids=_gr_veto_ids,
                         strategy=getattr(signal, "strategy", "") or "",
                         regime=_gr_regime,
+                        # BT_VETO_RESCORE DO-NOW #5 stamp
+                        metadata={
+                            "strategies_agree": (meta.get("strategies_agree") or []) if meta else [],
+                            "num_agree": _gr_n,
+                        },
                     )
                 except Exception:
                     pass
@@ -844,6 +854,21 @@ class RiskFilterChain:
             if _mt.get_streak(signal.symbol) <= -3:
                 risk_mult *= 0.3  # Additional 70% reduction on top of momentum_mult
                 meta["momentum_extreme_reduction"] = True
+            # After-loss de-sizing (RQ16_20: post-loss WR 20% n=65 vs post-win
+            # 46% n=24, p=0.012). BOOK-level (any symbol), window = 1 trade,
+            # stacks multiplicatively with the per-symbol ladder above.
+            # Env AFTER_LOSS_RISK_MULT (default 0.5); 1.0 disables.
+            _al_mult = _mt.get_after_loss_multiplier()
+            if _al_mult != 1.0:
+                risk_mult *= _al_mult
+                meta["after_loss_mult"] = _al_mult
+                if _pt: _pt.record_multiplier(signal.symbol, "after_loss_desize", _al_mult, "last_close_was_loss")
+                logger.info(
+                    f"[SIZING] [{signal.symbol}] AFTER-LOSS DE-SIZE: last closed trade "
+                    f"was a LOSS -> {_al_mult:.2f}x next-trade risk "
+                    f"(RQ16_20 post-loss WR 20% vs post-win 46%, p=0.012; "
+                    f"AFTER_LOSS_RISK_MULT to tune)"
+                )
         except Exception as e:
             logger.debug(f"[MOMENTUM] Error: {e}")
 
@@ -1365,6 +1390,22 @@ class RiskFilterChain:
                     )
             except Exception as e:
                 logger.debug(f"[ADAPTIVE_SIZER] Error: {e}")
+
+        # After-loss de-sizing (annotated path — RQ16_20: post-loss WR 20%
+        # n=65 vs post-win 46% n=24, p=0.012). Book-level, window 1 trade.
+        try:
+            from execution.momentum_tracker import get_momentum_tracker
+            _al_mult = get_momentum_tracker().get_after_loss_multiplier()
+            if _al_mult != 1.0:
+                risk_mult *= _al_mult
+                meta["after_loss_mult"] = _al_mult
+                logger.info(
+                    f"[SIZING] [{signal.symbol}] AFTER-LOSS DE-SIZE (annotated): "
+                    f"last closed trade was a LOSS -> {_al_mult:.2f}x "
+                    f"(AFTER_LOSS_RISK_MULT to tune)"
+                )
+        except Exception as e:
+            logger.debug(f"[AFTER_LOSS] Error: {e}")
 
         # Apply solo proven strategy size override (half size for safety)
         _solo_rm = signal.metadata.get("risk_mult_override")

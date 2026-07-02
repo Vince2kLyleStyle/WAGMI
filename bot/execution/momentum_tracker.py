@@ -37,6 +37,11 @@ class MomentumTracker:
         # streak > 0 = consecutive wins, < 0 = consecutive losses
         self._streaks: Dict[str, int] = {}
         self._last_outcome: Dict[str, bool] = {}
+        # GLOBAL (book-level) outcome of the most recent close across ALL
+        # symbols. RQ16_20_RISK_MATH Part A: WR after a loss = 20.0% (n=65)
+        # vs after a win = 45.8% (n=24), runs-test clustering p=0.012
+        # (survives era-split p=0.024). None = no close recorded yet.
+        self._global_last_win: Optional[bool] = None
         self._load_state()
 
     def _load_state(self):
@@ -50,6 +55,7 @@ class MomentumTracker:
                     state = json.load(f)
                 self._streaks = state.get("streaks", {})
                 self._last_outcome = {k: v for k, v in state.get("last_outcome", {}).items()}
+                self._global_last_win = state.get("global_last_win")
         except Exception as e:
             logger.debug(f"Momentum state load error: {e}")
 
@@ -60,6 +66,7 @@ class MomentumTracker:
                 json.dump({
                     "streaks": self._streaks,
                     "last_outcome": self._last_outcome,
+                    "global_last_win": self._global_last_win,
                     "updated": datetime.now(timezone.utc).isoformat(),
                 }, f)
         except Exception as e:
@@ -76,6 +83,7 @@ class MomentumTracker:
             self._streaks[sym] = min(-1, current - 1) if current <= 0 else -1
 
         self._last_outcome[sym] = won
+        self._global_last_win = won  # book-level: last close across ALL symbols
         self._save_state()
 
         logger.info(
@@ -108,6 +116,26 @@ class MomentumTracker:
         """Get current streak for a symbol. Positive = wins, negative = losses."""
         sym = symbol.replace("/USDC:USDC", "").replace("/USDT:USDT", "")
         return self._streaks.get(sym, 0)
+
+    def get_after_loss_multiplier(self) -> float:
+        """Book-level after-loss de-sizing multiplier (RQ16_20 Part A).
+
+        Evidence: next-trade WR after a realized LOSS is 20.0% (n=65) vs
+        45.8% after a win (n=24); loss clustering runs-test p=0.012
+        (p=0.024 inside Jun7+ alone). Window = 1 trade: the multiplier
+        applies until the NEXT close updates the global last-outcome.
+        Stacks multiplicatively with the per-symbol momentum ladder.
+
+        Env: AFTER_LOSS_RISK_MULT (default 0.5). Set to 1.0 to disable.
+        """
+        if self._global_last_win is not False:  # None (no data) or True (won)
+            return 1.0
+        try:
+            mult = float(os.getenv("AFTER_LOSS_RISK_MULT", "0.5"))
+        except (TypeError, ValueError):
+            mult = 0.5
+        # De-sizing only: never allow this knob to size UP after a loss.
+        return max(0.1, min(1.0, mult))
 
     def should_skip(self, symbol: str) -> bool:
         """Should we skip this symbol due to extreme losing streak?
