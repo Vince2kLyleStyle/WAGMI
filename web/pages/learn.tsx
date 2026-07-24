@@ -11,9 +11,9 @@ import { useApi } from '../hooks/useApi';
 
 type LessonsData = {
   insights: { category?: string; insight?: string; confidence?: number; evidence?: string; source?: string; validated?: boolean }[];
-  rules: { hypothesis?: string; conditions?: Record<string, unknown>; action?: string; confidence?: number; evidence_ratio?: number; total_evidence?: number; active?: boolean; retired_reason?: string | null }[];
+  edges: { label?: string; kind?: string; n?: number; wr?: number; ev?: number; total_pnl?: number }[];
   trades: { symbol?: string; side?: string; pnl?: number; outcome?: string; strategy?: string; regime?: string }[];
-  stats?: { total_trades?: number; insights_validated?: number; insights_total?: number; rules_shown?: number; rules_total?: number; by_category?: Record<string, number>; provenance?: string };
+  stats?: { total_trades?: number; insights_validated?: number; insights_total?: number; edges_found?: number; min_n?: number; by_category?: Record<string, number>; provenance?: string };
 };
 
 // The bot's journal stores some mis-encoded unicode (â‰¤ etc.); tidy the worst offenders.
@@ -36,7 +36,7 @@ function LiveCaseStudies() {
   const { data } = useApi<LessonsData>('/v1/lessons?limit=24', { refreshInterval: 120_000 });
   const st = data?.stats;
   const insights = (data?.insights || []).filter((i) => tidy(i.insight)).slice(0, 6);
-  const rules = (data?.rules || []).filter((r) => r.hypothesis).slice(0, 4);
+  const edges = (data?.edges || []).filter((e) => e.label).slice(0, 12);
   const trades = (data?.trades || []).filter((t) => t.symbol).slice(0, 4);
   const loading = !data;
 
@@ -61,10 +61,10 @@ function LiveCaseStudies() {
         What the bot has actually learned
       </h2>
       <p style={{ fontSize: F.md, color: C.textSub, margin: '0 0 16px', maxWidth: 640, lineHeight: 1.6 }}>
-        Not textbook hypotheticals — these are lessons the engine extracted from its own trades. And they're
-        filtered: you only see insights the bot <em>validated</em> and rules that survived its own audit
-        (n≥13, dollar-validated). Everything unproven or quarantined is hidden — so this is what actually held
-        up, not everything the bot ever guessed.
+        Not textbook hypotheticals, and not frozen rules either — the edges below are recomputed live from
+        the bot's own trade ledger every time this page loads (n≥13 per bucket), so they update themselves as
+        it trades. The journal notes are filtered to only what the bot <em>validated</em>. Nothing here is a
+        hardcoded value.
       </p>
 
       {/* Stat band */}
@@ -76,11 +76,11 @@ function LiveCaseStudies() {
         }}
       >
         {stat(st?.total_trades, 'Real trades')}
-        {stat(st?.insights_validated, `Validated lessons${st?.insights_total ? ` of ${st.insights_total}` : ''}`, C.bull)}
-        {stat(st?.rules_shown, `Proven rules${st?.rules_total ? ` of ${st.rules_total}` : ''}`, C.info)}
+        {stat(st?.edges_found, `Live edges (n≥${st?.min_n ?? 13})`, C.info)}
+        {stat(st?.insights_validated, `Validated notes${st?.insights_total ? ` of ${st.insights_total}` : ''}`, C.bull)}
       </div>
       <p style={{ fontSize: F.xs, color: C.muted, margin: '-10px 0 22px', fontStyle: 'italic' }}>
-        Only {st?.insights_validated ?? '—'} of {st?.insights_total ?? '—'} logged insights and {st?.rules_shown ?? '—'} of {st?.rules_total ?? '—'} graduated rules passed validation — the rest are unproven or were quarantined by the bot's own audit. We show only what survived.
+        Edges are recomputed live from the trade ledger every load — never frozen into rules. Only {st?.insights_validated ?? '—'} of {st?.insights_total ?? '—'} journal notes passed the bot's own validation; the rest are hidden.
       </p>
 
       {loading && <div style={{ color: C.muted, fontSize: F.sm, padding: '8px 0 24px' }}>Loading the bot's lessons…</div>}
@@ -113,27 +113,35 @@ function LiveCaseStudies() {
         </>
       )}
 
-      {/* Hypotheses */}
-      {rules.length > 0 && (
+      {/* Live edges — recomputed from the trade ledger, never hardcoded */}
+      {edges.length > 0 && (
         <>
-          <h3 style={{ fontSize: F.lg, fontWeight: 700, color: C.text, margin: '0 0 12px' }}>Hypotheses it has tested</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 12, marginBottom: 28 }}>
-            {rules.map((r, idx) => (
-              <div key={idx} style={{ ...Glass.crystal, border: `1px solid ${C.border}`, borderRadius: R.lg, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <p style={{ margin: 0, fontSize: F.sm, color: C.text, fontWeight: 600, lineHeight: 1.5 }}>{tidy(r.hypothesis)}</p>
-                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', fontSize: F.xs }}>
-                  {r.total_evidence != null && (
-                    <span style={{ color: C.muted, fontFamily: 'JetBrains Mono, monospace' }}>n={r.total_evidence}</span>
-                  )}
-                  {r.evidence_ratio != null && (
-                    <span style={{ color: C.muted, fontFamily: 'JetBrains Mono, monospace' }}>hit {Math.round((r.evidence_ratio || 0) * 100)}%</span>
-                  )}
-                  <span style={{ marginLeft: 'auto', fontWeight: 700, padding: '1px 7px', borderRadius: R.pill, background: (r.active ? C.bull : C.muted) + '22', color: r.active ? C.bull : C.muted }}>
-                    {r.active ? 'active' : 'retired'}
-                  </span>
+          <h3 style={{ fontSize: F.lg, fontWeight: 700, color: C.text, margin: '0 0 4px' }}>Its edges, right now</h3>
+          <p style={{ fontSize: F.xs, color: C.muted, margin: '0 0 12px' }}>
+            Win-rate and expectancy per bucket, recomputed live from every closed trade (n≥{data?.stats?.min_n ?? 13}).
+            These are not frozen rules — they move as the bot trades.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 12, marginBottom: 28 }}>
+            {edges.map((e, idx) => {
+              const pos = (e.ev || 0) >= 0;
+              return (
+                <div key={idx} style={{ ...Glass.crystal, border: `1px solid ${C.border}`, borderRadius: R.lg, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8 }}>
+                    <span style={{ fontSize: F.md, fontWeight: 700, color: C.text }}>{e.label}</span>
+                    <span style={{ fontSize: F.sm, fontWeight: 800, color: pos ? C.bull : C.bear, fontFamily: 'JetBrains Mono, monospace' }}>
+                      {pos ? '+' : ''}{(e.ev || 0).toLocaleString(undefined, { style: 'currency', currency: 'USD' })}<span style={{ fontSize: F.xs, color: C.muted, fontWeight: 400 }}>/trade</span>
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', fontSize: F.xs, color: C.muted, fontFamily: 'JetBrains Mono, monospace' }}>
+                    <span>n={e.n}</span>
+                    <span>WR {e.wr}%</span>
+                    <span style={{ marginLeft: 'auto', color: pos ? C.bull : C.bear }}>
+                      net {pos ? '+' : ''}{(e.total_pnl || 0).toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </>
       )}
