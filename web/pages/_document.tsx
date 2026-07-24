@@ -60,7 +60,11 @@ export default function Document() {
                auto-fit/auto-fill) to one column. Icon+text "auto 1fr" rows stack,
                which is acceptable on a phone. */
             [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
-            /* Fixed-pixel data-table rows keep their columns but scroll their card. */
+            /* Critical: let grid/flex CHILDREN shrink below their content size. Without
+               this, one wide child (a data table or diagram) balloons its 1fr track past
+               the viewport and every sibling grid then renders multi-column and bleeds. */
+            [style*="display:grid"] > *, [style*="display: grid"] > *,
+            [style*="display:flex"] > *, [style*="display: flex"] > * { min-width: 0 !important; }
             [style*="minWidth"], [style*="min-width"] { min-width: 0 !important; }
             /* Media + diagrams never exceed the viewport. */
             img, video, canvas, svg { max-width: 100% !important; height: auto; }
