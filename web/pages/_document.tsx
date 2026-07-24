@@ -48,6 +48,30 @@ export default function Document() {
             font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
           }
 
+          /* ── Mobile: collapse fixed multi-column grids to a single column ──
+             The dashboard uses many inline grid-template-columns like "1fr 1fr"
+             and "repeat(3, 1fr)" that cram or overflow on phones. Attribute
+             selectors + !important override the inline value; auto-fit/minmax
+             grids don't match these patterns, so they stay responsive as-is. */
+          @media (max-width: 720px) {
+            [style*="1fr 1fr"],
+            [style*="repeat(2,"], [style*="repeat(2 ,"],
+            [style*="repeat(3,"], [style*="repeat(3 ,"],
+            [style*="repeat(4,"], [style*="repeat(4 ,"],
+            [style*="repeat(5,"], [style*="repeat(6,"] {
+              grid-template-columns: 1fr !important;
+            }
+            /* Keep media and wide boxes inside the viewport */
+            img, video, canvas, svg { max-width: 100%; height: auto; }
+            table, pre { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+          }
+          @media (max-width: 460px) {
+            /* Even auto-fit multi-column tracks collapse on the smallest phones */
+            [style*="grid-template-columns"][style*="minmax"] {
+              grid-template-columns: 1fr !important;
+            }
+          }
+
           /* ── CSS custom properties ──────────────────────── */
           :root {
             /* Brand */
