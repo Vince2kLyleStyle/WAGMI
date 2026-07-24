@@ -37,6 +37,11 @@ docker-compose.override.yml
 
 # Bot runtime data (generated at runtime, not committed)
 data/
+# Re-include frontend fallback snapshots (the broad `data/` rule above also caught
+# web/public/data). These JSONs are the CDN-served data source for the site's
+# dashboard/thesis widgets — they ARE deployable content.
+!web/public/data/
+!web/public/data/*.json
 ml_data/
 bot/ml_data/
 bot/backtest_ml_data/

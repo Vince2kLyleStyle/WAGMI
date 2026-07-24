@@ -41,6 +41,9 @@ type CommitteeAgent = {
   invalidation?: number;
   vote?: string;
   risk_flags?: string[];
+  size_multiplier?: number;
+  leverage?: number;
+  max_loss_pct?: number;
   daily_slope_pct?: number;
   daily_rsi?: number;
   h1_rsi?: number;
