@@ -13,7 +13,7 @@ type LessonsData = {
   insights: { category?: string; insight?: string; confidence?: number; evidence?: string; source?: string; validated?: boolean }[];
   rules: { hypothesis?: string; conditions?: Record<string, unknown>; action?: string; confidence?: number; evidence_ratio?: number; total_evidence?: number; active?: boolean; retired_reason?: string | null }[];
   trades: { symbol?: string; side?: string; pnl?: number; outcome?: string; strategy?: string; regime?: string }[];
-  stats?: { total_insights?: number; validated_insights?: number; by_category?: Record<string, number>; total_rules?: number; active_rules?: number; total_trades?: number };
+  stats?: { total_trades?: number; insights_validated?: number; insights_total?: number; rules_shown?: number; rules_total?: number; by_category?: Record<string, number>; provenance?: string };
 };
 
 // The bot's journal stores some mis-encoded unicode (â‰¤ etc.); tidy the worst offenders.
@@ -60,9 +60,11 @@ function LiveCaseStudies() {
       <h2 style={{ fontSize: F['3xl'], fontWeight: 800, color: C.text, margin: '0 0 6px', letterSpacing: -0.5 }}>
         What the bot has actually learned
       </h2>
-      <p style={{ fontSize: F.md, color: C.textSub, margin: '0 0 20px', maxWidth: 640, lineHeight: 1.6 }}>
-        Not textbook hypotheticals — these are the real lessons the engine extracted from its own trades,
-        the hypotheses it has tested, and the trades that taught them. Updated live from the bot.
+      <p style={{ fontSize: F.md, color: C.textSub, margin: '0 0 16px', maxWidth: 640, lineHeight: 1.6 }}>
+        Not textbook hypotheticals — these are lessons the engine extracted from its own trades. And they're
+        filtered: you only see insights the bot <em>validated</em> and rules that survived its own audit
+        (n≥13, dollar-validated). Everything unproven or quarantined is hidden — so this is what actually held
+        up, not everything the bot ever guessed.
       </p>
 
       {/* Stat band */}
@@ -74,10 +76,12 @@ function LiveCaseStudies() {
         }}
       >
         {stat(st?.total_trades, 'Real trades')}
-        {stat(st?.total_insights, 'Lessons logged', C.brand)}
-        {stat(st?.validated_insights, 'Validated', C.bull)}
-        {stat(st?.active_rules, 'Active rules', C.info)}
+        {stat(st?.insights_validated, `Validated lessons${st?.insights_total ? ` of ${st.insights_total}` : ''}`, C.bull)}
+        {stat(st?.rules_shown, `Proven rules${st?.rules_total ? ` of ${st.rules_total}` : ''}`, C.info)}
       </div>
+      <p style={{ fontSize: F.xs, color: C.muted, margin: '-10px 0 22px', fontStyle: 'italic' }}>
+        Only {st?.insights_validated ?? '—'} of {st?.insights_total ?? '—'} logged insights and {st?.rules_shown ?? '—'} of {st?.rules_total ?? '—'} graduated rules passed validation — the rest are unproven or were quarantined by the bot's own audit. We show only what survived.
+      </p>
 
       {loading && <div style={{ color: C.muted, fontSize: F.sm, padding: '8px 0 24px' }}>Loading the bot's lessons…</div>}
 
