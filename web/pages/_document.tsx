@@ -4,11 +4,11 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* Inter + JetBrains Mono from Google Fonts */}
+        {/* Bricolage Grotesque (display) + Inter (body) + JetBrains Mono (data) */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
         {/* Favicon — green accent */}
@@ -44,6 +44,12 @@ export default function Document() {
           }
           a { color: inherit; text-decoration: none; }
           button { font-family: inherit; cursor: pointer; }
+          /* Display face on every heading — the single biggest lift away from stock-Inter. */
+          h1, h2, h3, .display {
+            font-family: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+            letter-spacing: -0.02em;
+            font-optical-sizing: auto;
+          }
           code, pre, .mono {
             font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
           }

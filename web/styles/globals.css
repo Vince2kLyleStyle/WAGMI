@@ -1,0 +1,11 @@
+/* Global stylesheet (reliably applied via _app import, unlike some _document inline rules). */
+
+/* Display face on every heading — the biggest lift away from stock Inter. */
+h1,
+h2,
+h3,
+.display {
+  font-family: 'Bricolage Grotesque', 'Inter', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.02em;
+  font-optical-sizing: auto;
+}
