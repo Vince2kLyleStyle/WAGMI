@@ -6,6 +6,7 @@ import { useApi } from '../hooks/useApi';
 import type { TradeRecord, LlmMarketView } from '../src/types';
 import AnimatedNumber from '../components/AnimatedNumber';
 import AgentBrainGraphic from '../components/AgentBrainGraphic';
+import NeuralField from '../components/NeuralField';
 import LiveActivityTape from '../components/LiveActivityTape';
 import Shimmer from '../components/Shimmer';
 import Icon from '../components/Icon';
@@ -521,19 +522,21 @@ export default function LandingPage() {
         <LiveActivityTape />
 
         {/* ── Hero ───────────────────────────────────────────────────────── */}
-        <section
-          style={{
-            maxWidth: 1200,
-            margin: '0 auto',
-            padding: '72px 24px 48px',
-            display: 'grid',
-            gridTemplateColumns: 'minmax(0, 1.1fr) minmax(0, 1fr)',
-            gap: 48,
-            alignItems: 'center',
-          }}
-          className="hero-grid"
-        >
-          <div>
+        <section style={{ position: 'relative', overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+          {/* ── Living neural field: the 9-agent brain, breathing on live bot state ── */}
+          <div style={{ position: 'absolute', inset: 0, zIndex: 0 }} aria-hidden="true">
+            <NeuralField
+              height={640}
+              regime={(marketView as any)?.regime}
+              equityUp={(summary?.total_pnl ?? 0) >= 0}
+              lastAction={trades[0]?.side}
+            />
+            <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'linear-gradient(90deg, rgba(5,5,8,0.95) 0%, rgba(5,5,8,0.72) 42%, rgba(5,5,8,0.18) 74%, rgba(5,5,8,0.5) 100%)' }} />
+            <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'linear-gradient(180deg, rgba(5,5,8,0.55) 0%, rgba(5,5,8,0) 24%, rgba(5,5,8,0) 66%, rgba(5,5,8,0.92) 100%)' }} />
+          </div>
+          {/* ── Hero content ── */}
+          <div style={{ position: 'relative', zIndex: 1, maxWidth: 1200, margin: '0 auto', padding: '104px 24px 96px', minHeight: 640, display: 'flex', flexDirection: 'column', justifyContent: 'center' }} className="hero-content">
+            <div style={{ maxWidth: 620 }}>
             {/* Live badge */}
             <div
               style={{
@@ -626,59 +629,6 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Hero right column — AgentBrainGraphic */}
-          <div className="hero-graphic" style={{ display: 'flex', justifyContent: 'center' }}>
-            <div style={{
-              padding: '20px',
-              background: 'rgba(13,13,20,0.4)',
-              border: '1px solid rgba(255,255,255,0.06)',
-              borderRadius: 16,
-              width: '100%',
-              maxWidth: 560,
-              position: 'relative',
-              overflow: 'hidden',
-            }}>
-              <div style={{
-                fontSize: 10,
-                fontWeight: 700,
-                color: C.muted,
-                textTransform: 'uppercase',
-                letterSpacing: 1.5,
-                marginBottom: 4,
-                fontFamily: 'JetBrains Mono, monospace',
-              }}>
-                The Brain
-              </div>
-              <div style={{
-                fontSize: 14,
-                fontWeight: 600,
-                color: C.text,
-                marginBottom: 16,
-              }}>
-                9 specialist agents deliberate every trade.
-              </div>
-              <AgentBrainGraphic width={620} height={260} />
-              <div style={{
-                marginTop: 12,
-                display: 'flex',
-                gap: 12,
-                flexWrap: 'wrap',
-                fontSize: 10,
-                fontFamily: 'JetBrains Mono, monospace',
-                color: C.muted,
-                letterSpacing: 0.5,
-              }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: C.info }} /> HAIKU
-                </span>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: C.brand }} /> SONNET
-                </span>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: C.purple }} /> OPUS
-                </span>
-              </div>
-            </div>
           </div>
         </section>
 
