@@ -48,6 +48,14 @@ export default function Document() {
             font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
           }
 
+          /* Scroll-reveal: sections fade + rise into view (JS adds .in via IntersectionObserver). */
+          .reveal { opacity: 0; transform: translateY(28px); will-change: opacity, transform;
+            transition: opacity 0.7s cubic-bezier(.22,1,.36,1), transform 0.7s cubic-bezier(.22,1,.36,1); }
+          .reveal.in { opacity: 1; transform: none; }
+          @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+          }
+
           /* ── Mobile responsiveness ──────────────────────────
              The dashboard is built almost entirely with inline styles, so global
              classes can't reach it — we override inline grid/width via attribute
