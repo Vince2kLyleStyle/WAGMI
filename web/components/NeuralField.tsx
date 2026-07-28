@@ -98,6 +98,14 @@ export default function NeuralField({ regime, equityUp, lastAction, height = 520
     let sweep = 0;         // which node is "active" (deliberating)
     let sweepClock = 0;
 
+    // Ambient particle field — slow-drifting motes for depth + atmosphere.
+    const particles = Array.from({ length: 70 }, () => ({
+      x: Math.random(), y: Math.random(),
+      vx: (Math.random() - 0.5) * 0.00035, vy: (Math.random() - 0.5) * 0.00035,
+      r: 0.5 + Math.random() * 1.4, a: 0.06 + Math.random() * 0.28,
+      tw: Math.random() * Math.PI * 2, // twinkle phase
+    }));
+
     let paused = false;
     const io = new IntersectionObserver(([e]) => { paused = !e.isIntersecting; }, { threshold: 0.01 });
     io.observe(wrap);
@@ -122,26 +130,60 @@ export default function NeuralField({ regime, equityUp, lastAction, height = 520
 
       // Ambient vignette glow at the core.
       const [cx, cy] = pos(NODES[3], t);
-      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W, H) * 0.6);
-      g.addColorStop(0, rgba(tint, 0.05));
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W, H) * 0.65);
+      g.addColorStop(0, rgba(tint, 0.10));
+      g.addColorStop(0.5, rgba(tint, 0.03));
       g.addColorStop(1, 'rgba(5,5,8,0)');
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
 
-      // Edges — faint living wires.
-      ctx.lineWidth = 1;
+      // Drifting particle field.
+      for (const p of particles) {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = 1; else if (p.x > 1) p.x = 0;
+        if (p.y < 0) p.y = 1; else if (p.y > 1) p.y = 0;
+        const tw = p.a * (0.55 + 0.45 * Math.sin(t * 1.2 + p.tw));
+        ctx.beginPath();
+        ctx.arc(p.x * W, p.y * H, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(tint, tw * 0.5);
+        ctx.fill();
+      }
+
+      // Proximity web — faint links between ALL nearby nodes, for density.
+      const P = NODES.map((n) => pos(n, t));
+      const maxD = Math.min(W, H) * 0.42;
+      for (let i = 0; i < NODES.length; i++) {
+        for (let j = i + 1; j < NODES.length; j++) {
+          const dx = P[i][0] - P[j][0], dy = P[i][1] - P[j][1];
+          const d = Math.hypot(dx, dy);
+          if (d > maxD) continue;
+          const a = (1 - d / maxD) * 0.10;
+          ctx.strokeStyle = rgba(tint, a);
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(P[i][0], P[i][1]);
+          ctx.lineTo(P[j][0], P[j][1]);
+          ctx.stroke();
+        }
+      }
+
+      // Pipeline edges — brighter living wires with a soft glow.
+      ctx.lineWidth = 1.4;
       for (const [a, b] of EDGES) {
         const na = NODES.find((n) => n.id === a)!;
         const nb = NODES.find((n) => n.id === b)!;
         const [ax, ay] = pos(na, t);
         const [bx, by] = pos(nb, t);
-        const breathe = 0.06 + 0.05 * (0.5 + 0.5 * Math.sin(t * 0.8 + na.phase));
+        const breathe = 0.14 + 0.10 * (0.5 + 0.5 * Math.sin(t * 0.8 + na.phase));
         ctx.strokeStyle = rgba(tint, breathe);
+        ctx.shadowColor = rgba(tint, 0.4);
+        ctx.shadowBlur = 6;
         ctx.beginPath();
         ctx.moveTo(ax, ay);
         ctx.lineTo(bx, by);
         ctx.stroke();
       }
+      ctx.shadowBlur = 0;
 
       // Advance deliberation sweep + emit a pulse from the active node's outgoing edges.
       if (!reduce) {
