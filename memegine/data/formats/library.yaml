@@ -1,0 +1,423 @@
+formats:
+  - slug: photoreal_portrait
+    kind: image
+    description: |
+      Single-subject photoreal portrait. Treated like a real photograph: named
+      lens, named film stock, named lighting setup, named location. Never says
+      "cinematic".
+    prompt_scaffold: |
+      {subject}, shot on {camera_and_lens}, {film_stock_or_sensor_look},
+      {lighting_setup}, {location_and_time_of_day}, {wardrobe_and_props},
+      {composition_rule}, {mood_keywords}, photoreal, no CGI, sharp focus on eyes.
+    good_models: [aurora, flux_pro_via_grok, nano_banana]
+    slot_hints:
+      camera_and_lens: [
+        "Canon EOS R5 with 85mm f/1.2",
+        "Leica Q3 with 28mm f/1.7",
+        "Sony A7IV with 35mm f/1.4 GM",
+        "Hasselblad X2D with 90mm",
+      ]
+      film_stock_or_sensor_look: [
+        "Kodak Portra 400 look",
+        "Fuji 400H pastels",
+        "Cinestill 800T tungsten halation",
+        "digital medium format, clean",
+      ]
+      lighting_setup: [
+        "hard directional window light, shadow side dominant",
+        "single softbox 45 degrees camera-right",
+        "ambient overcast, no direct sun",
+        "practical neon, mixed tungsten + daylight",
+      ]
+      composition_rule: [
+        "rule of thirds, subject left",
+        "centered medium close-up",
+        "leading lines to subject",
+        "negative space right half",
+      ]
+
+  - slug: meme_two_panel
+    kind: image
+    description: |
+      Classic two-panel reaction meme. Panel one = setup. Panel two = payoff.
+      Text rendered IN the image (Ideogram territory via Grok).
+    prompt_scaffold: |
+      Two-panel meme image, stacked vertically, equal panels.
+      Top panel: {setup_scene}. Caption overlay top: "{setup_text}".
+      Bottom panel: {payoff_scene}. Caption overlay bottom: "{payoff_text}".
+      Impact-style white text with black stroke, dead-center each panel.
+    good_models: [ideogram_via_grok, aurora]
+    slot_hints:
+      setup_text: ["< 6 words", "the problem / expectation"]
+      payoff_text: ["< 6 words", "the reversal / punchline"]
+
+  - slug: drake_yes_no
+    kind: image
+    description: |
+      Drake preference meme. Top half = rejected. Bottom half = preferred.
+      Needs Drake image (reference) or generated equivalent.
+    prompt_scaffold: |
+      Drake meme template, two vertical panels, right side text.
+      Top: Drake rejecting pose, right-side caption "{rejected_text}".
+      Bottom: Drake approving pose, right-side caption "{preferred_text}".
+      Clean white background, bold sans-serif caption, 1:1 square.
+    good_models: [ideogram_via_grok]
+
+  - slug: photoreal_scene_motion
+    kind: video
+    description: |
+      Short (3-6 sec) photoreal video built from one hero still + one camera move.
+      Pipeline: generate photoreal still first, then img2vid with one named move.
+    prompt_scaffold_still: |
+      {subject_and_scene}, shot on {camera_and_lens}, {film_stock_or_sensor_look},
+      {lighting_setup}, {location_and_time_of_day}, {composition_rule},
+      photoreal, no CGI.
+    prompt_scaffold_motion: |
+      Camera move: {camera_move}. Duration: {duration_sec}s.
+      Subject motion: {subject_motion}. Lighting stays consistent.
+      No cuts, no zoom bloom, no style drift.
+    good_models_still: [aurora, flux_pro_via_grok]
+    good_models_motion: [grok_imagine_video, kling_img2vid]
+    slot_hints:
+      camera_move: [
+        "slow push-in, 8mm total travel",
+        "static lockoff with subject motion only",
+        "rack focus from foreground to subject",
+        "slow orbit, 15 degrees",
+        "Ken Burns zoom on still, 5% over 4s",
+      ]
+      duration_sec: [3, 4, 5, 6]
+
+  - slug: lore_drop
+    kind: image
+    description: |
+      Cryptic single image + one-line ominous caption that expands a project's
+      universe. No explanation, no hashtags. Image does 80% of the work.
+    prompt_scaffold: |
+      {cryptic_scene}, {lighting_setup}, {film_stock_or_sensor_look},
+      {composition_rule}, single frame, no text overlay.
+    good_models: [aurora, flux_pro_via_grok]
+
+  - slug: cope_chart
+    kind: image
+    description: |
+      Fake chart / absurd analysis screenshot. Dumb conclusions stated with
+      authority. Text rendering is the whole game.
+    prompt_scaffold: |
+      Screenshot of a {chart_context} with title "{chart_title}".
+      Y-axis labeled "{y_label}", x-axis labeled "{x_label}".
+      One line dramatically {trend_direction}. Annotation: "{annotation}".
+      Bloomberg-terminal styling, serif headings, monospace data.
+    good_models: [ideogram_via_grok]
+
+  - slug: npc_wojak_row
+    kind: image
+    description: |
+      Row of identical NPC wojaks saying the same dumb line, then one
+      differentiated wojak on the end with the enlightened take.
+    prompt_scaffold: |
+      Horizontal row of {n_npc} identical gray NPC wojak faces, flat color
+      style, each with a speech bubble reading "{consensus_line}".
+      At the far {side}, one enlightened wojak (color, detail, slight glow)
+      with speech bubble reading "{enlightened_line}".
+      Clean white background, comic panel framing.
+    good_models: [ideogram_via_grok]
+    slot_hints:
+      n_npc: [3, 4, 5]
+      side: [right, left]
+
+  - slug: split_screen_then_now
+    kind: image
+    description: |
+      Left panel: how people think it is. Right panel: how it actually is.
+      Two equal-width panels, matching composition, different subject.
+    prompt_scaffold: |
+      Two-panel horizontal split image, equal widths, thin divider line.
+      Left panel labeled "EXPECTATION": {expectation_scene}.
+      Right panel labeled "REALITY": {reality_scene}.
+      Same camera angle and crop style across both panels.
+      {lens_and_film}, {lighting_setup}.
+    good_models: [ideogram_via_grok, aurora]
+
+  - slug: photoreal_product_shot
+    kind: image
+    description: |
+      Tabletop product-style photo of a token/item/symbol as if shot for a
+      magazine. Hero object center-frame, shallow depth, considered background.
+    prompt_scaffold: |
+      Studio tabletop product photograph of {object}, on {surface},
+      {lens_and_film} (e.g. 100mm macro, Ektar 100), {lighting_setup}
+      (e.g. single softbox top-left, white bounce card right),
+      shallow depth of field, hero object centered, {background},
+      no extra objects, no logos except the subject's.
+    good_models: [aurora, flux_pro_via_grok]
+    slot_hints:
+      surface: ["brushed steel", "black felt", "weathered oak", "concrete slab"]
+      background: ["seamless off-white", "deep shadow gradient", "out-of-focus plant"]
+
+  - slug: photoreal_street_scene
+    kind: image
+    description: |
+      Candid photoreal street photograph, subject framed in context of a
+      specific city / time / weather. No staged feel.
+    prompt_scaffold: |
+      Candid street photograph, {subject} in {city_location}, {time_of_day},
+      {weather_or_condition}, {lens_and_film} (e.g. 35mm Leica, Tri-X pushed
+      to 1600), available light only, rule of thirds, foreground depth cue,
+      no posing, no eye contact with camera.
+    good_models: [aurora, flux_pro_via_grok]
+
+  - slug: reaction_shot_meme
+    kind: image
+    description: |
+      Classic single-face reaction meme — one character's expression IS the
+      whole joke. Caption optional (meme works silent).
+    prompt_scaffold: |
+      Tight portrait of {character} showing {emotion}, shot like a candid
+      screenshot, slightly soft focus, {lens_and_film}, indirect ambient
+      light, centered composition, caption bar at bottom reading
+      "{caption_text}" in Impact-style white with black stroke.
+      If caption_text is empty, no text bar.
+    good_models: [ideogram_via_grok, nano_banana]
+
+  - slug: fake_news_headline
+    kind: image
+    description: |
+      Fake screenshot of a news article headline + subhead + byline. Subject
+      is absurd, presentation is deadpan broadsheet.
+    prompt_scaffold: |
+      Screenshot of a news article, {publication_style}, headline:
+      "{headline}". Sub-headline: "{subhead}". Byline: "{byline}".
+      Small hero image area showing {hero_image_concept}.
+      Serif headline typography, sans-serif body, clean broadsheet layout,
+      mobile aspect ratio if {mobile} else desktop.
+    good_models: [ideogram_via_grok]
+    slot_hints:
+      publication_style: ["NYT broadsheet", "Bloomberg terminal", "Substack minimal", "Twitter card"]
+
+  - slug: video_single_take_reaction
+    kind: video
+    description: |
+      5-6s static shot, single emotion read across the face. No camera move —
+      the performance IS the shot. Good for reaction content.
+    prompt_scaffold_still: |
+      Portrait of {character} about to {reaction_trigger}, {lens_and_film},
+      {lighting_setup}, {time_of_day}, centered composition, sharp on eyes,
+      natural skin texture.
+    prompt_scaffold_motion: |
+      Camera move: static lockoff. Duration: {duration_sec}s.
+      Subject action: {reaction_description} — a slow emotional read across
+      the face, no body movement beyond micro-expressions.
+      Lighting stays consistent. No zoom, no pan.
+    good_models_still: [aurora, flux_pro_via_grok, nano_banana]
+    good_models_motion: [grok_imagine_video, kling_img2vid]
+
+  - slug: video_kenburns_still
+    kind: video
+    description: |
+      Ken Burns slow-push on a single photoreal still. The cheapest/fastest
+      way to turn one great image into a 4-6s piece for X.
+    prompt_scaffold_still: |
+      {subject_and_scene}, {lens_and_film}, {lighting_setup},
+      {time_of_day}, {composition_rule}.
+    prompt_scaffold_motion: |
+      Camera move: Ken Burns zoom-and-pan on the still. Start at
+      {start_crop}, end at {end_crop}. Duration: {duration_sec}s.
+      Ease-in ease-out, no bounce, no jitter.
+    good_models_still: [aurora, flux_pro_via_grok]
+    good_models_motion: [grok_imagine_video, runway_gen4]
+    slot_hints:
+      start_crop: ["full frame", "wide", "centered medium"]
+      end_crop: ["tight on subject face", "tight on hands", "tight on detail"]
+
+  - slug: before_after
+    kind: image
+    description: |
+      Before / After split — two states of the same subject side-by-side
+      or stacked. Used for transformations, glow-ups, market-state shifts.
+    prompt_scaffold: |
+      Two-panel image, {split_direction} split, equal panels, thin divider.
+      Left/Top labeled "BEFORE": {before_state}.
+      Right/Bottom labeled "AFTER": {after_state}.
+      Matched camera angle and lighting across both panels so only the
+      subject state differs. Impact-style labels in the corner of each panel.
+    good_models: [ideogram_via_grok, nano_banana]
+    slot_hints:
+      split_direction: [horizontal, vertical]
+
+  - slug: trend_cycle
+    kind: image
+    description: |
+      The four-panel trend-cycle meme. Top-left: "I hate it".
+      Top-right: "...wait".  Bottom-left: "I love it".
+      Bottom-right: "I am it now". Used for ironic self-awareness posts.
+    prompt_scaffold: |
+      Four-panel 2x2 grid, thin dividers, square aspect. Same character
+      ({character}) across all four panels, same lighting, different
+      progressively evolving facial expressions.
+      Panel 1 caption: "{line1}".
+      Panel 2 caption: "{line2}".
+      Panel 3 caption: "{line3}".
+      Panel 4 caption: "{line4}".
+      Impact-style bottom captions, white with black stroke.
+    good_models: [ideogram_via_grok, nano_banana]
+
+  - slug: hot_take_card
+    kind: image
+    description: |
+      A clean text-card for a hot take / contrarian statement. No image
+      subject — the typography IS the post. Think: manifesto card.
+    prompt_scaffold: |
+      Typographic poster image, {background_color} flat background,
+      centered headline "{hot_take_text}" in {font_family},
+      color {text_color}, 9:16 aspect ratio.
+      Below, small byline: "{byline}".
+      No decorations, no illustrations, no gradients.
+    good_models: [ideogram_via_grok]
+    slot_hints:
+      background_color: [white, black, off-white, deep-navy, cream]
+      text_color: [black, white, red, forest-green]
+      font_family: ["serif display (Playfair Display)", "sans-serif condensed (Oswald Bold)", "monospace (JetBrains Mono)"]
+
+  - slug: sports_broadcast
+    kind: image
+    description: |
+      Fake ESPN-style broadcast graphic with score, team, analyst line.
+      Substitute market / crypto / life events for "sports" for humor.
+    prompt_scaffold: |
+      Fake sports broadcast graphic, widescreen 16:9. Lower third banner
+      showing "{team_a} {score_a} – {team_b} {score_b}".
+      Right side: analyst callout "{analyst_name}: '{analyst_line}'".
+      ESPN-style red/white/blue color scheme, bold condensed sans-serif,
+      no actual logos (generic styling).
+    good_models: [ideogram_via_grok]
+
+  - slug: motivational_quote
+    kind: image
+    description: |
+      Dead-serious motivational quote over a stylized image. Works as
+      irony when the image or quote subverts. Minimal text.
+    prompt_scaffold: |
+      Photoreal image of {scene}, {lens_and_film}, {lighting_setup},
+      {time_of_day}, {composition_rule}.
+      Overlaid in bottom third, center-aligned serif italic:
+      "{quote}" — {attribution}.
+      Text in {text_color} with subtle drop shadow.
+    good_models: [ideogram_via_grok, nano_banana]
+
+  - slug: terminal_screenshot
+    kind: image
+    description: |
+      Fake terminal / IDE / chat screenshot. Mono fonts, syntax highlighting
+      or chat UI chrome. For tech-adjacent jokes.
+    prompt_scaffold: |
+      Screenshot of a {terminal_style} terminal with window chrome visible.
+      Monospace text in the window, multiple lines showing:
+      {line_contents}.
+      Prompt symbol "$" or ">" appropriate. Small blinking cursor at end.
+      Flat dark background, no desktop visible.
+    good_models: [ideogram_via_grok]
+    slot_hints:
+      terminal_style: ["iTerm2 dark", "Windows Terminal", "old CRT amber", "modern VS Code"]
+
+  - slug: receipt_screenshot
+    kind: image
+    description: |
+      Fake receipt / invoice / bank statement. Line items tell the joke.
+      Works for absurd purchases, absurd totals, itemized life-regrets.
+    prompt_scaffold: |
+      Photoreal receipt / invoice, {paper_style},
+      header: "{business_name}", date: "{date}".
+      Line items:
+      {line_items}
+      Total: "{total}".
+      Bottom line: "{thank_you}".
+      Monospace receipt font, faint printing imperfections, slight curl at edges.
+    good_models: [ideogram_via_grok, flux_pro_via_grok]
+
+  - slug: lore_poster
+    kind: image
+    description: |
+      Full-width lore poster — an image with a single line of ominous
+      prose bottom-center. Builds project mythology in one post.
+    prompt_scaffold: |
+      {scene_description}, {lens_and_film}, {lighting_setup},
+      {time_of_day}, {composition_rule}, mood: {mood_keywords}.
+      Bottom third has a single line of text in
+      {font_family}: "{lore_line}".
+      Text color {text_color}, understated, no box or shadow.
+    good_models: [nano_banana, aurora, ideogram_via_grok]
+
+  - slug: polaroid_stack
+    kind: image
+    description: |
+      A set of 3-5 polaroid photos scattered or stacked on a surface,
+      each showing a different moment. Evokes nostalgia, diary, lore.
+    prompt_scaffold: |
+      Overhead shot of {n_polaroids} polaroid photos
+      {arrangement} on a {surface}. Each polaroid shows a different
+      {theme_per_photo}. Handwritten caption on white border of each.
+      {lens_and_film}, {lighting_setup}, slight shadow under each polaroid.
+    good_models: [nano_banana, aurora]
+    slot_hints:
+      n_polaroids: [3, 4, 5]
+      arrangement: ["scattered slightly overlapping", "stacked diagonally", "arranged in a grid"]
+      surface: ["weathered wood desk", "black felt", "vintage kraft paper"]
+
+  - slug: video_text_reveal
+    kind: video
+    description: |
+      Short video (3-6s) where a single word or phrase reveals by
+      fade-in / type-on / mask-wipe over a moving background clip.
+      Good for "name announcement" / mic-drop style posts.
+    prompt_scaffold_still: |
+      Ambient moving background: {background_scene}, {lens_and_film},
+      {lighting_setup}, slow drift motion only, no subject.
+    prompt_scaffold_motion: |
+      Camera move: static lockoff.
+      Duration: {duration_sec}s.
+      Text reveal: "{reveal_text}" appears at {reveal_start_sec}s via
+      {reveal_style}, in {font_family}, centered, {text_color} with
+      subtle stroke.
+      Text holds until end of clip. No other motion.
+    good_models_still: [aurora, flux_pro_via_grok]
+    good_models_motion: [grok_imagine_video, kling_img2vid]
+    slot_hints:
+      reveal_style: [fade-in, type-on, mask-wipe, bounce-in]
+
+  - slug: video_split_compare
+    kind: video
+    description: |
+      Side-by-side comparison clip — two short synchronized videos with a
+      divider, labeled. For "this vs that" style posts.
+    prompt_scaffold_still: |
+      Two-panel layout, {split_direction} split with thin divider.
+      Left/Top: {left_content}. Right/Bottom: {right_content}.
+      Matched lighting, matched {lens_and_film}.
+    prompt_scaffold_motion: |
+      Duration: {duration_sec}s.
+      Both panels play simultaneously, no sync issues.
+      Left panel motion: {left_motion}.
+      Right panel motion: {right_motion}.
+      Small static labels in each panel corner: "{left_label}" / "{right_label}".
+    good_models_still: [aurora, flux_pro_via_grok]
+    good_models_motion: [grok_imagine_video, kling_img2vid]
+    slot_hints:
+      split_direction: [horizontal, vertical]
+
+  - slug: character_3shot
+    kind: image
+    description: |
+      Three-panel character consistency set: same character in three
+      different scenes, same wardrobe, same face. Good for "a day in the
+      life" or episodic lore.
+    prompt_scaffold: |
+      Three-panel horizontal image, thin dividers.
+      CHARACTER (keep identical across all three panels):
+      {character_block}.
+      WARDROBE (identical): {wardrobe}.
+      Panel 1: character doing {action_1} in {location_1}.
+      Panel 2: character doing {action_2} in {location_2}.
+      Panel 3: character doing {action_3} in {location_3}.
+      Same {lens_and_film}, matched lighting treatment across all three.
+    good_models: [nano_banana]
